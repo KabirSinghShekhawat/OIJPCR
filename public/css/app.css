@@ -15,10 +15,6 @@
 }
 
 body {
-    background-color: var(--background-color);
-    display: flex;
-    flex-direction: column;
-
     min-height: 100vh;
 }
 
@@ -29,6 +25,18 @@ h1 {
 footer {
     margin-top: auto;
     width: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.bg-primary {
+    background-color: var(--background-color);
 }
 
 .bg-primary-red {
