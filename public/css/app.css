@@ -15,9 +15,16 @@
 }
 
 body {
-    background-color: rgb(192, 180, 180);
+    background-color: var(--background-color);
+    display: relative;
+    height: 100vh;
 }
 
 h1 {
     color: purple;
+}
+
+.flex-items {
+    display: absolute;
+    top: 0;
 }
