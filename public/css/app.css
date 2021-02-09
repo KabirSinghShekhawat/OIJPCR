@@ -16,15 +16,21 @@
 
 body {
     background-color: var(--background-color);
-    display: relative;
-    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100vh;
 }
 
 h1 {
     color: purple;
 }
 
-.flex-items {
-    display: absolute;
-    top: 0;
+footer {
+    margin-top: auto;
+    width: 100%;
+}
+
+.bg-primary-red {
+    background-color: var(--navbar-button-color);
 }
