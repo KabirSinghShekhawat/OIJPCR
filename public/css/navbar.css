@@ -1,0 +1,30 @@
+nav {
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 0.5em 0.2em 0.5em;
+    position: fixed;
+    /* border: 2px solid rgb(180, 95, 95); */
+}
+
+.logo {
+    background-image: url(../assets/svg/logo.svg);
+    background-size: cover;
+	height: 6rem;
+	width: 6rem;
+	border-radius: 0;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.nav-font {
+    font-family: var(--navbar-font-family);
+    font-weight: var(--navbar-font-weight);
+    font-size: var(--navbar-font-size);
+}
+
+.nav-links {
+    justify-content: space-evenly;
+    align-items: center;
+}
