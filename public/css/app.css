@@ -1,12 +1,14 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap"); */
+/* fonts */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap");
 /* CSS */
 @import url("navbar.css");
+@import url("flex.css");
+@import url("footer.css");
 
 :root {
     --background-color: #E5E5E5;
-    --navbar-button-color: #FD0054;
+    --primary-red: #FD0054;
     --navbar-font-family: Montserrat, sans-serif;
     --navbar-font-weight: 900;
     --navbar-font-size: 1.3rem; /* 24px */
@@ -26,61 +28,14 @@ body {
     min-height: 100vh;
 }
 
-footer {
-    margin-top: auto;
-    width: 100%;
-}
 
-
-
-.nav-links > div {
-    height: 100%;
-    padding: 1rem 1.3rem;
-    display: flex;
-    align-items: center;
-}
-
-.nav-links > div:hover {
-    cursor: pointer;
-    background-color: var(--hyperlink-hover-backgroundColor);
-}
-
-.nav-links > div > a {
-    justify-content: center;
-}
-
-.submitButton {
-    width: 100%;
-}
-
-.submitButton > button {
-    border: none;
-    border-radius: 0.3em;
-    width: 100%;
-    padding: 0.4em 0.3em;
-    margin: 0 0.1em;
-    background-color: var(--navbar-button-color);
-    box-shadow: 0.3rem 0.4rem 0.2rem rgba(0, 0, 0, 0.2);
-}
-
-.flex {
-    display: flex;
-}
-
-.flex-row {
-    flex-direction: row;
-}
-
-.flex-column {
-    flex-direction: column;
-}
 
 .bg-primary {
     background-color: var(--background-color);
 }
 
 .bg-primary-red {
-    background-color: var(--navbar-button-color);
+    background-color: var(--primary-red);
 }
 
 a {
@@ -89,7 +44,7 @@ a {
 }
 
 a:hover {
-    color: var(--navbar-button-color);
+    color: var(--primary-red);
 }
 
 button:hover {
