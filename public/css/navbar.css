@@ -63,17 +63,19 @@ nav {
 
 .toggle-button {
     position: absolute;
-    top: 1.5rem;
-    right: 1.7rem;
-    width: 2em;
-    height: 2em;
+    top: 1em;
+    right: 1.2em;
+    width: 4em;
+    height: 4em;
+    padding: 1em;
+    border-radius: 0.3em;
     display: none;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .toggle-button:hover {
-    background-color: var(--hyperlink-hover-backgroundColor);
+    background-color: var(--toggle-hover-backgroundColor);
     cursor: pointer;
 }
 
@@ -84,10 +86,23 @@ nav {
     background: var(--primary-red);
 }
 
+#aboutUs {
+    transition-property: scroll;
+    transition-duration: 0.7s;
+    transition-timing-function: ease-out;
+}
+
 @media (max-width: 1024px) {
     nav {
         flex-direction: column;
         align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .logo {
+        margin-top: 0.6rem;
+        height: 4rem;
+        width: 4rem;
     }
 
     .toggle-button {
@@ -96,6 +111,19 @@ nav {
 
     .nav-links {
         display: none;
+        width: 80%;
+        margin-top: 0.5rem;
+    }
+
+    .nav-links.active > div {
         width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
     }
 }

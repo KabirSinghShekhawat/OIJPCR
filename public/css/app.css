@@ -17,11 +17,16 @@
     --heading-font-weight: 700;
     --hyperlink-color: #000000;
     --hyperlink-hover-backgroundColor: #f3e0e05d;
+    --toggle-hover-backgroundColor: rgba(0, 0, 0, 0.555);
 }
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
