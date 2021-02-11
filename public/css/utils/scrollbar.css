@@ -1,0 +1,12 @@
+::-webkit-scrollbar {
+    width: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-red);
+    height: 7rem;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color);
+}

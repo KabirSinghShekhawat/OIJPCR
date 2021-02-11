@@ -3,8 +3,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap");
 /* CSS */
 @import url("navbar.css");
-@import url("flex.css");
 @import url("footer.css");
+/* utils */
+@import url("utils/flex.css");
+@import url("utils/scrollbar.css");
 
 :root {
     --background-color: #E5E5E5;
@@ -32,8 +34,6 @@ html {
 body {
     min-height: 100vh;
 }
-
-
 
 .bg-primary {
     background-color: var(--background-color);
