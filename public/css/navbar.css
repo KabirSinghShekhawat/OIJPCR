@@ -3,6 +3,7 @@ nav {
     width: 100%;
     padding: 0 0.5em 0.2em 0.5em;
     position: fixed;
+    background: white;
     /* border: 2px solid rgb(180, 95, 95); */
 }
 
