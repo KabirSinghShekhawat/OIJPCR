@@ -3,7 +3,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--primary-red);
+    /* background: var(--primary-red); */
+    background: #c70646;
     height: 7rem;
 }
 
