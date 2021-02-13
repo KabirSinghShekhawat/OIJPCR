@@ -1,0 +1,12 @@
+a {
+    text-decoration: none;
+    color: var(--hyperlink-color);
+}
+
+a:hover {
+    color: var(--primary-red);
+}
+
+button:hover {
+    cursor: pointer;
+}

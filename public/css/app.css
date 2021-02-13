@@ -1,22 +1,27 @@
 /* fonts */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400&display=swap');
 /* CSS */
 @import url("navbar.css");
 @import url("footer.css");
+@import url("banner.css");
 /* utils */
 @import url("utils/flex.css");
 @import url("utils/scrollbar.css");
+@import url("utils/hover-effects.css");
 
 :root {
-    --background-color: #E5E5E5;
+    --background-color: #FFFFFF;
     --primary-red: #FD0054;
     --navbar-font-family: Montserrat, sans-serif;
     --navbar-font-weight: 900;
     --navbar-font-size: 1.3rem; /* 24px */
     --heading-font-size: 3rem; /* 72px */
-    --heading-font-family: Jost, sans-serif;
-    --heading-font-weight: 700;
+    --heading-font-family: 'Jost', sans-serif;
+    --heading-font-weight-bold: 700;
+    --heading-font-weight-normal: 400;
     --hyperlink-color: #000000;
     --hyperlink-hover-backgroundColor: #f3e0e05d;
     --toggle-hover-backgroundColor: rgba(0, 0, 0, 0.555);
@@ -41,17 +46,4 @@ body {
 
 .bg-primary-red {
     background-color: var(--primary-red);
-}
-
-a {
-    text-decoration: none;
-    color: var(--hyperlink-color);
-}
-
-a:hover {
-    color: var(--primary-red);
-}
-
-button:hover {
-    cursor: pointer;
 }
