@@ -4,16 +4,18 @@ header {
 }
 
 .banner-container {
-    margin-top: 20vh;
-    height: 72vh;
+    margin-top: 17vh;
+    height: 65vh;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    /* border: solid green 4px; */
 }
 
 .oijpcr-heading {
     height: 100%;
     padding-left: 0.7em;
+    padding-top: 0.3em;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -33,5 +35,31 @@ header {
 }
 .oijpcr-right-img > img {
     width: 80%;
-    height: 75%;
+    height: 80%;
+}
+
+.scroll-arrow {
+    /* border: solid blueviolet 5px; */
+}
+
+.scroll-arrow > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: solid blue 5px; */
+}
+.scroll-arrow a {
+    width: 25%;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    /* border: solid orange 5px; */
+}
+.scroll-arrow img {
+    align-items: center;
+    /* border: solid red 5px; */
+    width: 30%;
+    height: 30%;
 }
