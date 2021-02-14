@@ -89,12 +89,6 @@ nav {
     background: var(--primary-red);
 }
 
-#aboutUs {
-    transition-property: scroll;
-    transition-duration: 0.7s;
-    transition-timing-function: ease-out;
-}
-
 @media (max-width: 1024px) {
     nav {
         flex-direction: column;
