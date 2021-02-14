@@ -1,0 +1,39 @@
+.about-us div {
+    justify-content: flex-start;
+    padding: 0.6em;
+}
+
+.about-us-heading {
+    width: 100%;
+    /* border: solid 3px red; */
+}
+
+.about-us h2 {
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight-normal);
+    font-size: 3em;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+}
+
+.about-us-content {
+    margin: 0.2em 2em;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5em 1em;
+    background-color: var(--background-color-secondary);
+}
+
+.about-us-content p {
+    font-family: Lato;
+    font-size: 1.5em;
+    font-weight: normal;
+    text-align:justify;
+    text-justify: justify;
+    padding: 0.2em 2em;
+    margin-top: 0.5em;
+}
+
+.about-us-content p:nth-child(2) {
+    margin: 1em 0;
+}
