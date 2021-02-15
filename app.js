@@ -20,9 +20,23 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 const homepage = (request, response) => {
-    response.render('home', { title: 'OIJPCR', css: 'app.css'});
+    const options = {
+        title: 'OIJPCR', 
+        css: 'app.css',
+        isHomePage: true
+    }
+    response.render('home', options);
 }
 
+const podcast = (request, response) => {
+    const options = {
+        title: 'Podcast', 
+        css: 'app.css',
+        isHomePage: false
+    }
+    response.render('podcast', options);
+}
 app.get('/', homepage);
+app.get('/podcast', podcast);
 
 module.exports = app;
