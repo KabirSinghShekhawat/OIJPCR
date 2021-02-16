@@ -3,15 +3,50 @@
 <body class="flex flex-column bg-primary">
 
     <%- include('partials/navbar') %>
-<div class="podcast-banner flex">
+
+<div class="podcast-banner-container flex">
     <div class="left-banner">
-        <div>
+        <div class="left-banner-top">
             <h3 class="podcast-banner-font">PODCAST</h3>
+        </div>
+        <div class="left-banner-bottom">
+            <img src="assets/svg/podcast.svg">
         </div>
     </div>
 
     <div class="right-banner">
-        <h4 class="podcast-banner-font">The OIJPCR Podcast</h4>
+        <div class="right-banner-wrapper flex">
+            <div class="right-banner-top">
+                <h4 class="podcast-banner-font">The OIJPCR Podcast</h4>
+            </div>
+
+            <div class="right-banner-middle flex">
+                <div class="right-banner-middle-image">
+                    <img src="assets/svg/podcast/podcast_cover.svg" alt="podcast cover art">
+                </div>
+
+                <div class="right-banner-middle-paragraph">
+                    <p>
+                        OIJPCR podcast will elucidate, 
+                        introspect and analyze the multifarious methods 
+                        and mechanisms of conflict resolution 
+                        used by the states, organizations, institutions, 
+                        social activists, academicians, individuals, 
+                        and practitioners. 
+                    </p>
+                </div>
+            </div>
+            <div>
+                <p class="streaming-text">
+                    Now streaming on all major podcast streaming platforms!
+                </p>
+            </div>
+            <div class="right-banner-bottom flex">
+                <img src="assets/svg/podcast/spotify.svg" alt="Spotify Logo">
+                <img src="assets/svg/podcast/itunes.svg" alt="Itunes Logo">
+                <img src="assets/svg/podcast/pocketCasts.svg" alt="Pocket Casts">
+            </div>
+        </div>
     </div>
 </div>
 

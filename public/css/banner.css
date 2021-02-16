@@ -40,9 +40,9 @@ header {
     height: 90%;
 }
 
-.scroll-arrow {
-    /* border: solid blueviolet 5px; */
-}
+/* .scroll-arrow {
+    border: solid blueviolet 5px;
+} */
 
 .scroll-arrow > div {
     width: 100%;

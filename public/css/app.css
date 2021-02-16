@@ -9,6 +9,7 @@
 @import url("about.css");
 @import url("team.css");
 @import url("footer.css");
+@import url("podcast.css");
 /* utils */
 @import url("utils/flex.css");
 @import url("utils/scrollbar.css");
@@ -49,28 +50,4 @@ body {
 
 .bg-primary-red {
     background-color: var(--primary-red);
-}
-
-.podcast-banner {
-    justify-content: space-around;
-    border: 3px solid green;
-    margin-top: 10%;
-}
-
-.podcast-banner-font {
-    font-family: var(--heading-font-family);
-    font-weight: var(--heading-font-weight-normal);
-    font-size: 2em;
-}
-
-.left-banner {
-    border: 2px solid orange;
-    display: flex;
-}
-
-.right-banner {
-    padding: 0.5em;
-    border-radius: 2em;
-    height: 100%;
-    background-color: rgba(253, 0, 84, 0.15);
 }
