@@ -36,7 +36,24 @@ const podcast = (request, response) => {
     }
     response.render('podcast', options);
 }
+
+const submitArticle = (request, response) => {
+    const options = {
+        title: 'Submit Articles',
+        css: 'app.css',
+        isHomePage: false
+    }
+    response.render('submit', options);
+}
+
+const postArticle = (request, response) => {
+    console.log(request.body)
+    response.redirect('/');
+}
+
 app.get('/', homepage);
 app.get('/podcast', podcast);
+app.get('/submit', submitArticle);
+app.post('/submitArticle', postArticle);
 
 module.exports = app;

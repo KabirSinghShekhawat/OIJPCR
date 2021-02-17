@@ -10,10 +10,11 @@
 @import url("team.css");
 @import url("footer.css");
 @import url("podcast.css");
+@import url("submit.css");
 /* utils */
 @import url("utils/flex.css");
 @import url("utils/scrollbar.css");
-@import url("utils/hover-effects.css");
+@import url("utils/basic_elements.css");
 
 :root {
     --background-color: #fbf9fa;
@@ -50,4 +51,8 @@ body {
 
 .bg-primary-red {
     background-color: var(--primary-red);
+}
+
+*:focus {
+    outline: none;
 }
