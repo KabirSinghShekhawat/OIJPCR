@@ -3,6 +3,8 @@ const morgan = require('morgan');
 const engine = require('ejs-mate');
 const method_override = require('method-override');
 const path = require('path');
+const mongoose = require('mongoose');
+const Comment = require('./models/comment');
 const app = express();
 
 /*-----------EJS Set Up------------*/
@@ -18,7 +20,22 @@ app.use(method_override('_method'))
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+// Mongo setup
+const mongoOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+}
 
+mongoose.connect('mongodb://localhost/oijpcr', mongoOptions)
+.then(() => {
+    console.log("Connected to MongoDB oijpcr");
+})
+.catch(err => {
+    console.log("Error agaya yaar!")
+    console.log(err)
+})
+// 
 const homepage = (request, response) => {
     const options = {
         title: 'OIJPCR', 
@@ -46,6 +63,11 @@ const submitArticle = (request, response) => {
     response.render('submit', options);
 }
 
+const journals = async (request, response) => {
+    const comments = await Comment.find({});
+    response.render('journals', { comments })
+}
+
 const postArticle = (request, response) => {
     console.log(request.body)
     response.redirect('/');
@@ -54,6 +76,7 @@ const postArticle = (request, response) => {
 app.get('/', homepage);
 app.get('/podcast', podcast);
 app.get('/submit', submitArticle);
+app.get('/journals', journals);
 app.post('/submitArticle', postArticle);
 
 module.exports = app;
