@@ -1,0 +1,33 @@
+.journal-container {
+    margin-top: 12%;
+    /* height: 70vh; */
+    /* border: 3px dotted violet; */
+    padding: 1em 2em;
+    margin-bottom: 5%;
+}
+
+.journal-title {
+    /* border: 2px dashed blue; */
+    padding: 1em;
+}
+
+.journal-author {
+    /* border: 2px dashed green; */
+    padding: 1em;
+    font-size: 1.4em;
+    letter-spacing: 0.1em;
+}
+
+/* .journal-author p, h4 {
+    border: 3px dotted red;
+} */
+
+.journal-content {
+    text-align: justify;
+    justify-content: justify;
+    font-size: 1.4em;
+    padding: 1em;
+    letter-spacing: 0.1em;
+    line-height: 1.3em;
+    /* border: 2px dashed darkturquoise; */
+}

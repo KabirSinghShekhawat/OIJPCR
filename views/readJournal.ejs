@@ -1,55 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('partials/header') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journals</title>
-    <style>
-        li {
-            margin-top: 2em;
-            background-color: rgb(219, 219, 219);
-            font-size: 1.3em;
-            font-family:'Lucida Sans';
-            list-style: none;
-            width: 70%;
-            border-radius: 0.8em;
-            padding: 0.5em;
-        }
-        a {
-            text-decoration: none;
-        }
-        a:hover {
-            cursor: pointer;
-        }
-        button:hover {
-            cursor: pointer;
-        }
-        .btn {
-            color: rgb(255, 255, 255);
-            font-size: 0.8em;
-            border: none;
-            margin-top: 0.2em;
-            border-radius: 0.6em;
-            background-color: rgb(7, 140, 250);
-            padding: 0.5em;
-        }
-    </style>
-</head>
+<body class="flex flex-column bg-primary">
 
-<body>
-    <h1>Journals</h1>
-    <ul>
-        <li>
+    <%- include('partials/navbar') %>
+<div class="journal-container">
+    <div class="journal-title">
+        <h1>Journal</h1>
+    </div>
+    <div class="journal-author">
+        <p>Written by <b>-</b></p>
+        <h4>
+            <%= journal.author %>
+        </h4>
+    </div>
+    <div class="journal-content">
+        <p>
             <%= journal.content %>
-                <b> -</b>
-                <%= journal.author %>
-                    <a href="/journals">
-                        <button class="btn">Go Back</button>
-                    </a>
-        </li>
-    </ul>
-</body>
+        </p>
+    </div>
+</div>
 
-</html>
+<%- include('partials/footer') %>

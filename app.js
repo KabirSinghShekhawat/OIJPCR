@@ -66,15 +66,25 @@ const submitArticle = (request, response) => {
 
 const journals = async (request, response) => {
     const journals = await Journal.find({});
-    response.render('journals', { journals })
+    const options = {
+        title: 'Journals',
+        css: 'app.css',
+        isHomePage: false,
+        journals: journals
+    }
+    response.render('journals', options);
 }
 
 const getJournal = async (request, response) => {
-    console.log(request.params);
     const { id } = request.params;
-    console.log(id);
     const journal = await Journal.findById(id);
-    response.render('readJournal', { journal });
+    const options = {
+        title: 'Journal',
+        css: 'app.css',
+        isHomePage: false,
+        journal: journal
+    }
+    response.render('readJournal', options);
 }
 
 const postComment = (request, response) => {
@@ -89,9 +99,10 @@ const postArticle = (request, response) => {
 
 app.get('/', homepage);
 app.get('/journals', journals);
+app.get('/journals/:id', getJournal);
 app.get('/podcast', podcast);
 app.get('/submit', submitArticle);
-app.get('/journals/:id', getJournal);
+
 app.post('/journals/:id', postComment);
 app.post('/submit', postArticle);
 
