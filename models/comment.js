@@ -8,6 +8,9 @@ const commentSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: true
+    },
+    journal_id: {
+        type: String
     }
 },
     {

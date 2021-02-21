@@ -5,6 +5,7 @@ const method_override = require('method-override');
 const path = require('path');
 const mongoose = require('mongoose');
 const Comment = require('./models/comment');
+const Journal = require('./models/journal');
 const app = express();
 
 /*-----------EJS Set Up------------*/
@@ -64,19 +65,34 @@ const submitArticle = (request, response) => {
 }
 
 const journals = async (request, response) => {
-    const comments = await Comment.find({});
-    response.render('journals', { comments })
+    const journals = await Journal.find({});
+    response.render('journals', { journals })
+}
+
+const getJournal = async (request, response) => {
+    console.log(request.params);
+    const { id } = request.params;
+    console.log(id);
+    const journal = await Journal.findById(id);
+    response.render('readJournal', { journal });
+}
+
+const postComment = (request, response) => {
+    console.log(request.body)
+    response.redirect('/journals');
 }
 
 const postArticle = (request, response) => {
-    console.log(request.body)
+    console.log(request.body) 
     response.redirect('/');
 }
 
 app.get('/', homepage);
+app.get('/journals', journals);
 app.get('/podcast', podcast);
 app.get('/submit', submitArticle);
-app.get('/journals', journals);
-app.post('/submitArticle', postArticle);
+app.get('/journals/:id', getJournal);
+app.post('/journals/:id', postComment);
+app.post('/submit', postArticle);
 
 module.exports = app;

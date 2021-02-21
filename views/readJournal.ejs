@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,20 +37,19 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Journals</h1>
     <ul>
-        <% for (let journal of journals) { %>
-            <li>
-                <%= journal.content %> 
-                <b> -</b> 
-                <%= journal.author %> 
-                <br>
-                <a href="/journals/<%=journal._id%>">
-                    <button class="btn">Read more</button>
-                </a>
-            </li>
-        <% } %>  
+        <li>
+            <%= journal.content %>
+                <b> -</b>
+                <%= journal.author %>
+                    <a href="/journals">
+                        <button class="btn">Go Back</button>
+                    </a>
+        </li>
     </ul>
 </body>
+
 </html>
