@@ -87,6 +87,15 @@ const getJournal = async (request, response) => {
     response.render('readJournal', options);
 }
 
+const admin = async (request, response) => {
+    const options = {
+        title: 'Admin',
+        css: 'app.css',
+        isHomePage: false,
+    }
+    response.render('admin', options);
+}
+
 const postComment = (request, response) => {
     console.log(request.body)
     response.redirect('/journals');
@@ -97,13 +106,19 @@ const postArticle = (request, response) => {
     response.redirect('/');
 }
 
+const summernote = (request, response) => {
+    console.log(request.body)
+    response.redirect('/admin');
+}
+
 app.get('/', homepage);
 app.get('/journals', journals);
 app.get('/journals/:id', getJournal);
 app.get('/podcast', podcast);
 app.get('/submit', submitArticle);
+app.get('/admin', admin);
 
 app.post('/journals/:id', postComment);
 app.post('/submit', postArticle);
-
+app.post('/admin/summernote', summernote);
 module.exports = app;

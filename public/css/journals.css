@@ -1,0 +1,74 @@
+.journalList-container {
+    /* border: 3px dotted violet; */
+    padding: 1em;
+    margin-top: 12%;
+    margin-bottom: 5%;
+}
+
+.journals-heading {
+    font-size: 2em;
+    padding: 0.5em;
+    font-family: var(--header-font-family);
+    letter-spacing: 0.1em;
+}
+
+.journal-card-container {
+    border: 1px solid var(--primary-red);
+    /* background-color: rgb(250, 250, 245); */
+    margin: 0.5em 0;
+    width: 98%;
+    padding: 1em;
+    border-radius: 0.5em;
+}
+
+.journal-card-title {
+    /* border: 2px dashed blue; */
+    padding: 0.3em 1em;
+    font-size: 1.4em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+}
+
+.journal-card-author {
+    /* border: 2px dashed green; */
+    padding: 1em;
+    font-size: 1.2em;
+    letter-spacing: 0.1em;
+}
+
+.journal-card-author span {
+    font-weight: normal;
+}
+
+.journal-card-content {
+    /* border: 2px dashed darkturquoise; */
+    text-align: justify;
+    font-family: 'Lato';
+    justify-content: justify;
+    font-size: 1.2em;
+    padding: 1em;
+    /* line-height: 1.5em; */
+}
+
+.journal-card-details {
+    width: 100%;
+    padding: 0 1em 0 0;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.read-more {
+    background-color: var(--primary-red);
+    border: none;
+    border-radius: 0.6em;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: black;
+    padding: 0.4em 0.6em;
+}
+
+@media (max-width: 1024px) {
+    .journalList-container {
+        margin-top: 26%;
+    }
+}

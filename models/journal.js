@@ -5,6 +5,10 @@ const journalSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    title: {
+        type: String,
+        required: true
+    },
     content: {
         type: String,
         required: true

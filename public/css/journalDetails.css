@@ -18,7 +18,8 @@
     letter-spacing: 0.1em;
 }
 
-/* .journal-author p, h4 {
+/* .journal-author p,
+.journal-author h4 {
     border: 3px dotted red;
 } */
 
@@ -28,6 +29,6 @@
     font-size: 1.4em;
     padding: 1em;
     letter-spacing: 0.1em;
-    line-height: 1.3em;
+    line-height: 1.5em;
     /* border: 2px dashed darkturquoise; */
 }

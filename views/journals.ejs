@@ -3,19 +3,38 @@
 <body class="flex flex-column bg-primary">
 
     <%- include('partials/navbar') %>
-<h1>Journals</h1>
-    <ul>
-        <% for (let journal of journals) { %>
-            <li>
-                <%= journal.content %> 
-                <b> -</b> 
-                <%= journal.author %> 
-                <br>
-                <a href="/journals/<%=journal._id%>">
-                    <button>Read more</button>
-                </a>
-            </li>
-        <% } %>  
-    </ul>
+<div class="journalList-container">
+    <h1 class="journals-heading">Journals</h1>
+    <% for (let journal of journals) { %>
+    <div class="journal-card-container">
+            <div class="journal-card-title">
+                <h3>
+                    <%= journal.title %>
+                </h3>
+            </div>
+
+            <div class="journal-card-author">
+                <h4>
+                    <span>Written by -</span>
+                        <%= journal.author %> 
+                </h4>
+            </div>
+
+            <div class="journal-card-content">
+                <p>
+                    <%= journal.content %> 
+                </p>
+                <div class="journal-card-details flex">
+                    <a href="/journals/<%=journal._id%>">
+                        <button class="read-more">Read more</button>
+                    </a>
+                </div>
+            </div>
+
+            
+        </div>
+    <% } %>      
+</div>
+
 
 <%- include('partials/footer') %>
