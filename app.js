@@ -11,6 +11,7 @@ const Journal = require('./models/journal');
 const app = express();
 
 /*-----------EJS Set Up------------*/
+app.use(method_override('_method'))
 app.engine('ejs', engine);
 
 app.set('view engine', 'ejs')
@@ -19,7 +20,6 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(morgan('dev'));
 
 app.use('/', express.static(path.join(__dirname, 'public')))
-app.use(method_override('_method'))
 
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }))
 app.use(bodyParser.json({ limit: '5mb'}))
@@ -93,7 +93,7 @@ const admin = async (request, response) => {
     const journals = await Journal.find({})
     const options = {
         title: 'Admin',
-        css: 'app.css',
+        css: 'admin.css',
         journals: journals,
         isHomePage: false,
     }
@@ -126,10 +126,17 @@ const postJournal = async (request, response) => {
 const addJournal = (request, response) => {
     const options = {
         title: 'Add New Journal',
-        css: 'app.css',
+        css: 'admin.css',
         isHomePage: false,
     }
     response.render('newJournal', options)
+}
+
+const deleteJournal = async (request, response) => {
+    const { id } = request.params;
+    console.log("Made it!")
+    await Journal.findByIdAndDelete(id);
+    response.redirect('/admin');
 }
 
 app.get('/', homepage);
@@ -143,5 +150,7 @@ app.get('/admin/journal', addJournal);
 app.post('/journals/:id', postComment);
 app.post('/submit', postArticle);
 app.post('/admin/journal', postJournal);
+
+app.delete('/admin/journal/:id', deleteJournal);
 
 module.exports = app;

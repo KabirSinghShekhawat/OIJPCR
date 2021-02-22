@@ -22,7 +22,8 @@
 
             <div class="journal-card-content">
                 <p>
-                    <%- journal.content %> 
+                   <% let slug = journal.content.slice(0, 100) %> 
+                   <%- slug %>
                 </p>
                 <div class="journal-card-details flex">
                     <a href="/journals/<%=journal._id%>">
