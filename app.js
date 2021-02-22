@@ -139,6 +139,30 @@ const deleteJournal = async (request, response) => {
     response.redirect('/admin');
 }
 
+const editJournal = async (request, response) => {
+    const { id } = request.params;
+    const journal = await Journal.findById(id);
+    const options = {
+        title: 'Edit Journal',
+        css: 'admin.css',
+        isHomePage: false,
+        journal: journal
+    }
+    response.render('editJournal', options);
+}
+
+const putJournal = async (request, response) => {
+    const { id } = request.params;
+    const { author, title, editordata } = request.body;
+    const updatedJournal = {
+        author: author,
+        title: title,
+        content: editordata
+    }
+    await Journal.findByIdAndUpdate(id, updatedJournal);
+    response.redirect('/admin');
+}
+
 app.get('/', homepage);
 app.get('/journals', journals);
 app.get('/journals/:id', getJournal);
@@ -146,11 +170,13 @@ app.get('/podcast', podcast);
 app.get('/submit', submitArticle);
 app.get('/admin', admin);
 app.get('/admin/journal', addJournal);
+app.get('/admin/journal/:id', editJournal);
 
 app.post('/journals/:id', postComment);
 app.post('/submit', postArticle);
 app.post('/admin/journal', postJournal);
 
 app.delete('/admin/journal/:id', deleteJournal);
+app.put('/admin/journal/:id', putJournal);
 
 module.exports = app;

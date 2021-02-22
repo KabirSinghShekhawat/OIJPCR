@@ -73,6 +73,7 @@
     align-items: center;
 }
 
+.journal-card-details div,
 .journal-card-details form {
     margin-left: 1em;
     display: inline;
