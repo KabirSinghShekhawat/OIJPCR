@@ -1,9 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
 const engine = require('ejs-mate');
+const bodyParser = require('body-parser');
 const method_override = require('method-override');
 const path = require('path');
 const mongoose = require('mongoose');
+const multer = require('multer');
 const Comment = require('./models/comment');
 const Journal = require('./models/journal');
 const app = express();
@@ -19,8 +21,8 @@ app.use(morgan('dev'));
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(method_override('_method'))
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }))
+app.use(bodyParser.json({ limit: '5mb'}))
 // Mongo setup
 const mongoOptions = {
     useNewUrlParser: true,
@@ -49,7 +51,7 @@ const homepage = (request, response) => {
 const podcast = (request, response) => {
     const options = {
         title: 'Podcast', 
-        css: 'app.css',
+        css: 'admin.css',
         isHomePage: false
     }
     response.render('podcast', options);
@@ -88,9 +90,11 @@ const getJournal = async (request, response) => {
 }
 
 const admin = async (request, response) => {
+    const journals = await Journal.find({})
     const options = {
         title: 'Admin',
         css: 'app.css',
+        journals: journals,
         isHomePage: false,
     }
     response.render('admin', options);
@@ -106,9 +110,26 @@ const postArticle = (request, response) => {
     response.redirect('/');
 }
 
-const summernote = (request, response) => {
+const postJournal = async (request, response) => {
+    const { author, title, editordata } = request.body;
     console.log(request.body)
+    const newJournal = {
+        author: author,
+        title: title,
+        content: editordata
+    }
+    const journal = new Journal(newJournal);
+    await journal.save();
     response.redirect('/admin');
+}
+
+const addJournal = (request, response) => {
+    const options = {
+        title: 'Add New Journal',
+        css: 'app.css',
+        isHomePage: false,
+    }
+    response.render('newJournal', options)
 }
 
 app.get('/', homepage);
@@ -117,8 +138,10 @@ app.get('/journals/:id', getJournal);
 app.get('/podcast', podcast);
 app.get('/submit', submitArticle);
 app.get('/admin', admin);
+app.get('/admin/journal', addJournal);
 
 app.post('/journals/:id', postComment);
 app.post('/submit', postArticle);
-app.post('/admin/summernote', summernote);
+app.post('/admin/journal', postJournal);
+
 module.exports = app;

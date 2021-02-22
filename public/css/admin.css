@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.summernote-container {
+    padding: 1em;
+    background-color: azure;
+    margin-bottom: 5%;
+}
+
+.summernote-submit-button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.summernote-submit-button button {
+    font-size: 2em;
+    background-color: blue;
+    font-weight: bold;
+    padding: 0.5em 1em;
+}
+
+.author-container 
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.author-container input 
+.title-container input{
+    padding: 0.5em;
+    width: 50%;
+    font-size: 1em;
+}
