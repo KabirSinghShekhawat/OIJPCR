@@ -8,6 +8,9 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const Comment = require('./models/comment');
 const Journal = require('./models/journal');
+const journalsRoute = require('./routes/journals');
+const adminRoute = require('./routes/admin');
+const submitRoute = require('./routes/submitArticle');
 const app = express();
 
 /*-----------EJS Set Up------------*/
@@ -35,7 +38,7 @@ mongoose.connect('mongodb://localhost/oijpcr', mongoOptions)
     console.log("Connected to MongoDB oijpcr");
 })
 .catch(err => {
-    console.log("Error agaya yaar!")
+    console.log("Error!")
     console.log(err)
 })
 // 
@@ -57,126 +60,10 @@ const podcast = (request, response) => {
     response.render('podcast', options);
 }
 
-const submitArticle = (request, response) => {
-    const options = {
-        title: 'Submit Articles',
-        css: 'app.css',
-        isHomePage: false
-    }
-    response.render('submit', options);
-}
-
-const journals = async (request, response) => {
-    const journals = await Journal.find({});
-    const options = {
-        title: 'Journals',
-        css: 'app.css',
-        isHomePage: false,
-        journals: journals
-    }
-    response.render('journals', options);
-}
-
-const getJournal = async (request, response) => {
-    const { id } = request.params;
-    const journal = await Journal.findById(id);
-    const options = {
-        title: 'Journal',
-        css: 'app.css',
-        isHomePage: false,
-        journal: journal
-    }
-    response.render('readJournal', options);
-}
-
-const admin = async (request, response) => {
-    const journals = await Journal.find({})
-    const options = {
-        title: 'Admin',
-        css: 'admin.css',
-        journals: journals,
-        isHomePage: false,
-    }
-    response.render('admin', options);
-}
-
-const postComment = (request, response) => {
-    console.log(request.body)
-    response.redirect('/journals');
-}
-
-const postArticle = (request, response) => {
-    console.log(request.body) 
-    response.redirect('/');
-}
-
-const postJournal = async (request, response) => {
-    const { author, title, editordata } = request.body;
-    console.log(request.body)
-    const newJournal = {
-        author: author,
-        title: title,
-        content: editordata
-    }
-    const journal = new Journal(newJournal);
-    await journal.save();
-    response.redirect('/admin');
-}
-
-const addJournal = (request, response) => {
-    const options = {
-        title: 'Add New Journal',
-        css: 'admin.css',
-        isHomePage: false,
-    }
-    response.render('newJournal', options)
-}
-
-const deleteJournal = async (request, response) => {
-    const { id } = request.params;
-    console.log("Made it!")
-    await Journal.findByIdAndDelete(id);
-    response.redirect('/admin');
-}
-
-const editJournal = async (request, response) => {
-    const { id } = request.params;
-    const journal = await Journal.findById(id);
-    const options = {
-        title: 'Edit Journal',
-        css: 'admin.css',
-        isHomePage: false,
-        journal: journal
-    }
-    response.render('editJournal', options);
-}
-
-const putJournal = async (request, response) => {
-    const { id } = request.params;
-    const { author, title, editordata } = request.body;
-    const updatedJournal = {
-        author: author,
-        title: title,
-        content: editordata
-    }
-    await Journal.findByIdAndUpdate(id, updatedJournal);
-    response.redirect('/admin');
-}
-
 app.get('/', homepage);
-app.get('/journals', journals);
-app.get('/journals/:id', getJournal);
+app.use('/journals', journalsRoute);
+app.use('/submit', submitRoute);
+app.use('/admin', adminRoute);
 app.get('/podcast', podcast);
-app.get('/submit', submitArticle);
-app.get('/admin', admin);
-app.get('/admin/journal', addJournal);
-app.get('/admin/journal/:id', editJournal);
-
-app.post('/journals/:id', postComment);
-app.post('/submit', postArticle);
-app.post('/admin/journal', postJournal);
-
-app.delete('/admin/journal/:id', deleteJournal);
-app.put('/admin/journal/:id', putJournal);
 
 module.exports = app;
