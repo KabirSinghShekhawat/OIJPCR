@@ -30,7 +30,8 @@ app.use(bodyParser.json({ limit: '5mb'}))
 const mongoOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 }
 
 mongoose.connect('mongodb://localhost/oijpcr', mongoOptions)

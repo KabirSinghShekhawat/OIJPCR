@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const slugify = require('slugify');
 const Journal = require('../models/journal');
 
 
@@ -10,19 +11,21 @@ const admin = async (request, response) => {
         css: 'admin.css',
         journals: journals,
         isHomePage: false,
+        slugify: slugify
     }
-    response.render('admin', options);
+    response.render('admin/admin', options);
 }
 
 
 
 const postJournal = async (request, response) => {
-    const { author, title, editordata } = request.body;
+    const { author, title, editordata, slug } = request.body;
     console.log(request.body)
     const newJournal = {
         author: author,
         title: title,
-        content: editordata
+        content: editordata,
+        slug: slug
     }
     const journal = new Journal(newJournal);
     await journal.save();
@@ -35,7 +38,7 @@ const addJournal = (request, response) => {
         css: 'admin.css',
         isHomePage: false,
     }
-    response.render('newJournal', options)
+    response.render('admin/newJournal', options)
 }
 
 const deleteJournal = async (request, response) => {
@@ -54,16 +57,17 @@ const editJournal = async (request, response) => {
         isHomePage: false,
         journal: journal
     }
-    response.render('editJournal', options);
+    response.render('admin/editJournal', options);
 }
 
 const putJournal = async (request, response) => {
     const { id } = request.params;
-    const { author, title, editordata } = request.body;
+    const { author, title, editordata, slug } = request.body;
     const updatedJournal = {
         author: author,
         title: title,
-        content: editordata
+        content: editordata,
+        slug: slug
     }
     await Journal.findByIdAndUpdate(id, updatedJournal);
     response.redirect('/admin');

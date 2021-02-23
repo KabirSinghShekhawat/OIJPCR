@@ -12,6 +12,10 @@ const journalSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true
+    },
+    slug: {
+        type: String,
+        required: true
     }
 },
     {

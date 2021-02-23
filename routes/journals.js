@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const slugify = require('slugify');
 const Journal = require('../models/journal');
 
 
@@ -9,7 +10,8 @@ const journals = async (request, response) => {
         title: 'Journals',
         css: 'app.css',
         isHomePage: false,
-        journals: journals
+        journals: journals,
+        slugify: slugify
     }
     response.render('journals', options);
 }
@@ -32,7 +34,7 @@ const postComment = (request, response) => {
 }
 
 router.get('/', journals);
-router.get('/:id', getJournal);
+router.get('/:slug/:id', getJournal);
 router.post('/:id', postComment);
 
 module.exports = router;

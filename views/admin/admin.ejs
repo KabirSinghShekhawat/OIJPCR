@@ -1,4 +1,4 @@
-<%- include('partials/adminHeader') %>
+<%- include('../partials/adminHeader') %>
 
     <body>
         <div class="journalList-container">
@@ -28,7 +28,8 @@
                         
                         <div class="journal-card-details">
                             <div>
-                                <a href="/journals/<%=journal._id%>">
+                                <% const slug = slugify(journal.slug) %>
+                                <a href="/journals/<%=slug%>/<%=journal._id%>">
                                     <button class="btn btn-blue">Read more</button>
                                 </a>
                             </div>
@@ -39,10 +40,6 @@
                                 </a>
                             </div>
     
-                            <!-- <form method="POST" action="/admin/journal/<%=journal._id%>">
-                                <button type="submit" class="btn btn-orange">Edit</button>
-                            </form> -->
-    
                             <form method="POST" action="/admin/journal/<%=journal._id%>?_method=DELETE">
                                 <button type="submit" class="btn btn-red">Delete</button>
                             </form>
@@ -51,14 +48,11 @@
 
                     <div class="journal-card-content">
                         <p>
-                            <% let slug=journal.content.slice(0, 300) %>
-                                <%- slug %>
+                            <%= journal.slug %>
                         </p>
                     </div>
                 </div>
-                <% } %>
+            <% } %>
         </div>
-
     </body>
-
-    </html>
+</html>

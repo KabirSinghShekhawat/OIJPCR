@@ -6,7 +6,7 @@
 <div class="journalList-container">
     <h1 class="journals-heading">Journals</h1>
     <% for (let journal of journals) { %>
-    <div class="journal-card-container">
+        <div class="journal-card-container">
             <div class="journal-card-title">
                 <h3>
                     <%= journal.title %>
@@ -21,18 +21,21 @@
             </div>
 
             <div class="journal-card-content">
-                <p>
-                   <% let slug = journal.content.slice(0, 100) %> 
-                   <%- slug %>
-                </p>
-                <div class="journal-card-details flex">
-                    <a href="/journals/<%=journal._id%>">
-                        <button class="read-more">Read more</button>
-                    </a>
+                <div class="journal-card-slug">
+                    <p> 
+                        <%= journal.slug %>
+                    </p>
                 </div>
-            </div>
-
-            
+                   
+                <% const slug = slugify(journal.slug) %>
+                <div class="journal-card-details">
+                    <div>
+                        <a href="/journals/<%=slug%>/<%=journal._id%>">
+                            <button class="read-more">Read more</button>
+                        </a>
+                    </div>
+                </div>
+            </div>   
         </div>
     <% } %>      
 </div>
