@@ -54,7 +54,7 @@ const homepage = (request, response) => {
 const podcast = (request, response) => {
     const options = {
         title: 'Podcast', 
-        css: 'admin.css',
+        css: 'app.css',
         isHomePage: false
     }
     response.render('podcast', options);

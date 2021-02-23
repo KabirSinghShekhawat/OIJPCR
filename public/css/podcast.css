@@ -109,8 +109,10 @@
 }
 
 @media (max-width: 1024px) {
+
     .podcast-banner-container {
         flex-direction: column;
+        margin-top: 25%;
     }
 
     .left-banner-bottom {
