@@ -85,7 +85,7 @@
 .right-banner-middle-paragraph {
     /* border: 3px solid red; */
     padding: 1em 2em 1em 1em;
-    font-family: Lato;
+    font-family: var(--heading-font-family);
     font-weight: 400;
     font-size: 1em;
     line-height: 1.3em;
@@ -102,10 +102,13 @@
 .right-banner-bottom {
     margin-top: 0.5em;
     justify-content: flex-start;
+    align-items: center;
 }
-.right-banner-bottom > img{
+
+.right-banner-bottom  img{
     width: 2em;
-    margin: 0 0.3em;
+    /* border: 2px solid darkturquoise; */
+    margin: 0 0.5em;
 }
 
 @media (max-width: 1024px) {

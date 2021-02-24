@@ -1,5 +1,10 @@
 footer {
-    margin-top: auto;
-    height: 40vh;
+    background-image: url('/assets/svg/topWave.svg');
+    background-repeat: no-repeat;
+    /* border-top: 3px solid black; */
+    background-position: center;
+    background-size: cover;
+    margin-top: 20%;
+    height: 60vh;
     width: 100%;
 }

@@ -18,10 +18,11 @@
 
 .about-us-content {
     margin: 0.2em 2em;
-    border: none;
+    border: 2px solid #FD0054;
     border-radius: 0.5rem;
     padding: 0.5em 1em;
-    background-color: var(--background-color-secondary);
+    background-color: rgba(241, 138, 138, 0.151);
+    /* background-color: var(--background-color-secondary); */
 }
 
 .about-us-content p {

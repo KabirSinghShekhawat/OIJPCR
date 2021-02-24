@@ -1,11 +1,12 @@
 <%- include('partials/header') %>
 
-<body class="flex flex-column bg-primary">
+<body class="flex flex-column bg-primary" onload="fetchAllJournals();">
 
     <%- include('partials/navbar') %>
 <div class="journalList-container">
-    <h1 class="journals-heading">Journals</h1>
+    <!-- <h1 class="journals-heading">Journals</h1> -->
     <% for (let journal of journals) { %>
+    <div class="journal-card-wrapper flex flex-column">
         <div class="journal-card-container">
             <div class="journal-card-title">
                 <h3>
@@ -37,8 +38,9 @@
                 </div>
             </div>   
         </div>
+    </div>
     <% } %>      
 </div>
 
-
+<script src="js/fetchJournals.js" defer></script>
 <%- include('partials/footer') %>

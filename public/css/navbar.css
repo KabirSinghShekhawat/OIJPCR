@@ -12,9 +12,9 @@ nav {
 .logo {
     background-image: url(../assets/svg/logo.svg);
     background-size: cover;
-	height: 6rem;
-	width: 6rem;
-    margin-bottom: 0.8em;
+	height: 4rem;
+	width: 4rem;
+    margin-bottom: 0.5em;
 	border-radius: 0;
 }
 

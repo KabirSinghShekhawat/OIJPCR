@@ -61,7 +61,14 @@ const podcast = (request, response) => {
     response.render('podcast', options);
 }
 
+const apiData = async (request, response) => {
+    const journals = await Journal.find({})
+    console.log(journals)
+    response.send(journals)
+}
+
 app.get('/', homepage);
+app.get('/api', apiData);
 app.use('/journals', journalsRoute);
 app.use('/submit', submitRoute);
 app.use('/admin', adminRoute);
