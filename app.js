@@ -21,6 +21,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
 process.env.NODE_ENV = "dev"
+// process.env.NODE_ENV = "production"
 let dbUrl = ''
 if (process.env.NODE_ENV !== "dev") {
     require('dotenv').config()
@@ -43,7 +44,7 @@ const mongoOptions = {
     useCreateIndex: true,
     useFindAndModify: false
 }
-console.log(dbUrl)
+
 mongoose.connect(dbUrl, mongoOptions)
     .then(() => {
         console.log("Connected to MongoDB oijpcr");
