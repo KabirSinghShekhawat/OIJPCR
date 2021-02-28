@@ -20,12 +20,22 @@ app.engine('ejs', engine);
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
-app.use(morgan('dev'));
+process.env.NODE_ENV = "dev"
+let dbUrl = ''
+if (process.env.NODE_ENV !== "dev") {
+    require('dotenv').config()
+    app.use(morgan('tiny'));
+    dbUrl = process.env.DB_URL
+}
+else {
+    dbUrl = 'mongodb://localhost/oijpcr'
+    app.use(morgan('dev'));
+}
 
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }))
-app.use(bodyParser.json({ limit: '5mb'}))
+app.use(bodyParser.json({ limit: '5mb' }))
 // Mongo setup
 const mongoOptions = {
     useNewUrlParser: true,
@@ -33,19 +43,19 @@ const mongoOptions = {
     useCreateIndex: true,
     useFindAndModify: false
 }
-
-mongoose.connect('mongodb://localhost/oijpcr', mongoOptions)
-.then(() => {
-    console.log("Connected to MongoDB oijpcr");
-})
-.catch(err => {
-    console.log("Error!")
-    console.log(err)
-})
+console.log(dbUrl)
+mongoose.connect(dbUrl, mongoOptions)
+    .then(() => {
+        console.log("Connected to MongoDB oijpcr");
+    })
+    .catch(err => {
+        console.log("Error!")
+        console.log(err)
+    })
 // 
 const homepage = (request, response) => {
     const options = {
-        title: 'OIJPCR', 
+        title: 'OIJPCR',
         css: 'app.css',
         isHomePage: true
     }
@@ -54,7 +64,7 @@ const homepage = (request, response) => {
 
 const podcast = (request, response) => {
     const options = {
-        title: 'Podcast', 
+        title: 'Podcast',
         css: 'app.css',
         isHomePage: false
     }
@@ -62,9 +72,13 @@ const podcast = (request, response) => {
 }
 
 const apiData = async (request, response) => {
-    const journals = await Journal.find({})
-    console.log(journals)
-    response.send(journals)
+    if(process.env.NODE_ENV !== 'dev') {
+        await console.log('access API data in production')
+        response.redirect('/')
+    } else {
+        const journals = await Journal.find({})
+        response.send(journals)
+    }
 }
 
 app.get('/', homepage);
