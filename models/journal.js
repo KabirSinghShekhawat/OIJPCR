@@ -16,6 +16,9 @@ const journalSchema = new mongoose.Schema({
     slug: {
         type: String,
         required: true
+    },
+    volume: {
+        type: Number
     }
 },
     {

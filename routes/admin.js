@@ -19,13 +19,14 @@ const admin = async (request, response) => {
 
 
 const postJournal = async (request, response) => {
-    const { author, title, editordata, slug } = request.body;
-    console.log(request.body)
+    const { author, title, editordata, slug, volume } = request.body;
+    console.log(`Author: ${author}\nTitle: ${title}\nSlug: ${slug}\nVolume: ${volume}`)
     const newJournal = {
         author: author,
         title: title,
         content: editordata,
-        slug: slug
+        slug: slug, 
+        volume: volume
     }
     const journal = new Journal(newJournal);
     await journal.save();
@@ -62,12 +63,13 @@ const editJournal = async (request, response) => {
 
 const putJournal = async (request, response) => {
     const { id } = request.params;
-    const { author, title, editordata, slug } = request.body;
+    const { author, title, editordata, slug, volume } = request.body;
     const updatedJournal = {
         author: author,
         title: title,
         content: editordata,
-        slug: slug
+        slug: slug, 
+        volume: volume
     }
     await Journal.findByIdAndUpdate(id, updatedJournal);
     response.redirect('/admin');

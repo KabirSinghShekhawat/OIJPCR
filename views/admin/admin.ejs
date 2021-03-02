@@ -4,8 +4,11 @@
         <div class="journalList-container">
 
             <div class="new-journal">
-                <a href="/admin/journal" target="_blank">
-                    <button class="btn btn-blue">New Journal</button>
+                <a href="/admin/journal">
+                    <button class="btn btn-blue btn-hover font-md">New Journal</button>
+                </a>
+                <a href="/">
+                    <button class="btn btn-dark btn-hover font-md">Home</button>
                 </a>
             </div>
 
@@ -24,6 +27,10 @@
                                 <span>Written by -</span>
                                 <%= journal.author %>
                             </h4>
+                            <h5>
+                                <span>Volume: </span>
+                                <%= journal.volume %>
+                            </h5>
                         </div>
                         
                         <div class="journal-card-details">

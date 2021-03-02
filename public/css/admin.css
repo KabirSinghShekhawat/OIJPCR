@@ -1,3 +1,7 @@
+:root {
+    --primary-red: #FD0054;
+    --primary-blue: rgb(40, 160, 240);
+}
 * {
     box-sizing: border-box;
     padding: 0;
@@ -23,7 +27,7 @@
 }
 
 .journal-card-container {
-    border: 1px solid #FD0054;
+    border: 1px solid var(--primary-red);
     /* background-color: rgb(250, 250, 245); */
     margin: 0.5em 0;
     width: 98%;
@@ -82,20 +86,30 @@
 .btn {
     border: none;
     border-radius: 0.6em;
-    font-size: 0.9em;
+    font-family: 'Arial';
     font-weight: bold;
     color: black;
     padding: 0.4em 0.6em;
 }
 
 .btn-red {
-    background-color: #FD0054;
+    background-color: var(--primary-red);
 }
 
 .btn-blue {
-    background-color: rgb(40, 160, 240);
+    background-color: var(--primary-blue);
 }
-
+.font-md {
+    font-size: 1.4em !important;
+}
+.btn-dark {
+    color: white;
+    background-color: black;
+}
+.btn-hover:hover {
+    background-color: white;
+    border: 1px solid var(--primary-red);
+}
 .btn-orange {
     background-color: orange;
 }
