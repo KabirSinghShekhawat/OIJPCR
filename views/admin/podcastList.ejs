@@ -1,0 +1,41 @@
+<%- include('../partials/adminHeader') %>
+
+    <body>
+        <div class="podcast-container-main">
+
+            <div class="new-journal">
+                <a href="/admin/podcast">
+                    <button class="btn btn-blue btn-hover font-md">New Podcast</button>
+                </a>
+                <a href="/admin">
+                    <button class="btn btn-dark btn-hover font-md">Admin Panel</button>
+                </a>
+            </div>
+
+            <h1 class="podcast-heading">Podcasts</h1>
+            <div class="podcast-list-container">
+                <% for (let podcast of podcasts) { %>
+                    <div class="podcast-container">
+                        <div class="iframe-container">
+                            <div class="episode-number">
+                                <h2>
+                                    Episode <%=podcast.episode%>
+                                </h2>
+                            </div>
+                            <iframe src="<%=podcast.URL%>" frameborder="0" scrolling="no"></iframe>
+                        </div>
+                        <div class="button-container">
+                            <a href="/admin/podcast/<%=podcast._id%>">
+                                <button class="btn btn-orange btn-hover font-md">Edit</button>
+                            </a>
+                            <form method="POST" action="/admin/podcast/<%=podcast._id%>?_method=DELETE">
+                                <button class="btn btn-danger btn-hover font-md">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </body>
+
+    </html>

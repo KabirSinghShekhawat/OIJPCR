@@ -1,0 +1,36 @@
+<%- include('../partials/adminHeader') %>
+
+<body class="container-fluid">
+    <form method="POST" action="/admin/podcast" class="form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" class="form-control" id="title" placeholder="Title">
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input type="text" name="author" class="form-control" id="author" placeholder="Name">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" name="description" id="description" class="form-control" placeholder="Description">
+        </div>
+
+        <div class="form-group">
+            <label for="episode">Episode Number</label>
+            <input type="number" name="episode" id="episode" class="form-control" placeholder="Episode Number">
+        </div>
+
+        <div class="form-group">
+            <label for="URL">Source URL</label>
+            <input type="text" name="URL" id="URL" class="form-control" placeholder="URL">
+        </div>
+
+        <div class="container">
+            <button type="submit" class="btn btn-lg btn-block btn-primary mb-5">Save</button>
+            <a href="/admin" class="btn btn-lg btn-block btn-danger">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

@@ -59,4 +59,19 @@
     </div>
 </div>
 
+<div class="podcast-list-container flex flex-column">
+    <% for (let podcast of podcasts) { %>
+        <div class="podcast-container">
+            <div class="iframe-container">
+                <div class="episode-number">
+                    <h2>
+                        Episode <%=podcast.episode%>
+                    </h2>
+                </div>
+                <iframe src="<%=podcast.URL%>" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+    <% } %>
+</div>
+
 <%- include('partials/footer') %>

@@ -6,19 +6,22 @@ const method_override = require('method-override');
 const path = require('path');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const Comment = require('./models/comment');
-const Journal = require('./models/journal');
+// Routes
 const journalsRoute = require('./routes/journals');
 const adminRoute = require('./routes/admin');
-const submitRoute = require('./routes/submitArticle');
+const submitArticleRoute = require('./routes/submitArticle');
+const homeRoute = require('./routes/home');
+const podcastRoute = require('./routes/podcast');
 const app = express();
 
 /*-----------EJS Set Up------------*/
 app.use(method_override('_method'))
-app.engine('ejs', engine);
 
+app.engine('ejs', engine);
 app.set('view engine', 'ejs')
+
 app.set('views', path.join(__dirname, 'views'))
+app.use('/', express.static(path.join(__dirname, 'public')))
 
 process.env.NODE_ENV = "dev"
 // process.env.NODE_ENV = "production"
@@ -33,10 +36,10 @@ else {
     app.use(morgan('dev'));
 }
 
-app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }))
 app.use(bodyParser.json({ limit: '5mb' }))
+
 // Mongo setup
 const mongoOptions = {
     useNewUrlParser: true,
@@ -50,43 +53,13 @@ mongoose.connect(dbUrl, mongoOptions)
         console.log("Connected to MongoDB oijpcr");
     })
     .catch(err => {
-        console.log("Error!")
-        console.log(err)
+        throw new Error(`Error Message: ${err.message}`);
     })
-// 
-const homepage = (request, response) => {
-    const options = {
-        title: 'OIJPCR',
-        css: 'app.css',
-        isHomePage: true
-    }
-    response.render('home', options);
-}
 
-const podcast = (request, response) => {
-    const options = {
-        title: 'Podcast',
-        css: 'app.css',
-        isHomePage: false
-    }
-    response.render('podcast', options);
-}
-
-const apiData = async (request, response) => {
-    if(process.env.NODE_ENV !== 'dev') {
-        await console.log('access API data in production')
-        response.redirect('/')
-    } else {
-        const journals = await Journal.find({})
-        response.send(journals)
-    }
-}
-
-app.get('/', homepage);
-app.get('/api', apiData);
+app.use('/', homeRoute);
 app.use('/journals', journalsRoute);
-app.use('/submit', submitRoute);
+app.use('/submit', submitArticleRoute);
+app.use('/podcast', podcastRoute);
 app.use('/admin', adminRoute);
-app.get('/podcast', podcast);
 
 module.exports = app;
