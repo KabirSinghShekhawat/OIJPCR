@@ -27,6 +27,7 @@
     border-radius: 1.5em;
     width: 30%;
     padding: 1em;
+    height: 33rem;
     background-color: var(--background-color-secondary);
 }
 
@@ -43,7 +44,10 @@
 }
 
 .team-member-image img {
-    width: 50%;
+    width: 30%;
+    height: 30%;
+    border: 2px solid var(--primary-red);
+    border-radius: 50%;
 }
 
 .team-member-name {
@@ -61,9 +65,10 @@
 
 .team-member-description {
     line-height: 1.5;
-    letter-spacing: normal;
     text-align: justify;
-    text-justify: justify;
+    text-justify: inter-word;
+    /* border: 1px solid var(--primary-red); */
+    /* text-overflow: justify; */
     padding: 2em;
 }
 
