@@ -27,7 +27,7 @@
     border-radius: 1.5em;
     width: 30%;
     padding: 1em;
-    height: 33rem;
+    min-height: 33rem;
     background-color: var(--background-color-secondary);
 }
 

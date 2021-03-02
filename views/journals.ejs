@@ -4,7 +4,11 @@
 
     <%- include('partials/navbar') %>
 <div class="journalList-container">
-    <!-- <h1 class="journals-heading">Journals</h1> -->
+    <div class="journal-volume-container flex">
+        <div onclick="location.href=('/journals/1');">Volume 1</div>
+        <div onclick="location.href=('/journals/2');">Volume 2</div>
+        <div onclick="location.href=('/journals/3');">Volume 3</div>
+    </div>
     <% for (let journal of journals) { %>
     <div class="journal-card-wrapper flex flex-column">
         <div class="journal-card-container">
