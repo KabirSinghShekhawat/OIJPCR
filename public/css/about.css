@@ -5,7 +5,6 @@
 
 .about-us-heading {
     width: 100%;
-    /* border: solid 3px red; */
 }
 
 .about-us h2 {
@@ -37,4 +36,47 @@
 
 .about-us-content p:nth-child(2) {
     margin: 1em 0;
+}
+
+@media screen and (max-width: 768px) {
+    .about-us div {
+        justify-content: flex-start;
+        padding: 0.2em;
+    }
+    
+    .about-us-heading {
+        width: 100%;
+    }
+    
+    .about-us h2 {
+        font-family: var(--heading-font-family);
+        font-weight: var(--heading-font-weight-normal);
+        font-size: 3em;
+        padding-left: 1em;
+        padding-bottom: 0.6em;
+    }
+    
+    .about-us-content {
+        margin: 0.2em;
+        border: 2px solid #FD0054;
+        border-radius: 0.5rem;
+        background-color: rgba(241, 138, 138, 0.151);
+        /* background-color: var(--background-color-secondary); */
+    }
+    
+    .about-us-content p {
+        font-family: Lato;
+        font-size: 1em;
+        font-weight: normal;
+        text-align:justify;
+        text-justify: justify;
+        word-wrap: break-word;
+        word-break: break-word;
+        padding: 0.2em 0.8em;
+        margin-top: 0.8em;
+    }
+    
+    .about-us-content p:nth-child(2) {
+        margin: 1em 0;
+    }
 }
