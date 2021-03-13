@@ -1,0 +1,50 @@
+<hr>
+<div class="submit-comment flex flex-column">
+    <div class="commentBox-heading">
+        <p>Leave a Reply!</p>
+        <p>Your email address will not be published.
+            Required fields are marked as *
+        </p>
+    </div>
+    <form method="POST" action="/journals/<%= journal.slug %>/<%=journal._id%>">
+        <div class="flex">
+            <div class="flex">
+                <label for="author">Name</label>
+            </div>
+            <div class="flex">
+                <input type="text" name="name" id="name" placeholder="Name">
+            </div>
+        </div>
+        
+        <div class="flex">
+            <div class="flex">
+                <label for="email">Email</label>
+            </div>
+            <div class="flex">
+                <input type="email" name="email" id="email" placeholder="Email">
+            </div>
+        </div>
+        
+        <div class="flex">
+            <div class="comment-field flex">
+                <label for="comment">Comment</label>
+            </div>    
+            <div class="comment-field flex">
+                <textarea name="comment" id="comment" placeholder="Comment"></textarea>
+            </div>    
+        </div>
+
+        <div class="button-container flex">
+                <button type="submit">Post Comment</button>
+        </div>
+    </form>
+</div>
+
+<div class="comment-container">
+    <% for( let comment of comments) { %>
+        <div class="comment-body">
+            <label>Username: <%= comment.username %></label>
+            <p>Content: <%= comment.comment %></p>
+        </div>
+    <% } %>
+</div>

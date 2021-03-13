@@ -1,27 +1,18 @@
 .journal-container {
     margin-top: 12%;
-    /* height: 70vh; */
-    /* border: 3px dotted violet; */
     padding: 1em 2em;
     margin-bottom: 5%;
 }
 
 .journal-title {
-    /* border: 2px dashed blue; */
     padding: 1em;
 }
 
 .journal-author {
-    /* border: 2px dashed green; */
     padding: 1em;
     font-size: 1.4em;
     letter-spacing: 0.1em;
 }
-
-/* .journal-author p,
-.journal-author h4 {
-    border: 3px dotted red;
-} */
 
 .journal-content {
     text-align: justify;
@@ -29,5 +20,80 @@
     font-size: 1.4em;
     padding: 1em;
     line-height: 1.5em;
-    /* border: 2px dashed darkturquoise; */
+}
+
+.submit-comment {
+    border: 2px solid var(--primary-red);
+    border-radius: 12px;
+    margin: 8% auto;
+    padding: 2em;
+    width: 80%;
+}
+
+.commentBox-heading p:nth-child(1) {
+    font-family: 'Montserrat';
+    font-weight: 900;
+    font-size: 1.4em;
+}
+.commentBox-heading p:nth-child(2) {
+    font-family: 'Jost';
+    font-weight: 400;
+    font-size: 1em;
+}
+.submit-comment form {
+    /* border: 1px solid var(--primary-red); */
+    padding-top: 1em;
+}
+.submit-comment form > div {
+    justify-content: flex-start;
+    align-items: center;
+    /* border: 1px solid var(--primary-red); */
+    padding-top: 1em;
+}
+
+.submit-comment form > div > div:nth-child(1) {
+    justify-content: flex-start;
+    align-items: center;
+    width: 20%;
+    /* padding-left: 1em; */
+    font-size: 1.4em;
+    /* border: 1px solid blue; */
+}
+
+.submit-comment form > div > div:nth-child(2) {
+    /* border: 1px solid var(--primary-red); */
+    width: 80%;
+}
+
+.submit-comment input {
+    border: 2px solid black;
+    background-color: #C4C4C4;
+    border-radius: 0.6em;
+    padding: 0.8em;
+    min-width: 100%;
+    height: 4em;
+}
+.comment-field > textarea {
+    min-width: 100%;
+}
+.submit-comment form > div > div label {
+    font-family: 'Jost';
+}
+
+.submit-comment form > div > div label::after {
+    content: '*';
+    color: var(--primary-red);
+}
+
+.button-container {
+    margin-top: 2%;
+}
+.button-container button {
+    font-family: 'Jost';
+    font-size: 1.2em;
+    border: 1px solid black;
+    border-radius: 0.6em;
+    background-color: var(--primary-red);
+    padding: 0.4em 0.8em;
+    margin: 0 auto;
 }
