@@ -3,11 +3,11 @@
     <div class="commentBox-heading">
         <p>Leave a Reply!</p>
         <p>Your email address will not be published.
-            Required fields are marked as *
+            Required fields are marked as 
         </p>
     </div>
     <form method="POST" action="/journals/<%= journal.slug %>/<%=journal._id%>">
-        <div class="flex">
+        <div class="flex comment-input-group">
             <div class="flex">
                 <label for="author">Name</label>
             </div>
@@ -15,8 +15,8 @@
                 <input type="text" name="name" id="name" placeholder="Name">
             </div>
         </div>
-        
-        <div class="flex">
+
+        <div class="flex comment-input-group">
             <div class="flex">
                 <label for="email">Email</label>
             </div>
@@ -24,18 +24,18 @@
                 <input type="email" name="email" id="email" placeholder="Email">
             </div>
         </div>
-        
-        <div class="flex">
+
+        <div class="flex comment-input-group">
             <div class="comment-field flex">
                 <label for="comment">Comment</label>
-            </div>    
+            </div>
             <div class="comment-field flex">
                 <textarea name="comment" id="comment" placeholder="Comment"></textarea>
-            </div>    
+            </div>
         </div>
 
         <div class="button-container flex">
-                <button type="submit">Post Comment</button>
+            <button type="submit">Post Comment</button>
         </div>
     </form>
 </div>
@@ -45,19 +45,38 @@
         <h1>
             Comments
         </h1>
-        <% if(comments.length === 1) { %>
-            <span class="responses-title">1 Response to "Editor's Note"</span>
-        <% } else { %>
-                <span class="responses-title"><%=comments.length%> Responses to "Editor's Note"</span>
+        <% if(comments.length===1) { %>
+            <div class="responses-title">
+                <span>1 Response to "Editor's Note"</span>
+            </div>
+            <% } else { %>
+                <div class="responses-title">
+                    <span>
+                        <%=comments.length%> Responses to "Editor's Note"
+                    </span>
+                </div>
+                <% } %>
+    </div>
+    <div class="comments-list flex flex-column">
+        <% for( let comment of comments) { %>
+            <div class="comment-body flex flex-column">
+                <% const date=dateFormat(comment.createdAt) %>
+                <div class="comment-top flex">
+                    <div class="comment-profilePicture">
+                        <img src="/assets/svg/teamMember.svg" alt="profile picture">
+                    </div>
+                    <div class="comment-info">
+                        <span><%= comment.username %></span>
+                        <br>
+                        <span id="date"><%= date %></span>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p>
+                        <%= comment.comment %>
+                    </p>
+                </div>
+            </div>
         <% } %>
     </div>
-
-    <% for( let comment of comments) { %>
-        <div class="comment-body">
-            <% const date = dateFormat(comment.createdAt) %>
-            <p><%= date %></p>
-            <label>Username: <%= comment.username %></label>
-            <p>Content: <%= comment.comment %></p>
-        </div>
-    <% } %>
 </div>
