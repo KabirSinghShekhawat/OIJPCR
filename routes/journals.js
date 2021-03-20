@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const slugify = require('slugify');
+const dateFormat = require('../public/js/dateFormat');
 const Journal = require('../models/journal');
 const Comment = require('../models/comment');
 
@@ -38,8 +39,10 @@ const getJournal = async (request, response) => {
         css: 'app.css',
         isHomePage: false,
         journal: journal,
-        comments: comments
+        comments: comments, 
+        dateFormat: dateFormat
     }
+    
     response.render('readJournal', options);
 }
 

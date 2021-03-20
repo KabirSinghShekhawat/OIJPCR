@@ -25,7 +25,7 @@
 .submit-comment {
     border: 2px solid var(--primary-red);
     border-radius: 12px;
-    margin: 8% auto;
+    margin: 8% auto 4% auto;
     padding: 2em;
     width: 80%;
 }

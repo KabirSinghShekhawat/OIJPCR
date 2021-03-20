@@ -40,9 +40,22 @@
     </form>
 </div>
 
-<div class="comment-container">
+<div class="comments-container submit-comment">
+    <div>
+        <h1>
+            Comments
+        </h1>
+        <% if(comments.length === 1) { %>
+            <span class="responses-title">1 Response to "Editor's Note"</span>
+        <% } else { %>
+                <span class="responses-title"><%=comments.length%> Responses to "Editor's Note"</span>
+        <% } %>
+    </div>
+
     <% for( let comment of comments) { %>
         <div class="comment-body">
+            <% const date = dateFormat(comment.createdAt) %>
+            <p><%= date %></p>
             <label>Username: <%= comment.username %></label>
             <p>Content: <%= comment.comment %></p>
         </div>
