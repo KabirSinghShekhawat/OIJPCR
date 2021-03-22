@@ -5,11 +5,13 @@ const dateFormat = require('../public/js/dateFormat');
 const Journal = require('../models/journal');
 const Comment = require('../models/comment');
 
+const css = 'app.min.css'
+
 const journals = async (request, response) => {
     const journals = await Journal.find({});
     const options = {
         title: 'Journals',
-        css: 'app.css',
+        css: css,
         isHomePage: false,
         journals: journals,
         slugify: slugify
@@ -22,7 +24,7 @@ const journalByVolume = async (request, response) => {
     const journals = await Journal.find({'volume': volume});
     const options = {
         title: 'Journals',
-        css: 'app.css',
+        css: css,
         isHomePage: false,
         journals: journals,
         slugify: slugify
@@ -36,7 +38,7 @@ const getJournal = async (request, response) => {
     const comments = await Comment.find({'journal_id': id});
     const options = {
         title: 'Journal',
-        css: 'app.css',
+        css: css,
         isHomePage: false,
         journal: journal,
         comments: comments, 

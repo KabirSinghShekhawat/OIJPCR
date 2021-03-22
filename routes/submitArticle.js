@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
+const css = 'app.min.css'
+
 const submitArticle = (request, response) => {
     const options = {
         title: 'Submit Articles',
-        css: 'app.css',
+        css: css,
         isHomePage: false
     }
     response.render('submit', options);

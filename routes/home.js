@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Journal = require('../models/journal');
 
+const css = 'app.min.css'
+
 const apiData = async (request, response) => {
     if(process.env.NODE_ENV !== 'dev') {
         await console.log('access API data in production')
@@ -15,7 +17,7 @@ const apiData = async (request, response) => {
 const homepage = (request, response) => {
     const options = {
         title: 'OIJPCR',
-        css: 'app.css',
+        css: css,
         isHomePage: true
     }
     response.render('home', options);

@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Podcast = require('../models/podcast');
 
+const css = 'app.min.css'
+
 const podcast = async (request, response) => {
     const podcasts = await Podcast.find({});
     const options = {
         title: 'Podcast',
-        css: 'app.css',
+        css: css,
         podcasts: podcasts,
         isHomePage: false
     }

@@ -4,12 +4,13 @@ const slugify = require('slugify');
 const Journal = require('../models/journal');
 const Podcast = require('../models/podcast');
 
+const css = 'admin.css'
 
 const admin = async (request, response) => {
     const journals = await Journal.find({})
     const options = {
         title: 'Admin',
-        css: 'admin.css',
+        css: css,
         journals: journals,
         isHomePage: false,
         slugify: slugify
@@ -21,7 +22,7 @@ const admin = async (request, response) => {
 const addJournal = (request, response) => {
     const options = {
         title: 'Add New Journal',
-        css: 'admin.css',
+        css: css,
         isHomePage: false,
     }
     response.render('admin/newJournal', options)
@@ -47,7 +48,7 @@ const editJournal = async (request, response) => {
     const journal = await Journal.findById(id);
     const options = {
         title: 'Edit Journal',
-        css: 'admin.css',
+        css: css,
         isHomePage: false,
         journal: journal
     }
@@ -78,7 +79,7 @@ const podcastList = async (request, response) => {
     const podcasts = await Podcast.find({});
     const options = {
         title: 'Podcast',
-        css: 'admin.css',
+        css: css,
         podcasts: podcasts,
         isHomePage: false
     }
@@ -87,7 +88,7 @@ const podcastList = async (request, response) => {
 const addPodcast = (request, response) => {
     const options = {
         title: 'Add new Podcast',
-        css: 'admin.css',
+        css: css,
         isHomePage: false,
     }
     response.render('admin/newPodcast', options)
@@ -113,7 +114,7 @@ const editPodcast = async (request, response) => {
     const podcast = await Podcast.findById(id);
     const options = {
         title: 'Edit Podcast',
-        css: 'admin.css',
+        css: css,
         isHomePage: false,
         podcast: podcast
     }

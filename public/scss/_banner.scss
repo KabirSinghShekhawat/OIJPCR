@@ -1,0 +1,225 @@
+header {
+    height: 100vh;
+    padding-top: 17vh;
+    padding-left: 2em;
+    padding-right: 2em;
+    /* border: solid violet 7px; */
+}
+
+.banner-container {
+    height: 65vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* border: solid green 4px; */
+}
+
+.oijpcr-heading {
+    height: 100%;
+    padding-left: 0.7em;
+    padding-top: 0.3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.oijpcr-heading-font {
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight-normal);
+    font-size: 3em;
+}
+
+.oijpcr-right-img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.oijpcr-right-img > img {
+    width: 87%;
+    height: 90%;
+}
+
+/* .scroll-arrow {
+    border: solid blueviolet 5px;
+} */
+
+.scroll-arrow > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: solid blue 5px; */
+}
+
+.scroll-arrow a {
+    width: 25%;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    /* border: solid orange 5px; */
+}
+
+.scroll-arrow img {
+    align-items: center;
+    /* border: solid red 5px; */
+    width: 30%;
+    height: 30%;
+}
+
+@media (max-width: 1024px) {
+    .oijpcr-right-img {
+        display: none;
+    }
+
+    .banner-container {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .oijpcr-heading-font {
+        font-size: 4em;
+    }
+
+    .oijpcr-heading {
+        padding-left: 2em;
+    }
+
+    .scroll-arrow a {
+        width: 60%;
+    }
+
+    .scroll-arrow img {
+        width: 40%;
+        height: 40%;
+    }
+}
+@media (max-width: 580px) {
+    .oijpcr-heading-font {
+        font-size: 3em;
+    }
+}
+
+@media only screen and (max-device-width: 992px) {
+
+    .oijpcr-heading-font {
+        font-size: 3em;
+    }
+
+    .scroll-arrow img {
+        width: 55%;
+        height: 55%;
+    }   
+}
+
+@media only screen and (max-device-width: 786px) {
+    .oijpcr-heading-font {
+        font-size: 3em;
+    }
+    
+    .scroll-arrow {
+        margin-top: 0;
+    }
+    .scroll-arrow img {
+        width: 75%;
+        height: 75%;
+    }
+}
+
+@media only screen and (max-device-width: 600px) {
+    .oijpcr-heading-font {
+        font-size: 3em;
+    }
+    
+    .scroll-arrow {
+        margin-top: 2em;
+    }
+    .scroll-arrow img {
+        width: 70%;
+        height: 70%;
+    }
+}
+/* Surface Duo */
+@media only screen and (max-device-width: 540px) {
+    .oijpcr-heading-font {
+        font-size: 2.5em;
+    }
+    
+    .scroll-arrow a {
+        width: 40%;
+        height: 40%;
+    }
+    .scroll-arrow img {
+        width: 60%;
+        height: 60%;
+    }
+}
+/* Landscape */
+@media only screen and (max-device-width: 720px) {
+    .oijpcr-heading-font {
+        font-size: 2.5em;
+    }
+    
+    .scroll-arrow a {
+        width: 30%;
+        height: 30%;
+    }
+    .scroll-arrow img {
+        width: 60%;
+        height: 60%;
+    }
+}
+
+@media only screen and (max-device-width: 468px) {
+    
+    .oijpcr-heading-font {
+        font-size: 2.6em;
+    }
+    
+    .scroll-arrow {
+        margin-top: 2em;
+    }
+    .scroll-arrow img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .oijpcr-heading-font {
+        font-size: 3em;
+    }
+    
+    .scroll-arrow {
+        margin-top: 0;
+    }
+
+    .scroll-arrow a {
+        width: 40%;
+    }
+
+    .scroll-arrow img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 370px) {
+    .oijpcr-heading-font {
+        font-size: 2.2em;
+    }
+    
+    .scroll-arrow {
+        margin-top: 0;
+    }
+
+    .scroll-arrow a {
+        width: 40%;
+    }
+
+    .scroll-arrow img {
+        width: 100%;
+        height: 100%;
+    }
+}
