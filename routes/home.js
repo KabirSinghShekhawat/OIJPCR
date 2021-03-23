@@ -6,7 +6,7 @@ const css = 'app.min.css'
 
 const apiData = async (request, response) => {
     if(process.env.NODE_ENV !== 'dev') {
-        await console.log('access API data in production')
+        console.log('access API data in production')
         response.redirect('/')
     } else {
         const journals = await Journal.find({})

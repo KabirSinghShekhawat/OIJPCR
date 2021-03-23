@@ -13,11 +13,14 @@ const submitArticle = (request, response) => {
 }
 
 const postArticle = (request, response) => {
-    console.log(request.body) 
+    /**
+     * TODO: Contact Us
+     */
     response.redirect('/');
 }
 
-router.get('/', submitArticle);
-router.post('/', postArticle);
+router.route('/')
+.get(submitArticle)
+.post(postArticle);
 
 module.exports = router;
