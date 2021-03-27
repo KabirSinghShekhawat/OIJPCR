@@ -17,6 +17,9 @@ router.route('/register')
 .get(authController.registerPage)
 .post(authController.register)
 
+router.route('/logout')
+.post(authController.logout)
+
 // Journals
 
 router.route('/journal')

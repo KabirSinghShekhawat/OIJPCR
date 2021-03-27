@@ -46,6 +46,11 @@ exports.login = async (req, res) => {
     }
 }
 
+exports.logout = (req, res) => {
+    req.session.user_id = null
+    res.redirect('/admin/login')
+}
+
 exports.register = async (req, res) => {
     const { username, password } = req.body
     try {

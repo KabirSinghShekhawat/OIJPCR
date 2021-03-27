@@ -8,11 +8,21 @@
     margin: 0;
 }
 
+form {
+    display: inline;
+}
+
 .journalList-container {
     /* border: 3px dotted violet; */
     padding: 1em;
     /* margin-top: 2%; */
     margin-bottom: 5%;
+}
+
+.new-journal{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .new-journal:hover {
