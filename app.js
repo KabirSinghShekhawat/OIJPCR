@@ -1,11 +1,11 @@
 const express = require('express');
-const morgan = require('morgan');
 const engine = require('ejs-mate');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
 const method_override = require('method-override');
 const path = require('path');
-const mongoose = require('mongoose');
-const multer = require('multer');
+// const bodyParser = require('body-parser');
+// const multer = require('multer');
 // Routes
 const journalsRoute = require('./routes/journals');
 const adminRoute = require('./routes/admin');
