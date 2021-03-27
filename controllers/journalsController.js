@@ -6,44 +6,58 @@ const Comment = require('../models/comment');
 const css = 'app.min.css'
 
 exports.journals = async (request, response) => {
-    const journals = await Journal.find({});
-    const options = {
-        title: 'Journals',
-        css: css,
-        isHomePage: false,
-        journals: journals,
-        slugify: slugify
+    try {
+        const journals = await Journal.find({});
+        const options = {
+            title: 'Journals',
+            css: css,
+            isHomePage: false,
+            journals: journals,
+            slugify: slugify
+        }
+        response.render('journals', options);
+    } catch (err) {
+        response.status(404).send('Journals not found');
     }
-    response.render('journals', options);
 }
 
 exports.journalByVolume = async (request, response) => {
     const { volume } = request.params;
-    const journals = await Journal.find({'volume': volume});
-    const options = {
-        title: 'Journals',
-        css: css,
-        isHomePage: false,
-        journals: journals,
-        slugify: slugify
+    try {
+        const journals = await Journal.find({'volume': volume});
+        const options = {
+            title: 'Journals',
+            css: css,
+            isHomePage: false,
+            journals: journals,
+            slugify: slugify
+        }
+        response.render('journals', options);
+    } catch (err) {
+        response.status(404).send('Journal Not Found');
     }
-    response.render('journals', options);
 }
 
 exports.getJournal = async (request, response) => {
     const { id } = request.params;
-    const journal = await Journal.findById(id);
-    const comments = await Comment.find({'journal_id': id});
-    const options = {
-        title: 'Journal',
-        css: css,
-        isHomePage: false,
-        journal: journal,
-        comments: comments, 
-        dateFormat: dateFormat
+    try {
+        const journal = await Journal.findById(id);
+        const comments = await Comment.find({'journal_id': id});
+        const options = {
+            title: 'Journal',
+            css: css,
+            isHomePage: false,
+            journal: journal,
+            comments: comments, 
+            dateFormat: dateFormat
+        }
+        
+        response.render('readJournal', options);
+    } catch (err) {
+        console.log('error')
+        response.status(404).send('Journal Not Found');
     }
-    
-    response.render('readJournal', options);
+
 }
 
 exports.postComment = async (request, response) => {

@@ -7,10 +7,10 @@ exports.isLoggedIn = (req, res, next) => {
     try {
         console.log(`Session Set`)
         if (!req.session.user_id)
-            res.redirect('/admin/login')
+            return res.redirect('/admin/login')
         return next()
     } catch (err) {
-        console.log('is Logged In')
+        res.status(500).send('Login Failed')
     }
 }
 
@@ -34,10 +34,10 @@ exports.login = async (req, res) => {
     const { username, password } = req.body
     try {
         if (!isValidUser(username, password))
-            res.redirect('/admin/login')
+            return res.redirect('/admin/login')
 
         if (!(await validCredentials(username, password, req)))
-            res.redirect('/admin/login')
+            return res.redirect('/admin/login')
 
         res.redirect('/admin')
     } catch (err) {
@@ -55,11 +55,11 @@ exports.register = async (req, res) => {
     const { username, password } = req.body
     try {
         if (!isValidUser(username, password))
-            res.redirect('/admin/register')
+            return res.redirect('/admin/register')
 
         if ((await validCredentials(username, password, req))) {
             console.log(`error: 'User Already Exists'`)
-            res.redirect('/admin/register')
+            return res.redirect('/admin/register')
         }
 
         await createUser(username, password, req)
@@ -82,6 +82,7 @@ const createUser = async (username, password, req) => {
         await user.save()
         req.session.user_id = user._id
     } catch (err) {
+        res.status(500).send('Error creating user')
         throw new Error('Error in Password Generation ' + err.message)
     }
 }
