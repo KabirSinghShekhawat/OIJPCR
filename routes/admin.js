@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('./../controllers/adminController');
-const authController = require('./../controllers/authController');
+const authController = require('./../controllers/auth/authController');
 /**
  * Routes
  */
 
 router.route('/')
-.get(adminController.admin);
+.get(authController.isLoggedIn, adminController.admin);
 
 router.route('/login')
 .get(authController.loginPage)
@@ -20,26 +20,26 @@ router.route('/register')
 // Journals
 
 router.route('/journal')
-.get(adminController.addJournal)
-.post(adminController.postJournal)
+.get(authController.isLoggedIn, adminController.addJournal)
+.post(authController.isLoggedIn, adminController.postJournal)
 
 router.route('/journal/:id')
-.get(adminController.editJournal)
-.put(adminController.putJournal)
-.delete(adminController.deleteJournal)
+.get(authController.isLoggedIn, adminController.editJournal)
+.put(authController.isLoggedIn, adminController.putJournal)
+.delete(authController.isLoggedIn, adminController.deleteJournal)
 
 // Podcasts
 
 router.route('/podcast')
-.get(adminController.addPodcast)
-.post(adminController.postPodcast)
+.get(authController.isLoggedIn, adminController.addPodcast)
+.post(authController.isLoggedIn, adminController.postPodcast)
 
 router.route('/podcast/list')
-.get(adminController.podcastList)
+.get(authController.isLoggedIn, adminController.podcastList)
 
 router.route('/podcast/:id')
-.get(adminController.editPodcast)
-.put(adminController.putPodcast)
-.delete(adminController.deletePodcast)
+.get(authController.isLoggedIn, adminController.editPodcast)
+.put(authController.isLoggedIn, adminController.putPodcast)
+.delete(authController.isLoggedIn, adminController.deletePodcast)
 
 module.exports = router;

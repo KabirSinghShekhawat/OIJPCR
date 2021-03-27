@@ -1,18 +1,19 @@
 const express = require('express');
+const app = express();
 const engine = require('ejs-mate');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const method_override = require('method-override');
+const session = require('express-session');
 const path = require('path');
-// const bodyParser = require('body-parser');
-// const multer = require('multer');
+
 // Routes
 const journalsRoute = require('./routes/journals');
 const adminRoute = require('./routes/admin');
 const submitArticleRoute = require('./routes/submitArticle');
 const homeRoute = require('./routes/home');
 const podcastRoute = require('./routes/podcast');
-const app = express();
+require('dotenv').config()
 
 /*-----------EJS Set Up------------*/
 app.use(method_override('_method'))
@@ -22,12 +23,16 @@ app.set('view engine', 'ejs')
 
 app.set('views', path.join(__dirname, 'views'))
 app.use('/', express.static(path.join(__dirname, 'public')))
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
 
-process.env.NODE_ENV = "dev"
+// process.env.NODE_ENV = "dev"
 // process.env.NODE_ENV = "production"
 let dbUrl = ''
 if (process.env.NODE_ENV !== "dev") {
-    require('dotenv').config()
     app.use(morgan('tiny'));
     dbUrl = process.env.DB_URL
 }
