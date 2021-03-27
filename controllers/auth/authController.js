@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('./../../models/user')
 
-const css = 'app.min.css'
+const css = 'auth.css'
 
 exports.isLoggedIn = (req, res, next) => {
     try {
@@ -52,7 +52,13 @@ exports.register = async (req, res) => {
         if (!isValidUser(username, password))
             res.redirect('/admin/register')
 
+        if ((await validCredentials(username, password, req))) {
+            console.log(`error: 'User Already Exists'`)
+            res.redirect('/admin/register')
+        }
+
         await createUser(username, password, req)
+
         res.redirect('/admin')
     } catch (err) {
         res.redirect('/admin/register')
