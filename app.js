@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const method_override = require('method-override');
 const session = require('express-session');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 
 // Routes
@@ -16,6 +17,14 @@ const podcastRoute = require('./routes/podcast');
 require('dotenv').config()
 
 /*-----------EJS Set Up------------*/
+const limiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 100,
+    message: 'Too many requests, try again later'
+});
+
+app.use('/admin', limiter);
+
 app.use(method_override('_method'))
 
 app.engine('ejs', engine);

@@ -64,7 +64,7 @@ exports.register = async (req, res) => {
 
         await createUser(username, password, req)
 
-        res.redirect('/admin')
+        return res.redirect('/admin')
     } catch (err) {
         res.redirect('/admin/register')
         throw new Error('Could not Register ' + err.message)
