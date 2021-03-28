@@ -98,7 +98,8 @@ const createUser = async (username, password, req) => {
 const searchUser = async (username, password, req) => {
     try {
         const user = await User.findOne({ username })
-        if (!(user?.username && user?.password)) return false
+        if(typeof user == 'undefined' || user == null) return false 
+        if (!(user.username && user.password)) return false
 
         const match = await bcrypt.compare(password, user.password)
         if (!match) return false
