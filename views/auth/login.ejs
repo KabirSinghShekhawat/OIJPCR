@@ -1,7 +1,8 @@
 <%- include('../partials/header') %>
 
-<body>
-    <form method="POST" action="/admin/login">
+<body class="auth-body">
+    <%- include('../flash') %>
+    <form method="POST" action="/admin/login" class="auth-form">
         <div class="form-head">
             <h1>Login</h1>
         </div>

@@ -1,12 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap");
-body {
+.auth-body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-form {
+.auth-form {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
@@ -105,4 +106,43 @@ input {
     &:active {
         background-color: lightgray;
     }
+}
+
+.alert {
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5em;
+    &:hover {
+        cursor: pointer;
+    }
+}
+.alert-success {
+    background-color: lightgreen;
+    color: darkgreen;
+}
+
+.alert-error {
+    background-color: rgb(243, 135, 135);
+    color: darkred;
+}
+
+.message {
+    width: 50%;
+    padding: 0 1em;
+    font-size: 1.4em;
+    display: inline;
+}
+
+.cross {
+    margin-right: 5%;
+    display: inline;
+}
+
+.cross-span {
+    font-size: 1em;
 }

@@ -10,6 +10,7 @@ exports.isLoggedIn = (req, res, next) => {
             return res.redirect('/admin/login')
         return next()
     } catch (err) {
+        req.flash('error', 'Not logged in')
         res.status(500).send('Login Failed')
     }
 }
@@ -33,14 +34,20 @@ exports.registerPage = (req, res) => {
 exports.login = async (req, res) => {
     const { username, password } = req.body
     try {
-        if (!isValidUser(username, password))
+        if (!isValidUser(username, password)) {
+            req.flash('error', 'Invalid Credentials')
             return res.redirect('/admin/login')
-
-        if (!(await validCredentials(username, password, req)))
+        }
+        
+        if (!(await validCredentials(username, password, req))) {
+            req.flash('error', 'Invalid Credentials')
             return res.redirect('/admin/login')
+        }
 
+        req.flash('success', 'Successfully Logged In')
         res.redirect('/admin')
     } catch (err) {
+        req.flash('error', 'Login Failed')
         res.redirect('/admin/login')
         throw new Error('Login Error ' + err.message)
     }
@@ -58,6 +65,7 @@ exports.register = async (req, res) => {
             return res.redirect('/admin/register')
 
         if ((await validCredentials(username, password, req))) {
+            req.flash('error', 'User alreadt exists')
             console.log(`error: 'User Already Exists'`)
             return res.redirect('/admin/register')
         }
