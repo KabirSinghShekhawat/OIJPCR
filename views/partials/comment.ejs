@@ -3,7 +3,7 @@
     <div class="commentBox-heading">
         <p>Leave a Reply!</p>
         <p>Your email address will not be published.
-            Required fields are marked as 
+            Required fields are marked as
         </p>
     </div>
     <form method="POST" action="/journals/<%= journal.slug %>/<%=journal._id%>">
@@ -59,24 +59,30 @@
     </div>
     <div class="comments-list flex flex-column">
         <% for( let comment of comments) { %>
-            <div class="comment-body flex flex-column">
-                <% const date=dateFormat(comment.createdAt) %>
-                <div class="comment-top flex">
-                    <div class="comment-profilePicture">
-                        <img src="/assets/svg/teamMember.svg" alt="profile picture">
-                    </div>
-                    <div class="comment-info">
-                        <span><%= comment.username %></span>
-                        <br>
-                        <span id="date"><%= date %></span>
-                    </div>
+            <% if(comment.isVerified) { %>
+                <div class="comment-body flex flex-column">
+                    <% const date=dateFormat(comment.createdAt) %>
+                        <div class="comment-top flex">
+                            <div class="comment-profilePicture">
+                                <img src="/assets/svg/teamMember.svg" alt="profile picture">
+                            </div>
+                            <div class="comment-info">
+                                <span>
+                                    <%= comment.username %>
+                                </span>
+                                <br>
+                                <span id="date">
+                                    <%= date %>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            <p>
+                                <%= comment.comment %>
+                            </p>
+                        </div>
                 </div>
-                <div class="comment-content">
-                    <p>
-                        <%= comment.comment %>
-                    </p>
-                </div>
-            </div>
+            <% } %>
         <% } %>
     </div>
 </div>

@@ -7,7 +7,7 @@ const css = 'app.min.css'
 
 exports.journals = async (request, response) => {
     try {
-        const journals = await Journal.find({});
+        const journals = await Journal.find({}).sort({createdAt: -1});
         const options = {
             title: 'Journals',
             css: css,
@@ -24,7 +24,7 @@ exports.journals = async (request, response) => {
 exports.journalByVolume = async (request, response) => {
     const { volume } = request.params;
     try {
-        const journals = await Journal.find({'volume': volume});
+        const journals = await Journal.find({'volume': volume}).sort({createdAt: -1});
         const options = {
             title: 'Journals',
             css: css,
@@ -71,5 +71,6 @@ exports.postComment = async (request, response) => {
     }
     const comment = new Comment(newComment);
     await comment.save();
-    response.redirect(`/journals/${slug}/${id}`);
+    request.flash('success', 'Comment Awaiting Moderation');
+    return response.redirect(`/journals/${slug}/${id}`);
 }

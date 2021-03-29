@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema({
     username: {
         type: String,
-        // required: true
+        required: true
     },
     comment: {
         type: String,
@@ -15,6 +15,10 @@ const commentSchema = new mongoose.Schema({
     },
     journal_id: {
         type: String
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     }
 },
     {

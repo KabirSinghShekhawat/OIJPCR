@@ -1,6 +1,8 @@
 const slugify = require('slugify');
 const Journal = require('../models/journal');
 const Podcast = require('../models/podcast');
+const Comment = require('../models/comment');
+const dateFormat = require('../public/js/dateFormat');
 
 const css = 'admin.css'
 
@@ -140,4 +142,70 @@ exports.deletePodcast = async (request, response) => {
     const {id} = request.params;
     await Podcast.findByIdAndDelete(id);
     response.redirect('/admin/podcast/list');
+}
+/**
+ * Comments
+ */
+
+exports.commentsPage = async (req, res) => {
+    try {
+        const comments = await Comment.find({}).sort({createdAt: -1});
+        const options = {
+            title: 'Comments',
+            css: css,
+            comments: comments,
+            dateFormat: dateFormat
+        }
+        res.render('admin/comments', options)
+    } catch (err) {
+        req.flash('error', 'An error occurred')
+        return res.redirect('/admin')
+    }
+}
+
+exports.publishComment = async (req, res) => {
+    try {
+        await modifyComment(req, true, 'Comment has been published')
+        console.log('Publish Comment')
+        return res.redirect('/admin/comments')
+    } catch (err) {
+        console.log(err)
+        req.flash('error', 'Could Not Publish Comment')
+        return res.redirect('/admin/comments')
+    }
+}
+
+exports.draftComment = async (req, res) => {
+    try {
+        await modifyComment(req, false, 'Comment Moved to Draft')
+        return res.redirect('/admin/comments')
+    } catch (err) {
+        console.log(err)
+        req.flash('error', 'Could Not Draft Comment')
+        return res.redirect('/admin/comments')
+    }
+}
+
+exports.deleteComment = async (req, res) => {
+    try {
+        const {id} = req.params
+        await Comment.findByIdAndDelete(id)
+        req.flash('success', 'Comment deleted successfully')
+        return res.redirect('/admin/comments')
+    } catch (err) {
+        console.log(err)
+        req.flash('error', 'Could Not Delete Comment')
+        return res.redirect('/admin/comments')
+    }
+}
+
+const modifyComment = async (req, action, message) => {
+    const { id } = req.params;
+    try {
+        await Comment.findByIdAndUpdate(id, { isVerified: action})
+        return req.flash('success', message)
+    } catch (err) {
+        console.log(err)
+        throw new Error(err)
+    }
 }
