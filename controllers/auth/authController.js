@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('./../../models/user')
-
+require('dotenv').config()
 const css = 'auth.css'
 
 exports.isLoggedIn = (req, res, next) => {
@@ -59,13 +59,19 @@ exports.logout = (req, res) => {
 }
 
 exports.register = async (req, res) => {
-    const { username, password } = req.body
+    const { username, password, key} = req.body
+    
+    if(key !== process.env.SECRET) {
+        req.flash('error', 'Incorrect Credentials')
+        return res.redirect('/admin/register')
+    }
+
     try {
         if (!isValidUser(username, password))
             return res.redirect('/admin/register')
 
         if ((await validCredentials(username, password, req))) {
-            req.flash('error', 'User alreadt exists')
+            req.flash('error', 'User already exists')
             console.log(`error: 'User Already Exists'`)
             return res.redirect('/admin/register')
         }
