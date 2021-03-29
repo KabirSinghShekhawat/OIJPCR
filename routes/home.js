@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Journal = require('../models/journal');
+const slugify = require('slugify');
 
 const css = 'app.min.css'
 
@@ -14,13 +15,20 @@ const apiData = async (request, response) => {
     }
 }
 
-const homepage = (request, response) => {
-    const options = {
-        title: 'OIJPCR',
-        css: css,
-        isHomePage: true
+const homepage = async (request, response) => {
+    try {
+        const journals = await Journal.find({}).sort({createdAt: -1}).limit(3)
+        const options = {
+            title: 'OIJPCR',
+            css: css,
+            isHomePage: true,
+            journals: journals,
+            slugify: slugify
+        }
+        response.render('home', options);
+    } catch (err) {
+        response.status(404).send('Journals not found');
     }
-    response.render('home', options);
 }
 
 router.get('/', homepage);

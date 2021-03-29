@@ -1,14 +1,4 @@
-<%- include('partials/header') %>
-
-<body class="flex flex-column bg-primary">
-
-    <%- include('partials/navbar') %>
 <div class="journalList-container">
-    <div class="journal-volume-container flex">
-        <div onclick="location.href=('/journals/1');">Volume 1</div>
-        <div onclick="location.href=('/journals/2');">Volume 2</div>
-        <div onclick="location.href=('/journals/3');">Volume 3</div>
-    </div>
     <% for (let journal of journals) { %>
     <div class="journal-card-wrapper flex flex-column">
         <div class="journal-card-container">
@@ -47,4 +37,3 @@
 </div>
 
 <!-- <script src="js/fetchJournals.js" defer></script> -->
-<%- include('partials/footer') %>
