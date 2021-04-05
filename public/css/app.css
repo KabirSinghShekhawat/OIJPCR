@@ -799,6 +799,10 @@ footer {
     margin-top: 1rem;
   }
 }
+.recentAdded {
+  font-family: "Montserrat";
+}
+
 .journal-container {
   margin-top: 12%;
   padding: 1em 2em;
