@@ -1,37 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Journal = require('../models/journal');
-const slugify = require('slugify');
+const homeController = require('../controllers/homeController');
 
-const css = 'app.min.css'
 
-const apiData = async (request, response) => {
-    if(process.env.NODE_ENV !== 'dev') {
-        console.log('access API data in production')
-        response.redirect('/')
-    } else {
-        const journals = await Journal.find({})
-        response.send(journals)
-    }
-}
-
-const homepage = async (request, response) => {
-    try {
-        const journals = await Journal.find({}).sort({createdAt: -1}).limit(3)
-        const options = {
-            title: 'OIJPCR',
-            css: css,
-            isHomePage: true,
-            journals: journals,
-            slugify: slugify
-        }
-        response.render('home', options);
-    } catch (err) {
-        response.status(404).send('Journals not found');
-    }
-}
-
-router.get('/', homepage);
-router.get('/api', apiData);
+router.get('/', homeController.homepage);
+router.get('/api', homeController.apiData);
 
 module.exports = router;

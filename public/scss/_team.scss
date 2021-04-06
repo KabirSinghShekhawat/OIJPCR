@@ -1,6 +1,7 @@
 .our-team-heading {
     /* border: 3px solid orange; */
-    margin-top: 2rem;
+    // margin-top: 2rem;
+    margin-top: 10%;
     padding-left: 1em;
     font-family: var(--heading-font-family);
     font-size: 3.3em;
@@ -83,6 +84,9 @@
 }
 
 @media screen and (max-width: 768px) {
+    .our-team-heading {
+        margin-top: 13%;
+    }
     .team-container {
         flex-direction: column;
     }

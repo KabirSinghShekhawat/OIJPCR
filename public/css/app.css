@@ -397,6 +397,16 @@ header {
 }
 
 @media screen and (max-width: 768px) {
+  .about-us {
+    margin-top: 13%;
+  }
+  .about-us h2 {
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight-normal);
+    font-size: 3em;
+    padding-left: 1em;
+    padding-bottom: 0.6em;
+  }
   .about-us div {
     justify-content: flex-start;
     padding: 0.2em;
@@ -404,14 +414,6 @@ header {
 
   .about-us-heading {
     width: 100%;
-  }
-
-  .about-us h2 {
-    font-family: var(--heading-font-family);
-    font-weight: var(--heading-font-weight-normal);
-    font-size: 3em;
-    padding-left: 1em;
-    padding-bottom: 0.6em;
   }
 
   .about-us-content {
@@ -440,7 +442,7 @@ header {
 }
 .our-team-heading {
   /* border: 3px solid orange; */
-  margin-top: 2rem;
+  margin-top: 10%;
   padding-left: 1em;
   font-family: var(--heading-font-family);
   font-size: 3.3em;
@@ -523,6 +525,10 @@ header {
   }
 }
 @media screen and (max-width: 768px) {
+  .our-team-heading {
+    margin-top: 13%;
+  }
+
   .team-container {
     flex-direction: column;
   }
@@ -768,6 +774,22 @@ footer {
   padding: 0.4rem 0.6rem;
 }
 
+.recently-added div {
+  justify-content: flex-start;
+  padding: 0.4rem;
+}
+.recently-added h2 {
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight-normal);
+  font-size: 3em;
+  padding-left: 0.6em;
+  padding-bottom: 0.6em;
+}
+
+.recently-added-heading {
+  width: 100%;
+}
+
 @media (max-width: 1024px) {
   .journalList-container {
     margin-top: 22%;
@@ -797,6 +819,18 @@ footer {
 
   .journal-card-details {
     margin-top: 1rem;
+  }
+
+  .recently-added div {
+    justify-content: flex-start;
+    padding: 0.2rem;
+  }
+  .recently-added h2 {
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight-normal);
+    font-size: 2.5em;
+    padding-left: 0.2em;
+    padding-bottom: 0.4em;
   }
 }
 .recentAdded {

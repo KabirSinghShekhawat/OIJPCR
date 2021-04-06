@@ -39,22 +39,26 @@
 }
 
 @media screen and (max-width: 768px) {
-    .about-us div {
-        justify-content: flex-start;
-        padding: 0.2em;
-    }
-    
+    .about-us {
+        margin-top: 13%;
+        h2 {
+            font-family: var(--heading-font-family);
+            font-weight: var(--heading-font-weight-normal);
+            font-size: 3em;
+            padding-left: 1em;
+            padding-bottom: 0.6em;
+        }
+        div {
+            justify-content: flex-start;
+            padding: 0.2em;
+        }
+    } 
+        
     .about-us-heading {
         width: 100%;
     }
     
-    .about-us h2 {
-        font-family: var(--heading-font-family);
-        font-weight: var(--heading-font-weight-normal);
-        font-size: 3em;
-        padding-left: 1em;
-        padding-bottom: 0.6em;
-    }
+    
     
     .about-us-content {
         margin: 0.2em;
