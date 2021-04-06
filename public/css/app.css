@@ -838,6 +838,10 @@ footer {
   padding: 0.5em;
 }
 
+.social-share-container a {
+  font-size: 1.5em;
+}
+
 .submit-comment {
   border: 2px solid var(--primary-red);
   border-radius: 12px;
@@ -972,6 +976,10 @@ footer {
 
 .comment-content {
   /* border: 2px solid var(--primary-red); */
+  text-overflow: justify;
+  overflow: scroll;
+  white-space: wrap;
+  height: fit-content;
   font-family: "Lato";
   font-size: 1.5em;
   padding: 0.5em 0 0 1em;

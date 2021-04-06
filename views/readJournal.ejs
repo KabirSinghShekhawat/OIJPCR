@@ -18,39 +18,38 @@
             <%- journal.content %>
         <!-- </p> -->
     </div>
+    
     <div class="journal-social-share-container">
         <div class="social-share-container">
-            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Check out this article from OIJPCR !" data-hashtags="OIJPCR" data-show-count="false">Tweet</a>
-            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a href="#" class="facebook-btn">
+                <i class="fab fa-facebook"></i>
+            </a>
         </div>
-        <div class="social-share-container">
-            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Check out this article from OIJPCR !" data-hashtags="OIJPCR" data-show-count="false">Tweet</a>
-            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        <div class="social-share-container">    
+            <a href="#" class="twitter-btn">
+                <i class="fab fa-twitter"></i>
+            </a>
         </div>
+        
         <div class="social-share-container">
-            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Check out this article from OIJPCR !" data-hashtags="OIJPCR" data-show-count="false">Tweet</a>
-            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a href="#" class="linkedin-btn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </div>
+        
+        <div class="social-share-container">
+            <a href="#" class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i>
+            </a>
         </div>
     </div>
 </div>
 
     <%- include('partials/comment') %>
     <script>
-        function imageResponsive() {
-            const images = document.querySelectorAll("img")
-            const isMobile = screen.width < 768 ? true : false
-            for(let img of images) {
-                if(isMobile) {
-                    img.style.width = "100%";
-                }
-                img.style.maxWidth = "100%"
-            }
-        }
-        document.onLoad = imageResponsive();
-        // $(document).ready(function(){
-        //     $("img").addClass("img-responsive");
-        //     $("img").css("max-width", "100%");
-        // });
+        
     </script>
+    <script src="js/readJournal.js"></script>
 <%- include('partials/footer') %>
 
