@@ -4,7 +4,8 @@
   "description": "A Blog",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
