@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
             return res.redirect('/admin/login')
         }
         
-        if (!(await validCredentials(username, password, req))) {
+        if (!(await searchUser(username, password, req))) {
             req.flash('error', 'Invalid Credentials')
             return res.redirect('/admin/login')
         }
@@ -70,13 +70,13 @@ exports.register = async (req, res) => {
         if (!isValidUser(username, password))
             return res.redirect('/admin/register')
 
-        if ((await validCredentials(username, password, req))) {
+        if ((await searchUser(username, password, req, res))) {
             req.flash('error', 'User already exists')
             console.log(`error: 'User Already Exists'`)
             return res.redirect('/admin/register')
         }
 
-        await createUser(username, password, req)
+        await createUser(username, password, req, res)
 
         return res.redirect('/admin')
     } catch (err) {
@@ -85,7 +85,7 @@ exports.register = async (req, res) => {
     }
 }
 
-const createUser = async (username, password, req) => {
+const createUser = async (username, password, req, res) => {
     try {
         const hash = await generatePasswordHash(password)
         const newUser = {
@@ -117,26 +117,23 @@ const searchUser = async (username, password, req) => {
     }
 }
 
-const validCredentials = async (username, password, req) => {
-    try {
-        const userFound = await searchUser(username, password, req)
-        if (!userFound) return false
-        return true
-    } catch (err) {
-        throw new Error(`valid credentials function: \n ${err.message}`)
-    }
-}
+// const validCredentials = async (username, password, req) => {
+//     try {
+//         return await searchUser(username, password, req);
+//
+//     } catch (err) {
+//         throw new Error(`valid credentials function: \n ${err.message}`)
+//     }
+// }
 
 const isValidUser = (username, password) => {
     const usernameValid = typeof username !== 'undefined' && username
     const passwordValid = typeof password !== 'undefined' && password
 
-    if (!usernameValid || !passwordValid)
-        return false
-    return true
+    return !(!usernameValid || !passwordValid);
+
 }
 
 const generatePasswordHash = async (password) => {
-    const hash = await bcrypt.hash(password, 10)
-    return hash
+    return await bcrypt.hash(password, 10)
 }

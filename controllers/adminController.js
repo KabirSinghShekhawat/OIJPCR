@@ -30,7 +30,6 @@ exports.addJournal = (request, response) => {
 
 exports.postJournal = async (request, response) => {
     const { author, title, editordata, slug, volume } = request.body;
-    // console.log(`Author: ${author}\nTitle: ${title}\nSlug: ${slug}\nVolume: ${volume}`)
     const newJournal = {
         author: author,
         title: title,

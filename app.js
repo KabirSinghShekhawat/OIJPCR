@@ -64,7 +64,7 @@ app.use(flash())
 // process.env.NODE_ENV = "dev"
 // process.env.NODE_ENV = "production"
 
-let dbUrl = ''
+let dbUrl
 if (process.env.NODE_ENV !== "dev") {
     app.use(morgan('tiny'));
     dbUrl = process.env.DB_URL
