@@ -1,5 +1,6 @@
 const express = require('express');
-const app = express();
+const app = express().disable("x-powered-by");
+const cors = require('cors');
 const engine = require('ejs-mate');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -27,7 +28,8 @@ app.use(
       contentSecurityPolicy: false,
     })
   );
-
+// cors
+app.use(cors());
 // Rate Limiter
 
 const limiter = rateLimit({

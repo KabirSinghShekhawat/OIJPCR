@@ -1,3 +1,33 @@
+const fs = require('fs/promises');
+const path = require('path');
+
+exports.getImageFile = async (req, res) => {
+    const { name } = req.params;
+    const src = path.join(path.dirname(require.main.filename) + '/uploads/' + name );
+    const data = await fs.readFile(src, "binary");
+    res.send( new Buffer.from(data, 'binary'))
+}
+
+exports.uploadByUrl = (req, res) => {
+    res.send({
+        "success": 1,
+        "file": {
+            "url": ''
+        }
+    })
+}
+
+exports.uploadImageFile = (req, res) => {
+    const a = req.file;
+    console.log(a)
+    res.send({
+        "success": 1,
+        "file": {
+            "url": req.file.path
+        }
+    })
+}
+
 const Journal = require('../models/journal');
 const slugify = require('slugify');
 
