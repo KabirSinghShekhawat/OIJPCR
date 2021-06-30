@@ -17,6 +17,7 @@ const adminRoute = require('./routes/admin');
 const submitArticleRoute = require('./routes/submitArticle');
 const homeRoute = require('./routes/home');
 const podcastRoute = require('./routes/podcast');
+const testRoute = require('./routes/test');
 require('dotenv').config()
 
 /*-----------Global Middlewares------------*/
@@ -93,7 +94,7 @@ const mongoOptions = {
 
 mongoose.connect(dbUrl, mongoOptions)
     .then(() => {
-        console.log("Connected to MongoDB oijpcr");
+        console.log("Connected to MongoDB: OIJPCR");
     })
     .catch(err => {
         throw new Error(`Error Message: ${err.message}`);
@@ -107,7 +108,7 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
-
+app.use('/test', testRoute);
 app.use('/', homeRoute);
 app.use('/journals', journalsRoute);
 app.use('/submit', submitArticleRoute);
