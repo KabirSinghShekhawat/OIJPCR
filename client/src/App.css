@@ -5,6 +5,7 @@ body {
 
 #editor {
   border: solid 2px black;
+  min-height: 40%;
 }
 
 .button-container {
@@ -14,13 +15,19 @@ body {
   padding: 1rem;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 button {
-  padding: 25px 35px;
+  width: 50%;
+  padding: 10px 25px;
   background-color: black;
-  width: 30%;
   color: white;
-  font-size: 2em;
-  border-radius: 2rem;
+  font-size: 1.5em;
+  border-radius: 5px;
 }
 
 button:hover {

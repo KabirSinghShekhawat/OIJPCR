@@ -1,44 +1,26 @@
 const Journal = require('../models/journal')
-const newJournal = require('../models/new_journal')
 
 const fs = require('fs/promises')
 const path = require('path')
 
-exports.getJournals  = async (req, res) => {
-  const journals = await newJournal.find().populate({path: "blocks.blockSchema.dataSchema"});
+exports.getJournals = async (req, res) => {
+  const journals = await Journal.find()
   res.send(journals)
 }
 
-exports.saveArticle  = async (req, res) => {
-  const { blocks, time, version } = req.body
-  const formattedBlocks = formatBlocks(blocks)
-  const newArticle = new newJournal({
-    blocks: formattedBlocks,
+exports.saveArticle = async (req, res) => {
+  const { author, title, blocks, time, version, slug, volume } = req.body
+  const newArticle = new Journal({
+    author,
+    title,
     time,
-    version
+    blocks,
+    version,
+    slug,
+    volume
   })
   await newArticle.save()
-  res.status(201).send({status: "OK", created: newArticle})
-}
-
-function formatBlocks (blocks) {
-  let newBlocks = []
-  for (let block of blocks) {
-    const dataSchema = {
-      text: block.data.text,
-      level: block.data.level ? block.data.level : 0,
-    }
-    const blockSchema = {
-      dataSchema,
-      blockId: block.id,
-      blockType: block.type,
-    }
-    const newBlock = {
-      blockSchema,
-    }
-    newBlocks.push(newBlock)
-  }
-  return newBlocks
+  res.status(201).send({ status: 'OK', created: newArticle })
 }
 
 exports.getImageFile = async (req, res) => {

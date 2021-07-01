@@ -45,7 +45,12 @@ class Editor extends Component {
     super(props)
     this.state = {
       data: {},
+      author: '',
+      title: '',
+      slug: '',
+      volume: 0,
     }
+    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -58,23 +63,34 @@ class Editor extends Component {
     }
   }
 
-  handleSubmit () {
-    editor.save().then(editorData => {
-      this.setState({ data: editorData })
-      logOutput(this.state.data.blocks)
-      const editorStateData = this.state.data
+  handleChange (evt) {
+    this.setState((state) => ({
+      [evt.target.name]: evt.target.value,
+    }))
+  }
 
-      axios.post('http://localhost:5000/test/editorJS', {
-          blocks: editorStateData.blocks,
-          time: editorStateData.time,
-          version: editorStateData.version
-      }).then(() => {
-        console.log("Sent Data to http://localhost:5000/test/editorJS")
-      }).catch((err) => {console.log('An Error occurred in posting data: ' + err.message)})
+  async handleSubmit (evt) {
+    evt.preventDefault()
+    const editorData = await editor.save()
+    this.setState({ data: editorData })
+    const editorStateData = this.state.data
 
-    }).catch((err) => {
-      console.log(err)
+    axios.post('http://localhost:5000/test/editorJS', {
+      author: this.state.author,
+      title: this.state.title,
+      blocks: editorStateData.blocks,
+      time: editorStateData.time,
+      version: editorStateData.version,
+      slug: this.state.slug,
+      volume: this.state.volume,
     })
+      .then(() => {
+        console.log('Sent Data to http://localhost:5000/test/editorJS')
+      })
+      .catch((err) => {
+        console.log('An Error occurred in posting data: ' + err.message)
+      })
+
   }
 
   render () {
@@ -84,17 +100,45 @@ class Editor extends Component {
         <hr/>
         <br/>
         <div className="button-container">
-          <button onClick={this.handleSubmit}>SAVE</button>
+          <form onSubmit={this.handleSubmit} method="POST">
+            <div>
+              <label>Author: </label>
+              <input type="text"
+                     value={this.state.author}
+                     name="author"
+                     onChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <label>Title: </label>
+              <input type="text"
+                     value={this.state.title}
+                     name="title"
+                     onChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <label>Slug: </label>
+              <input type="text"
+                     value={this.state.slug}
+                     name="slug"
+                     onChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <label>Volume: </label>
+              <input type="number"
+                     value={this.state.volume}
+                     name="volume"
+                     onChange={this.handleChange}
+                     min="0"
+              />
+            </div>
+            <button onClick={this.handleSubmit}>SAVE</button>
+          </form>
         </div>
       </>
     )
-  }
-}
-
-function logOutput (blocks) {
-  for (let block of blocks) {
-    console.log(`Type: ${block.type}\n Text: ${block.data.text}
-    \n Level: ${block.data.level ? block.data.level : ''}`)
   }
 }
 
