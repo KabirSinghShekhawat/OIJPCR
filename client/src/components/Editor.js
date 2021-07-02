@@ -13,8 +13,8 @@ const editor = new EditorJS({
       class: ImageTool,
       config: {
         endpoints: {
-          byFile: 'http://localhost:5000/test/uploadFile', // Your backend file uploader endpoint
-          byUrl: 'http://localhost:5000/test/fetchUrl', // Your endpoint that provides uploading by Url
+          byFile: 'http://localhost:5000/editor/uploadFile', // Your backend file uploader endpoint
+          byUrl: 'http://localhost:5000/editor/fetchUrl', // Your endpoint that provides uploading by Url
         },
         field: 'image',
         types: 'image/*',
@@ -32,7 +32,7 @@ const editor = new EditorJS({
     linkTool: {
       class: LinkTool,
       // config: {
-      //   endpoint: 'http://localhost:8008/test/fetchUrl',
+      //   endpoint: 'http://localhost:8008/editor/fetchUrl',
       // Your backend endpoint for url data fetching
       // }
     },
@@ -75,7 +75,7 @@ class Editor extends Component {
     this.setState({ data: editorData })
     const editorStateData = this.state.data
 
-    axios.post('http://localhost:5000/test/editorJS', {
+    axios.post('http://localhost:5000/editor/', {
       author: this.state.author,
       title: this.state.title,
       blocks: editorStateData.blocks,
@@ -85,7 +85,7 @@ class Editor extends Component {
       volume: this.state.volume,
     })
       .then(() => {
-        console.log('Sent Data to http://localhost:5000/test/editorJS')
+        console.log('Sent Data to http://localhost:5000/editor/')
       })
       .catch((err) => {
         console.log('An Error occurred in posting data: ' + err.message)

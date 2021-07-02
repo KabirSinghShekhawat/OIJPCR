@@ -17,7 +17,7 @@ const adminRoute = require('./routes/admin');
 const submitArticleRoute = require('./routes/submitArticle');
 const homeRoute = require('./routes/home');
 const podcastRoute = require('./routes/podcast');
-const testRoute = require('./routes/test');
+const editorJSRoute = require('./routes/editorJS');
 require('dotenv').config()
 
 /*-----------Global Middlewares------------*/
@@ -108,7 +108,7 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
-app.use('/test', testRoute);
+app.use('/editor', editorJSRoute);
 app.use('/', homeRoute);
 app.use('/journals', journalsRoute);
 app.use('/submit', submitArticleRoute);
