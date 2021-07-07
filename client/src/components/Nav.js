@@ -1,8 +1,23 @@
 import { Component } from 'react'
 import logo from './logo.svg'
+import logo_mobile from './logo_mobile.svg'
 import { Link } from 'react-router-dom'
 
 class Nav extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      isHidden: true
+    }
+    this.handleMenuClick = this.handleMenuClick.bind(this)
+  }
+
+  handleMenuClick () {
+    this.setState((prevState) => ({
+      isHidden: !prevState.isHidden
+    }))
+  }
+
   render () {
     const Items = [
       { url: '/about', value: 'About' },
@@ -15,9 +30,12 @@ class Nav extends Component {
       <>
         <header className="lg:px-16 px-6 bg-white flex flex-wrap items-center lg:py-0 py-2">
           <Brand/>
-          <MenuToggle/>
-
-          <div className="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
+          <MenuToggle />
+          <input className="hidden" type="button" id="menu-toggle" onClick={this.handleMenuClick} />
+          <div
+            className={`${this.state.isHidden ? 'hidden' : ''} lg:flex lg:items-center lg:w-auto w-full`}
+            id="menu"
+          >
             <NavLinks navItems={Items}/>
           </div>
 
@@ -29,9 +47,11 @@ class Nav extends Component {
 
 function Brand () {
   return (
-    <div className="flex-1 flex justify-between items-center">
+    <div className="flex-1 flex justify-between items-center md:mt-2">
       <Link to="/">
-        <img src={logo} alt="OIJPCR logo"/>
+        <img className="hidden sm:inline sm:w-14 sm:h-14 w-10 h-10 mr-2" src={logo} alt="OIJPCR logo"/>
+        <img className="inline sm:hidden sm:w-14 sm:h-14 w-10 h-10 mr-2" src={logo_mobile} alt="OIJPCR logo"/>
+        <label className="sm:hidden font-black text-lg">OIJPCR</label>
       </Link>
     </div>
   )
@@ -44,7 +64,7 @@ function NavLinks ({ navItems }) {
 
   return (
     <nav>
-      <ul className="lg:flex items-center justify-between text-base text-gray-700 pt-4 lg:pt-0">
+      <ul className="lg:flex items-center justify-between text-base text-black-900 pt-4 lg:pt-0">
         {links}
       </ul>
     </nav>
@@ -55,7 +75,7 @@ function NavLink ({ url, value }) {
   return (
     <li>
       <Link
-        className="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400"
+        className="lg:p-4 py-3 px-0 block border-b-2 text-semibold text-xl border-transparent hover:border-indigo-400"
         to={url}
       >
         {value}
@@ -70,15 +90,14 @@ function MenuToggle () {
       <label htmlFor="menu-toggle"
              className="pointer-cursor lg:hidden block"
       >
-        <svg className="fill-current text-gray-900"
+        <svg className="fill-current text-gray-900 pointer-cursor"
              xmlns="http://www.w3.org/2000/svg" width="20" height="20"
              viewBox="0 0 20 20"
         >
           <title>menu</title>
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+          <path className="pointer-cursor" d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
         </svg>
       </label>
-      <input className="hidden" type="checkbox" id="menu-toggle"/>
     </>
   )
 }

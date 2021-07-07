@@ -11,6 +11,7 @@ import About from './components/About'
 import Archive from './components/Archive'
 import Podcast from './components/Podcast'
 import SubmitArticle from './components/SubmitArticle'
+import Home from './components/Home'
 
 class App extends Component {
   render () {
@@ -27,6 +28,9 @@ function NavController() {
   return (
     <>
       <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
         <Route exact path="/about">
           <About />
         </Route>
