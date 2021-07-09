@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .header-home {
+        @apply sm:mx-8 mx-4 mt-8 mb-4 p-2 flex flex-col flex-wrap rounded-lg text-white;
+        @apply md:flex-row sm:rounded-md md:p-12 md:mt-8 md:mb-6 md:mx-12;
+    }
+}

@@ -9,7 +9,7 @@ import {
 import Nav from './components/Nav'
 import About from './components/About'
 import Archive from './components/Archive'
-import Podcast from './components/Podcast'
+// import Podcast from './components/Podcast'
 import SubmitArticle from './components/SubmitArticle'
 import Home from './components/Home'
 
@@ -37,9 +37,9 @@ function NavController() {
         <Route exact path="/archive">
           <Archive />
         </Route>
-        <Route exact path="/podcast">
-          <Podcast />
-        </Route>
+        {/*<Route exact path="/podcast">*/}
+        {/*  <Podcast />*/}
+        {/*</Route>*/}
         <Route exact path="/submitArticle">
           <SubmitArticle />
         </Route>

@@ -20,15 +20,16 @@ class Nav extends Component {
 
   render () {
     const Items = [
+      { url: '/', value: 'Home' },
       { url: '/about', value: 'About' },
       { url: '/archive', value: 'Archive' },
-      { url: '/podcast', value: 'Podcast' },
+      // { url: '/podcast', value: 'Podcast' },
       { url: '/submitArticle', value: 'Submit Article' },
     ]
 
     return (
       <>
-        <header className="lg:px-16 px-6 bg-white flex flex-wrap items-center lg:py-0 py-2">
+        <header className="lg:px-16 sm:px-6 px-4 shadow-lg md:shadow-none bg-white flex flex-wrap items-center lg:py-1 py-2">
           <Brand/>
           <MenuToggle />
           <input className="hidden" type="button" id="menu-toggle" onClick={this.handleMenuClick} />
@@ -88,14 +89,14 @@ function MenuToggle () {
   return (
     <>
       <label htmlFor="menu-toggle"
-             className="pointer-cursor lg:hidden block"
+             className=" lg:hidden block cursor-pointer"
       >
-        <svg className="fill-current text-gray-900 pointer-cursor"
-             xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+        <svg className="fill-current text-gray-900 "
+             xmlns="http://www.w3.org/2000/svg" width="30" height="30"
              viewBox="0 0 20 20"
         >
           <title>menu</title>
-          <path className="pointer-cursor" d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
         </svg>
       </label>
     </>
