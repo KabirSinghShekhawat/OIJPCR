@@ -3,22 +3,25 @@ import { Component } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
+  Route
 } from 'react-router-dom'
 
 import Nav from './components/Nav'
 import About from './components/About'
 import Archive from './components/Archive'
-// import Podcast from './components/Podcast'
 import SubmitArticle from './components/SubmitArticle'
 import Home from './components/Home'
+import Footer from './components/Footer'
 
 class App extends Component {
   render () {
       return (
         <Router>
+          <div className="flex flex-col h-screen">
             <Nav />
             <NavController />
+            <Footer/>
+          </div>
         </Router>
       )
   }
@@ -37,9 +40,6 @@ function NavController() {
         <Route exact path="/archive">
           <Archive />
         </Route>
-        {/*<Route exact path="/podcast">*/}
-        {/*  <Podcast />*/}
-        {/*</Route>*/}
         <Route exact path="/submitArticle">
           <SubmitArticle />
         </Route>

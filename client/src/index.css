@@ -3,8 +3,59 @@
 @tailwind utilities;
 
 @layer components {
+    .header-nav {
+        @apply sm:px-6;
+        @apply px-4 py-2 shadow-lg md:shadow-none bg-white;
+        @apply flex flex-wrap items-center;
+        @apply lg:px-16 lg:py-1;
+    }
+
     .header-home {
-        @apply sm:mx-8 mx-4 mt-8 mb-4 p-2 flex flex-col flex-wrap rounded-lg text-white;
-        @apply md:flex-row sm:rounded-md md:p-12 md:mt-8 md:mb-6 md:mx-12;
+        @apply sm:mx-8 sm:rounded-md;
+        @apply flex flex-col flex-wrap;
+        @apply mx-4 mt-8 mb-4 p-2 rounded-lg text-white;
+        @apply md:flex-row md:p-12 md:mx-12 md:mt-8 md:mb-6;
+    }
+
+    .nav-link-ul {
+        @apply items-center justify-between text-base pt-4 lg:pt-0;
+        @apply lg:flex;
+    }
+
+    .nav-link {
+        @apply lg:p-4 py-3 px-0 block;
+        @apply font-semibold text-xl;
+        @apply border-b-2 border-transparent hover:border-indigo-400;
+    }
+
+    .brand-container {
+        @apply flex-1 flex justify-between items-center md:mt-2;
+    }
+
+    .brand-logo {
+        @apply sm:w-14 sm:h-14;
+        @apply w-10 h-10 mr-2;
+    }
+
+    /*.nav-btn {*/
+    /*    @apply lg:flex lg:items-center lg:w-auto w-full;*/
+    /*}*/
+    .copyright-container {
+        @apply py-2 pr-2 pl-4 flex-1 w-full;
+        @apply md:w-1/2 md:p-2;
+    }
+
+    .footer-nav-container {
+        @apply w-full mt-2;
+        @apply flex flex-1 flex-row w-full;
+        @apply md:flex-1 md:w-1/2 md:mt-0;
+    }
+
+    .footer-links {
+        @apply text-center mt-2 text-gray-400;
+    }
+
+    .footer-links-heading {
+        @apply text-gray-200 text-xl font-bold;
     }
 }
