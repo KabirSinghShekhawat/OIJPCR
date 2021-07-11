@@ -1,5 +1,6 @@
 import { Component } from 'react'
-import alertCircle from './alert-circle.svg'
+import alertCircle from '../assets/alert-circle.svg'
+import { ArticleCard } from './ArticleCard'
 
 class Home extends Component {
   render () {

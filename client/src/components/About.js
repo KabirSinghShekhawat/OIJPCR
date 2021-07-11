@@ -1,9 +1,12 @@
 import { Component } from 'react'
+import { ArticleCard } from './ArticleCard'
 
 class About extends Component {
   render () {
     return (
-      <h1>About Page</h1>
+      <div className="flex-grow">
+        <ArticleCard/>
+      </div>
     )
   }
 }

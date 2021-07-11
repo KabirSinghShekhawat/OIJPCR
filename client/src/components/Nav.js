@@ -1,6 +1,6 @@
 import { Component } from 'react'
-import logo from './logo.svg'
-import logo_mobile from './logo_mobile.svg'
+import logo from '../assets/logo.svg'
+import logo_mobile from '../assets/logo_mobile.svg'
 import { Link } from 'react-router-dom'
 
 export const urlLinks = [
