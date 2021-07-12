@@ -10,7 +10,7 @@ import Nav from './components/Nav'
 import About from './components/About'
 import Archive from './components/Archive'
 import SubmitArticle from './components/SubmitArticle'
-import Home from './components/Home'
+import Home from './components/Home/Home'
 import Footer from './components/Footer'
 
 class App extends Component {

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { LinkItems } from './utils/LinkItems'
 import logo from '../assets/logo.svg'
 import { urlLinks as NavLinks } from './Nav'
 
@@ -46,23 +46,5 @@ function FooterLinks ({ links, heading }) {
         </ul>
       </div>
     </>
-  )
-}
-
-function LinkItems({links}) {
-  return (
-    links.map((item, index) => {
-      return <NavLink key={index} url={item.url} value={item.value} />
-    })
-  )
-}
-
-function NavLink ({ url, value }) {
-  return (
-    <li>
-      <Link to={url}>
-        {value}
-      </Link>
-    </li>
   )
 }
