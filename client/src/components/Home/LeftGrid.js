@@ -1,7 +1,7 @@
 import { cardData } from './DummyData'
 import { ArticleCard } from './ArticleCard'
 
-export function LeftGrid () {
+export default function LeftGrid () {
   const cardGrid = cardData.map((card, index) => {
     return <ArticleCard
       key={index}

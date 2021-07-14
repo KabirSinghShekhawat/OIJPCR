@@ -1,6 +1,6 @@
 import box from '../../../assets/submitArticleBtn.svg'
 
-export function SubmitArticleForm () {
+export default function SubmitArticleForm () {
   return (
     <div className="p-2 pb-6 mx-1 mb-6 mt-4 md:mt-10 rounded-lg shadow-xl border">
       <div className="flex flex-col justify-center">

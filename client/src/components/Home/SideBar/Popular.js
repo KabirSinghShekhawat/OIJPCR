@@ -8,7 +8,7 @@ const MostPopular = [
   { url: '#', value: 'Editor\'s Note', author: 'Jyoti M. Pathania', vol: 1 },
 ]
 
-export function Popular () {
+export default function Popular () {
   return (
     <div className="p-2 mx-1 mb-6 md:mb-0 mt-4 rounded-lg shadow-xl border">
       <p className="text-3xl text-gray-900 text-center font-bold my-4 mx-2">Most Popular</p>

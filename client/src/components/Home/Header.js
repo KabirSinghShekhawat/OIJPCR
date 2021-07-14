@@ -1,6 +1,6 @@
 import alertCircle from '../../assets/alert-circle.svg'
 
-export function Header () {
+export default function Header () {
   const headerText = (
     <h1 className="text-2xl md:text-5xl font-bold">
       Online Indian Journal <br/> of Peace and Conflict Resolution
