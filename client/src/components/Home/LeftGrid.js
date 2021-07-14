@@ -4,6 +4,7 @@ import { ArticleCard } from './ArticleCard'
 export function LeftGrid () {
   const cardGrid = cardData.map((card, index) => {
     return <ArticleCard
+      key={index}
       {...card}
       volume={index + 1}
       cname={
