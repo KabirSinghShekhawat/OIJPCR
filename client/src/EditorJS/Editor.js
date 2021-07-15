@@ -95,7 +95,7 @@ class Editor extends Component {
       <div className="flex flex-col items-center">
         <div className="flex justify-center items-center min-h-screen h-auto w-full">
           <div className="w-5/6 h-full rounded shadow-2xl border mt-8">
-            <div id="editor"></div>
+            <div id="editor" className="editor"></div>
           </div>
         </div>
         <EditorForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} {...this.state} />

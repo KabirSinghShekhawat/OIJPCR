@@ -33,7 +33,7 @@ class EditorJSParser extends Component {
 
   render () {
     return (
-      <div className="border-2 shadow-lg px-4 py-2 mt-4 mx-4 w-11/12">
+      <div className="border-2 shadow-lg px-4 py-2 mt-4 mx-4 w-11/12 editor">
         {HTMLReactParser(`${this.Articles()}`)}
       </div>
     )

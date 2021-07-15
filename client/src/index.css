@@ -1,4 +1,29 @@
 @tailwind base;
+
+@layer base {
+    .editor h1 {
+        @apply text-4xl;
+    }
+    .editor h2 {
+        @apply text-2xl;
+    }
+    .editor h3 {
+        @apply text-xl;
+    }
+    .editor h4 {
+        @apply text-lg;
+    }
+    .editor h5 {
+        @apply text-base;
+    }
+    .editor h6 {
+        @apply text-sm;
+    }
+    .editor a {
+        @apply text-blue-600 underline;
+    }
+}
+
 @tailwind components;
 @tailwind utilities;
 
