@@ -1,8 +1,9 @@
 import { Component } from 'react'
+import Editor from '../EditorJS/Editor'
 
 class SubmitArticle extends Component {
   render () {
-    return <h1>Submit Article</h1>
+    return <Editor/>
   }
 }
 

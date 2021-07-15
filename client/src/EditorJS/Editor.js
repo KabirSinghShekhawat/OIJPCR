@@ -4,6 +4,7 @@ import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import LinkTool from '@editorjs/link'
 import ImageTool from '@editorjs/image'
+import EditorForm from './EditorForm'
 
 const editor = new EditorJS({
   data: {},
@@ -25,7 +26,7 @@ const editor = new EditorJS({
       config: {
         placeholder: 'Enter a header',
         levels: [1, 2, 3, 4, 5, 6],
-        defaultLevel: 3,
+        defaultLevel: 1,
       },
       shortcut: 'CTRL+SHIFT+H',
     },
@@ -44,7 +45,7 @@ class Editor extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      data: {},
+      editorJSObject: {},
       author: '',
       title: '',
       slug: '',
@@ -57,7 +58,6 @@ class Editor extends Component {
   async componentDidMount () {
     try {
       await editor.isReady
-      console.log('Editor is ready')
     } catch (err) {
       console.log(err)
     }
@@ -71,16 +71,13 @@ class Editor extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    const editorData = await editor.save()
-    this.setState({ data: editorData })
-    const editorStateData = this.state.data
+    const editorJSObject = await editor.save()
+    this.setState({ editorJSObject: editorJSObject })
 
     axios.post('http://localhost:5000/editor/', {
       author: this.state.author,
       title: this.state.title,
-      blocks: editorStateData.blocks,
-      time: editorStateData.time,
-      version: editorStateData.version,
+      editorJSObject: editorJSObject,
       slug: this.state.slug,
       volume: this.state.volume,
     })
@@ -95,49 +92,14 @@ class Editor extends Component {
 
   render () {
     return (
-      <>
-        <div id="editor"></div>
-        <hr/>
-        <br/>
-        <div className="button-container">
-          <form onSubmit={this.handleSubmit} method="POST">
-            <div>
-              <label>Author: </label>
-              <input type="text"
-                     value={this.state.author}
-                     name="author"
-                     onChange={this.handleChange}
-              />
-            </div>
-            <div>
-              <label>Title: </label>
-              <input type="text"
-                     value={this.state.title}
-                     name="title"
-                     onChange={this.handleChange}
-              />
-            </div>
-            <div>
-              <label>Slug: </label>
-              <input type="text"
-                     value={this.state.slug}
-                     name="slug"
-                     onChange={this.handleChange}
-              />
-            </div>
-            <div>
-              <label>Volume: </label>
-              <input type="number"
-                     value={this.state.volume}
-                     name="volume"
-                     onChange={this.handleChange}
-                     min="0"
-              />
-            </div>
-            <button onClick={this.handleSubmit}>SAVE</button>
-          </form>
+      <div className="flex flex-col items-center">
+        <div className="flex justify-center items-center min-h-screen h-auto w-full">
+          <div className="w-5/6 h-full rounded shadow-2xl border mt-8">
+            <div id="editor"></div>
+          </div>
         </div>
-      </>
+        <EditorForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} {...this.state} />
+      </div>
     )
   }
 }

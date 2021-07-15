@@ -35,7 +35,7 @@ export default function Podcast() {
 function PodcastPlatforms () {
   return (
     <>
-      <a href="#">
+      <a href="https://podcasts.apple.com/in/podcast/indian-conflict-resolution/id1531189437">
         <img src={apple} alt="Apple Podcast" className="podcast-streaming-cover"/>
       </a>
 
@@ -55,7 +55,7 @@ function PodcastPlatforms () {
         <img src={radiopublic} alt="Radiopublic Podcast" className="podcast-streaming-cover" />
       </a>
 
-      <a href="#">
+      <a href="https://overcast.fm/itunes1531189437/indian-conflict-resolution">
         <img src={overcast} alt="Overcast Podcast" className="podcast-streaming-cover"/>
       </a>
     </>

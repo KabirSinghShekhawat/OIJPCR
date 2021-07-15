@@ -11,21 +11,9 @@ const journalSchema = new mongoose.Schema({
       required: true,
     },
 
-    time: {
-      type: String,
+    editorJSObject: {
+      type: Object
     },
-
-    blocks: [
-      {
-        id: { type: String },
-        type: { type: String },
-        data: {
-          text: { type: String },
-          level: { type: Number },
-        },
-      }],
-
-    version: { type: String },
 
     slug: {
       type: String,

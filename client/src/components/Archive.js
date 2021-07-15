@@ -1,8 +1,13 @@
 import { Component } from 'react'
+import EditorJSParser from '../EditorJS/EditorJSParser'
 
 class Archive extends Component {
   render () {
-    return <h1>Archive</h1>
+    return (
+      <div className="flex-grow">
+        <EditorJSParser/>
+      </div>
+    )
   }
 }
 

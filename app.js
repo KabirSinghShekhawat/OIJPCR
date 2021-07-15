@@ -108,6 +108,7 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
+
 app.use('/editor', editorJSRoute);
 app.use('/', homeRoute);
 app.use('/journals', journalsRoute);
