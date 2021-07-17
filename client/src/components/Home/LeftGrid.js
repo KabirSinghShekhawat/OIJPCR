@@ -1,5 +1,5 @@
 import { cardData } from './DummyData'
-import { ArticleCard } from './ArticleCard'
+import ArticleCard from './ArticleCard'
 
 export default function LeftGrid () {
   const cardGrid = cardData.map((card, index) => {
@@ -9,9 +9,9 @@ export default function LeftGrid () {
       volume={index + 1}
       cname={
         index === 0 ?
-        'md:col-span-full'
-        :
-        ''
+          'md:col-span-full'
+          :
+          ''
       }
     />
   })

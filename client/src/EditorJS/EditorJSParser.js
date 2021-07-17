@@ -1,43 +1,75 @@
 import React, { Component } from 'react'
-import edjsParser from 'editorjs-parser'
-import HTMLReactParser from 'html-react-parser'
 import axios from 'axios'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom'
+import ArticleCard from '../components/Home/ArticleCard'
+import ReadArticle from './ReadArticle'
 
 class EditorJSParser extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      data: []
+      journals: [],
     }
     this.Articles = this.Articles.bind(this)
   }
 
   async componentDidMount () {
     try {
-      const {data}  = await axios.get('http://localhost:5000/editor')
-      this.setState({ data: data })
+      const { data } = await axios.get('http://localhost:5000/journals')
+      this.setState({ journals: data })
     } catch (e) {
       throw new Error(e.message())
     }
   }
 
-  Articles() {
-    const ArticleList  = this.state.data
-    if ( typeof ArticleList == 'undefined' || ArticleList.length === 0) return '...Loading'
-    const parser = new edjsParser();
-    console.log(ArticleList)
-    return ArticleList.map((article) => {
-      return parser.parse(article.editorJSObject)
-    })
+  Articles () {
+
   }
 
   render () {
     return (
-      <div className="border-2 shadow-lg px-4 py-2 mt-4 mx-4 w-11/12 editor">
-        {HTMLReactParser(`${this.Articles()}`)}
-      </div>
+      <>
+        {/*<Router>*/}
+        {/*  <Switch>*/}
+            <Route exact path="/archive/journals/:urlSlug/:id" render={(props) =>
+              <ReadArticle {...props} />}
+            />
+            <Route path="/archive" render={(props) =>
+              <Journals journals={this.state.journals}/>}
+            />
+        {/*  </Switch>*/}
+        {/*</Router>*/}
+      </>
     )
   }
+}
+
+function Journals ({ journals }) {
+  let journalList = ''
+  if (typeof journals == 'undefined' || journals.length === 0)
+    journalList = '...Loading'
+  else journalList = createJournals(journals)
+
+  return (
+    <>
+      <div className="h-full md:mx-16 mx-4">
+        <div className="flex flex-col h-full items-center py-2 my-4 w-full editor">
+          {journalList}
+        </div>
+      </div>
+    </>
+  )
+}
+
+function createJournals (journals) {
+  return journals.map((article) => {
+    const articleProps = { ...article, id: article._id }
+    return <ArticleCard {...articleProps} />
+  })
 }
 
 export default EditorJSParser

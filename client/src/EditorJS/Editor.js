@@ -7,7 +7,7 @@ import ImageTool from '@editorjs/image'
 import EditorForm from './EditorForm'
 
 const editor = new EditorJS({
-  data: {},
+  journals: {},
   holder: 'editor',
   tools: {
     image: {

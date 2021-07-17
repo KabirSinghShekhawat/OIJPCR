@@ -19,15 +19,16 @@
     .editor h6 {
         @apply text-sm;
     }
-    .editor a {
-        @apply text-blue-600 underline;
-    }
+    /*.editor a {*/
+    /*    @apply text-blue-600 underline;*/
+    /*}*/
 }
 
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
+    /* utils */
     .header-nav {
         @apply sm:px-6;
         @apply px-4 py-2 shadow-lg md:shadow-none bg-white;
