@@ -15,13 +15,12 @@ class ReadArticle extends Component {
     this.state = {
       journal: {},
     }
-    this.getArticle = this.getArticle.bind(this)
+    this.parseArticle = this.parseArticle.bind(this)
   }
 
   async componentDidMount () {
     try {
       const { urlSlug, id } = this.props.match.params
-      console.log(this.props.match.params)
       console.log('id: ' + id)
       const url = `http://localhost:5000/journals/${urlSlug}/${id}`
       const { data } = await axios.get(url)
@@ -31,7 +30,7 @@ class ReadArticle extends Component {
     }
   }
 
-  getArticle () {
+  parseArticle () {
     const journal = this.state.journal
     if (journal === 'undefined' || Object.keys(journal).length === 0) return '...Loading'
     const parser = new edjsParser(undefined, customParsers)
@@ -42,9 +41,9 @@ class ReadArticle extends Component {
     const author = this.state.journal.author
     return (
       <div className="h-full md:mx-16 mx-4">
-        <div className="flex flex-col h-full items-center py-2 my-4 w-full editor">
-          <h1 className="text-3xl text-center">Written BY {author ? author : ''}</h1>
-          {HTMLReactParser(`${this.getArticle()}`)}
+        <div className="flex flex-col h-full items-left py-2 my-4 w-full editor">
+          <h1 className="text-3xl text-center mb-4">Written BY {author ? author : ''}</h1>
+          {HTMLReactParser(`${this.parseArticle()}`)}
         </div>
       </div>
     )

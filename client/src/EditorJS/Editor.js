@@ -1,45 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import EditorJS from '@editorjs/editorjs'
-import Header from '@editorjs/header'
-import LinkTool from '@editorjs/link'
-import ImageTool from '@editorjs/image'
 import EditorForm from './EditorForm'
-
-const editor = new EditorJS({
-  journals: {},
-  holder: 'editor',
-  tools: {
-    image: {
-      class: ImageTool,
-      config: {
-        endpoints: {
-          byFile: 'http://localhost:5000/editor/uploadFile', // Your backend file uploader endpoint
-          byUrl: 'http://localhost:5000/editor/fetchUrl', // Your endpoint that provides uploading by Url
-        },
-        field: 'image',
-        types: 'image/*',
-      },
-    },
-    header: {
-      class: Header,
-      config: {
-        placeholder: 'Enter a header',
-        levels: [1, 2, 3, 4, 5, 6],
-        defaultLevel: 1,
-      },
-      shortcut: 'CTRL+SHIFT+H',
-    },
-    linkTool: {
-      class: LinkTool,
-      // config: {
-      //   endpoint: 'http://localhost:8008/editor/fetchUrl',
-      // Your backend endpoint for url data fetching
-      // }
-    },
-  },
-  logLevel: 'ERROR',
-})
+import {config as EditorJSConfig} from '../EditorJS/EditorConfig'
 
 class Editor extends Component {
   constructor (props) {
@@ -50,6 +13,7 @@ class Editor extends Component {
       title: '',
       slug: '',
       volume: 0,
+      editor: {}
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -57,21 +21,23 @@ class Editor extends Component {
 
   async componentDidMount () {
     try {
+      const editor = new EditorJS(EditorJSConfig)
       await editor.isReady
+      this.setState({editor: editor})
     } catch (err) {
       console.log(err)
     }
   }
 
   handleChange (evt) {
-    this.setState((state) => ({
+    this.setState(() => ({
       [evt.target.name]: evt.target.value,
     }))
   }
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    const editorJSObject = await editor.save()
+    const editorJSObject = await this.state.editor.save()
     this.setState({ editorJSObject: editorJSObject })
 
     axios.post('http://localhost:5000/editor/', {
@@ -95,7 +61,7 @@ class Editor extends Component {
       <div className="flex flex-col items-center">
         <div className="flex justify-center items-center min-h-screen h-auto w-full">
           <div className="w-5/6 h-full rounded shadow-2xl border mt-8">
-            <div id="editor" className="editor"></div>
+            <div id="editor" className="editor">EditorJS</div>
           </div>
         </div>
         <EditorForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} {...this.state} />

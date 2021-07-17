@@ -1,4 +1,3 @@
-import './App.css'
 import { Component } from 'react'
 import {
   BrowserRouter as Router,
@@ -6,12 +5,15 @@ import {
   Route
 } from 'react-router-dom'
 
+import './App.css'
 import Nav from './components/Nav'
 import About from './components/About'
 import Archive from './components/Archive'
 import SubmitArticle from './components/SubmitArticle'
 import Home from './components/Home/Home'
 import Footer from './components/Footer'
+import Editor from './EditorJS/Editor'
+
 
 class App extends Component {
   render () {
@@ -37,11 +39,14 @@ function NavController() {
         <Route exact path="/about">
           <About />
         </Route>
-        <Route exact path="/archive">
-          <Archive />
-        </Route>
+        <Route path="/archive" render={(props) =>
+          <Archive {...props} /> }
+        />
         <Route exact path="/submitArticle">
           <SubmitArticle />
+        </Route>
+        <Route exact path="/admin">
+          <Editor/>
         </Route>
       </Switch>
     </>

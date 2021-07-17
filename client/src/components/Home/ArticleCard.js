@@ -41,7 +41,7 @@ function CardContent ({ title, slug, id }) {
       <div className="article-card-title"> {title} </div>
       <p className="article-card-slug"> {slug} </p>
       <Link
-        to={`/journals/${urlSlug}/${id}`}
+        to={`/archive/journals/${urlSlug}/${id}`}
         className="mt-4 sm:mt-4 py-2 px-4 max-w-max rounded-lg bg-black text-white"
       >
         <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
