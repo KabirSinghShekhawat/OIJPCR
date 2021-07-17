@@ -1,6 +1,6 @@
 import { Component } from 'react'
-import ArticleCard from './Home/ArticleCard'
-import coverPhoto from '../assets/r1_c1.jpg'
+import ArticleCard from '../Home/ArticleCard'
+import coverPhoto from '../../assets/r1_c1.jpg'
 
 class About extends Component {
   render () {

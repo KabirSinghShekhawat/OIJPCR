@@ -4,7 +4,7 @@ import LeftGrid from './LeftGrid'
 import Topics from './SideBar/Topics'
 import Popular from './SideBar/Popular'
 import SubmitArticleForm from './SideBar/SubmitArticleForm'
-import Podcast from './Podcast'
+import Podcast from './Podcast/Podcast'
 
 class Home extends Component {
   render () {

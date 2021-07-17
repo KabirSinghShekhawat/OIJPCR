@@ -6,13 +6,13 @@ import {
 } from 'react-router-dom'
 
 import './App.css'
-import Nav from './components/Nav'
-import About from './components/About'
-import Archive from './components/Archive'
-import SubmitArticle from './components/SubmitArticle'
+import Nav from './components/Navigation/Nav'
+import About from './components/About/About'
+import Archive from './components/Articles/Archive'
+import SubmitArticle from './components/SubmitArticle/SubmitArticle'
 import Home from './components/Home/Home'
-import Footer from './components/Footer'
-import Editor from './EditorJS/Editor'
+import Footer from './components/Footer/Footer'
+import NewArticle from './components/Admin/NewArticle'
 
 
 class App extends Component {
@@ -45,8 +45,8 @@ function NavController() {
         <Route exact path="/submitArticle">
           <SubmitArticle />
         </Route>
-        <Route exact path="/admin">
-          <Editor/>
+        <Route path="/admin">
+          <NewArticle/>
         </Route>
       </Switch>
     </>

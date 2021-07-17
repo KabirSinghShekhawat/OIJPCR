@@ -3,21 +3,24 @@ import dollar from '../../assets/r1_c1.jpg'
 import { Link } from 'react-router-dom'
 import slugify from 'slugify'
 
-export default function ArticleCard ({
-  coverPhoto,
-  author,
-  volume,
-  title,
-  slug,
-  cname,
-  id,
-}) {
+export default function ArticleCard (props) {
+  const {
+          coverPhoto,
+          author,
+          volume,
+          title,
+          slug,
+          cname,
+          id,
+          path,
+        } = props
   const authorText =
-    `BY ${author.toUpperCase()} ${String.fromCharCode(183)} VOLUME ${volume}`
+          `BY ${author.toUpperCase()} ${String.fromCharCode(183)} VOLUME ${volume}`
+  const defaultPhoto = coverPhoto ? coverPhoto : dollar
   return (
     <div className={`article-card-container ${cname}`}>
-      <CardCover coverPhoto={coverPhoto ? coverPhoto : dollar} authorText={authorText} />
-      <CardContent title={title} slug={slug} id={id} />
+      <CardCover coverPhoto={defaultPhoto} authorText={authorText}/>
+      <CardContent title={title} slug={slug} id={id} path={path}/>
     </div>
   )
 }
@@ -34,19 +37,28 @@ function CardCover ({ coverPhoto, authorText }) {
   )
 }
 
-function CardContent ({ title, slug, id }) {
+function CardContent ({ title, slug, id, path }) {
   const urlSlug = slugify(slug)
   return (
     <div className="mx-6 my-4 border-gray-light">
       <div className="article-card-title"> {title} </div>
       <p className="article-card-slug"> {slug} </p>
-      <Link
-        to={`/archive/journals/${urlSlug}/${id}`}
-        className="mt-4 sm:mt-4 py-2 px-4 max-w-max rounded-lg bg-black text-white"
-      >
-        <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
-        Read More
-      </Link>
+      <div>
+        <CardButton text="Read More" slug={urlSlug} id={id} path={path}/>
+      </div>
     </div>
+  )
+}
+
+function CardButton ({ slug, id, path }) {
+  const pathUrl = path ? path : '/archive/journals'
+  return (
+    <Link
+      to={`${pathUrl}/${slug}/${id}`}
+      className="mt-4 sm:mt-4 py-2 px-4 max-w-max rounded-lg bg-black text-white"
+    >
+      <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
+      Read More
+    </Link>
   )
 }

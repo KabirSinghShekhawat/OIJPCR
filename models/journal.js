@@ -4,11 +4,13 @@ const journalSchema = new mongoose.Schema({
     author: {
       type: String,
       required: true,
+      default: "Anonymous"
     },
 
     title: {
       type: String,
       required: true,
+      default: "Title NA"
     },
 
     editorJSObject: {
@@ -18,10 +20,12 @@ const journalSchema = new mongoose.Schema({
     slug: {
       type: String,
       required: true,
+      default: "Slug NA"
     },
 
     volume: {
       type: Number,
+      default: 1
     },
   },
   {

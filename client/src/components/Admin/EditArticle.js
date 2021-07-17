@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import EditorJS from '@editorjs/editorjs'
 import EditorForm from './EditorForm'
-import {config as EditorJSConfig} from '../EditorJS/EditorConfig'
+import { config as EditorJSConfig } from './Config/EditorConfig'
 
-class Editor extends Component {
+class EditArticle extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -13,7 +13,7 @@ class Editor extends Component {
       title: '',
       slug: '',
       volume: 0,
-      editor: {}
+      editor: {},
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -21,9 +21,13 @@ class Editor extends Component {
 
   async componentDidMount () {
     try {
+      const { urlSlug, id } = this.props.match.params
+      const url = `http://localhost:5000/journals/${urlSlug}/${id}`
+      const { data } = await axios.get(url)
+      this.setState({ journal: data })
       const editor = new EditorJS(EditorJSConfig)
       await editor.isReady
-      this.setState({editor: editor})
+      this.setState({ editor: editor })
     } catch (err) {
       console.log(err)
     }
@@ -59,15 +63,25 @@ class Editor extends Component {
   render () {
     return (
       <div className="flex flex-col items-center">
-        <div className="flex justify-center items-center min-h-screen h-auto w-full">
-          <div className="w-5/6 h-full rounded shadow-2xl border mt-8">
-            <div id="editor" className="editor">EditorJS</div>
-          </div>
-        </div>
-        <EditorForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} {...this.state} />
+        <Editor/>
+        <EditorForm
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          {...this.state}
+        />
       </div>
     )
   }
 }
 
-export default Editor
+function Editor () {
+  return (
+    <div className="flex justify-center items-center min-h-screen h-auto w-full">
+      <div className="w-5/6 h-full rounded shadow-2xl border mt-8">
+        <div id="editor" className="editor">EditorJS</div>
+      </div>
+    </div>
+  )
+}
+
+export default EditArticle

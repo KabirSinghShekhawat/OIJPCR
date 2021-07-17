@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom'
-import ArticleCard from './Home/ArticleCard'
-import ReadArticle from '../EditorJS/ReadArticle'
+import ArticleCard from '../Home/ArticleCard'
+import ReadArticle from './ReadArticle'
 
-class Archive extends Component {
+class ArticleList extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -26,19 +25,17 @@ class Archive extends Component {
   }
 
   render () {
-    const { path, url } = this.props.match
-    console.log(this.props.match)
+    const { path } = this.props.match
     return (
       <div className="flex-grow">
-          <Switch>
-            <Route exact path={`${path}/journals/:urlSlug/:id`} render={(props) =>
-              <ReadArticle {...props} />}
-            />
-            <Route path={path} render={() =>
-              <Journals journals={this.state.journals}/>}
-            />
-          </Switch>
-        {/*</Router>*/}
+        <Switch>
+          <Route exact path={`${path}/journals/:urlSlug/:id`} render={(props) =>
+            <ReadArticle {...props} />}
+          />
+          <Route path={path} render={() =>
+            <Journals journals={this.state.journals}/>}
+          />
+        </Switch>
       </div>
     )
   }
@@ -51,21 +48,19 @@ function Journals ({ journals }) {
   else journalList = createJournals(journals)
 
   return (
-    <>
-      <div className="h-full md:mx-16 mx-4">
-        <div className="flex flex-col h-full items-center py-2 my-4 w-full editor">
-          {journalList}
-        </div>
+    <div className="h-full md:mx-16 mx-4">
+      <div className="flex flex-col h-full items-center py-2 my-4 w-full editor">
+        {journalList}
       </div>
-    </>
+    </div>
   )
 }
 
 function createJournals (journals) {
   return journals.map((article) => {
-    const articleProps = { ...article, id: article._id }
+    const articleProps = { id: article._id, ...article }
     return <ArticleCard {...articleProps} key={article._id}/>
   })
 }
 
-export default Archive
+export default ArticleList

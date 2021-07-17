@@ -1,19 +1,27 @@
 import { Link } from 'react-router-dom'
 
-export function LinkItems({links, cname=""}) {
+export function LinkItems ({ links, cname = '', newTab }) {
   return (
     links.map((item, index) => {
-      return <NavLink key={index} {...item} cname={cname} />
+      return <NavLink key={index} {...item} cname={cname} newTab={newTab}/>
     })
   )
 }
 
-function NavLink ({ url, value, cname='' }) {
+function NavLink ({ url, value, cname = '', newTab }) {
   return (
     <li className={cname}>
-      <Link to={url}>
-        {value}
-      </Link>
+      {
+        newTab ?
+          <a href={url} target="_blank" rel="noreferrer">
+            {value}
+          </a>
+          :
+          <Link to={url}>
+            {value}
+          </Link>
+      }
+
     </li>
   )
 }
