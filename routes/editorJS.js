@@ -6,6 +6,11 @@ router.route('/')
   .get(editorJSController.getJournals)
   .post(editorJSController.saveArticle)
 
+router
+  .route('/:id')
+  .patch(editorJSController.editArticle)
+  .delete(editorJSController.deleteArticle)
+
 router.post('/uploadFile', editorJSController.uploadImage, editorJSController.uploadImageFile)
 
 router.get('/images/:name', editorJSController.getImageFile)

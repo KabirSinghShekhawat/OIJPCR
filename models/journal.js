@@ -13,8 +13,10 @@ const journalSchema = new mongoose.Schema({
       default: "Title NA"
     },
 
-    editorJSObject: {
-      type: Object
+    content: {
+      type: String,
+      required: true,
+      default: "Content NA"
     },
 
     slug: {

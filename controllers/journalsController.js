@@ -9,7 +9,7 @@ exports.journals = async (request, response) => {
   try {
     const journals = await Journal
       .find({})
-      .select('-editorJSObject')
+      .select('-editorJSObject -content')
       .sort({ createdAt: -1 })
       .exec()
     // const options = {

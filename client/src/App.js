@@ -13,6 +13,7 @@ import SubmitArticle from './components/SubmitArticle/SubmitArticle'
 import Home from './components/Home/Home'
 import Footer from './components/Footer/Footer'
 import NewArticle from './components/Admin/NewArticle'
+import Admin from './components/Admin/Admin'
 
 
 class App extends Component {
@@ -45,9 +46,10 @@ function NavController() {
         <Route exact path="/submitArticle">
           <SubmitArticle />
         </Route>
-        <Route path="/admin">
-          <NewArticle/>
-        </Route>
+        <Route path="/admin" render={(props) => <Admin {...props} />} />
+        {/*<Route path="/admin">*/}
+          {/*<NewArticle/>*/}
+        {/*</Route>*/}
       </Switch>
     </>
   )

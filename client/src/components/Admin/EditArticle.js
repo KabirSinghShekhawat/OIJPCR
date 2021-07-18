@@ -1,22 +1,28 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
+import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
-import EditorJS from '@editorjs/editorjs'
 import EditorForm from './EditorForm'
-import { config as EditorJSConfig } from './Config/EditorConfig'
+import { Redirect } from 'react-router-dom'
 
 class EditArticle extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      editorJSObject: {},
-      author: '',
-      title: '',
-      slug: '',
-      volume: 0,
-      editor: {},
+      editorRef: {},
+      content: '',
+      initialValue: this.props.content || '',
+      author: this.props.author || '',
+      title: this.props.title || '',
+      slug: this.props.slug || '',
+      volume: this.props.volume || '',
+      id: '',
+      redirect: null,
     }
-    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.PostData = this.PostData.bind(this)
+    this.onInit = this.onInit.bind(this)
   }
 
   async componentDidMount () {
@@ -24,12 +30,20 @@ class EditArticle extends Component {
       const { urlSlug, id } = this.props.match.params
       const url = `http://localhost:5000/journals/${urlSlug}/${id}`
       const { data } = await axios.get(url)
-      this.setState({ journal: data })
-      const editor = new EditorJS(EditorJSConfig)
-      await editor.isReady
-      this.setState({ editor: editor })
+      const { content: initialValue } = data
+      this.setState({ ...data, id, initialValue })
+    } catch (e) {
+      throw new Error(e.message)
+    }
+  }
+
+  async handleDelete () {
+    try {
+      const url = `http://localhost:5000/editor/${this.state.id}`
+      await axios.delete(url)
+      this.setState({ redirect: '/admin/new' })
     } catch (err) {
-      console.log(err)
+      console.log('An Error occurred in deleting data: ' + err.message)
     }
   }
 
@@ -41,47 +55,76 @@ class EditArticle extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    const editorJSObject = await this.state.editor.save()
-    this.setState({ editorJSObject: editorJSObject })
+    await this.PostData()
+  }
 
-    axios.post('http://localhost:5000/editor/', {
-      author: this.state.author,
-      title: this.state.title,
-      editorJSObject: editorJSObject,
-      slug: this.state.slug,
-      volume: this.state.volume,
+  handleEditorChange = (editor) => {
+    this.setState({
+      content: this.state.editorRef.getContent(),
     })
-      .then(() => {
-        console.log('Sent Data to http://localhost:5000/editor/')
-      })
-      .catch((err) => {
-        console.log('An Error occurred in posting data: ' + err.message)
-      })
-
+    console.log('Content was updated:')
   }
 
   render () {
+    const { content, redirect, ...formState } = this.state
+    if (redirect)
+      return <Redirect to={this.state.redirect}/>
+
     return (
-      <div className="flex flex-col items-center">
-        <Editor/>
-        <EditorForm
-          handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit}
-          {...this.state}
+      <EditorForm
+        handleChange={this.handleChange}
+        handleSubmit={this.handleSubmit}
+        handleDelete={this.handleDelete}
+        {...formState}
+        isEdit={true}
+      >
+        <Editor
+          onInit={this.onInit}
+          onChange={this.handleEditorChange}
+          initialValue={this.state.initialValue}
+          init={{
+            height: 500,
+            menubar: true,
+            branding: false,
+            save_onsavecallback: this.PostData,
+            plugins: [
+              'advlist autolink lists link image',
+              'charmap print preview anchor help',
+              'searchreplace visualblocks fullscreen',
+              'code',
+              'insertdatetime media table paste wordcount save',
+            ],
+            toolbar:
+              'save | undo redo | link | image | \
+              insert | styleselect | bold | italic | code | \
+              alignleft aligncenter alignright alignjustify | \
+              bullist numlist | outdent indent | help',
+            content_css: [
+              '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+              '//www.tiny.cloud/css/codepen.min.css',
+            ],
+          }}
         />
-      </div>
+      </EditorForm>
     )
   }
-}
 
-function Editor () {
-  return (
-    <div className="flex justify-center items-center min-h-screen h-auto w-full">
-      <div className="w-5/6 h-full rounded shadow-2xl border mt-8">
-        <div id="editor" className="editor">EditorJS</div>
-      </div>
-    </div>
-  )
+  onInit (evt, editor) {
+    this.setState({
+      editorRef: editor,
+    })
+  }
+
+  async PostData () {
+    try {
+      const url = `http://localhost:5000/editor/${this.state.id}`
+      const { editorRef, initialValue, ...data } = this.state
+      await axios.patch(url, { ...data })
+      console.log('Sent Data to http://localhost:5000/editor/')
+    } catch (err) {
+      console.log('An Error occurred in posting data: ' + err.message)
+    }
+  }
 }
 
 export default EditArticle

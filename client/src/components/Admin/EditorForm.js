@@ -5,6 +5,11 @@ class EditorForm extends Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+  }
+
+  handleDelete () {
+    this.props.handleDelete()
   }
 
   handleSubmit (evt) {
@@ -16,7 +21,7 @@ class EditorForm extends Component {
   }
 
   render () {
-    const { author, title, slug, volume } = this.props
+    const { author, title, slug, volume, isEdit=false } = this.props
     return (
       <FormContainer heading="Submit Form" handleSubmit={this.handleSubmit}>
         {/* Author */}
@@ -30,7 +35,19 @@ class EditorForm extends Component {
                    type="number"
                    min={0}
         />
-        <Button text="Save Data" handleClick={this.handleSubmit}/>
+        {this.props.children}
+        {
+          isEdit
+            ?
+            <ButtonGroup
+              handleSubmit={this.handleSubmit}
+              handleDelete={this.handleDelete}
+            />
+            :
+            <Button handleClick={this.handleSubmit} cname="primary-color-bg text-white">
+              Save Data
+            </Button>
+        }
       </FormContainer>
     )
   }
@@ -39,8 +56,8 @@ class EditorForm extends Component {
 function FormContainer (props) {
   const { heading, handleSubmit } = props
   return (
-    <div className="flex justify-center items-center h-screen w-full">
-      <div className="w-5/6 bg-white rounded shadow-2xl p-8 m-4">
+    <div className="flex justify-center items-center h-full w-full">
+      <div className="w-full bg-white rounded shadow-2xl p-8 m-4">
         <h1 className="block w-full text-center text-gray-800 text-2xl font-bold mb-6">{heading}</h1>
         <form onSubmit={handleSubmit} method="POST">
           {props.children}
@@ -73,13 +90,29 @@ function FormField ({ name, label, type, value, min, handleChange }) {
   )
 }
 
-function Button ({ handleSubmit, text }) {
+function ButtonGroup ({ handleSubmit, handleDelete }) {
+  return (
+    <div className="flex flex-row justify-center">
+      <Button handleClick={handleSubmit} cname="primary-color-bg text-white">
+        Save Data
+      </Button>
+      <Button handleClick={handleDelete} cname="bg-red-600 text-white">
+        Delete Article
+      </Button>
+    </div>
+  )
+}
+
+function Button (props) {
+  const { handleClick, cname } = props
+  const btnCN = cname +
+    ' block uppercase text-xl font-bold mx-auto p-4 rounded mt-8 w-64'
   return (
     <button
-      className="block primary-color-bg text-white uppercase text-xl font-bold mx-auto p-4 rounded mt-8 w-64"
+      className={btnCN}
       type="submit"
-      onClick={handleSubmit}
-    > {text}
+      onClick={handleClick}
+    > {props.children}
     </button>
   )
 }

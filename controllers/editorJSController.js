@@ -1,5 +1,4 @@
 const Journal = require('../models/journal')
-
 const fs = require('fs/promises')
 const path = require('path')
 
@@ -83,14 +82,34 @@ exports.uploadImageFile = (req, res) => {
 }
 
 exports.saveArticle = async (req, res) => {
-  const { author, title, editorJSObject, slug, volume } = req.body
+  const { author, title, content, slug, volume } = req.body
   const newArticle = new Journal({
     author,
     title,
-    editorJSObject,
+    content,
     slug,
     volume,
   })
   await newArticle.save()
-  res.status(201).send({ status: 'OK', created: newArticle })
+  res.status(201).send({ status: 'OK' })
+}
+
+exports.editArticle = async (req, res) => {
+  const { id } = req.params
+  const { author, title, content, slug, volume } = req.body
+  const modifiedArticle = {
+    author,
+    title,
+    content,
+    slug,
+    volume,
+  }
+  await Journal.findByIdAndUpdate(id, { ...modifiedArticle })
+  res.status(201).send({ status: 'OK' })
+}
+
+exports.deleteArticle = async (req, res) => {
+  const { id } = req.params
+  await Journal.findByIdAndDelete(id)
+  res.status(201).send({ status: 'OK' })
 }

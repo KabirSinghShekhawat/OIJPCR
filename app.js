@@ -52,6 +52,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
 app.use('/', express.static(path.join(__dirname, 'public')))
+app.use('/uploads', express.static(path.join(__dirname, 'public/img')))
 /**
  * Session 
  */
@@ -109,12 +110,12 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/editor', editorJSRoute);
 app.use('/', homeRoute);
 app.use('/journals', journalsRoute);
 app.use('/submit', submitArticleRoute);
 app.use('/podcast', podcastRoute);
 app.use('/admin', adminRoute);
+app.use('/editor', editorJSRoute);
 app.get('*', (req, res) => {
     res.status(404).send('<h1>Page Not Found</h1>')
 })

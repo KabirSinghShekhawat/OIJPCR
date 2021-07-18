@@ -5,7 +5,7 @@ import {
   Route,
 } from 'react-router-dom'
 import ArticleCard from '../Home/ArticleCard'
-import ReadArticle from './ReadArticle'
+import ReadArticle from '../Articles/ReadArticle'
 
 class ArticleList extends Component {
   constructor (props) {
