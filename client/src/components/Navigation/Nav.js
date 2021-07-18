@@ -59,14 +59,14 @@ function NavMenu (props) {
 }
 
 function NavLinks ({ navItems }) {
-  const links = navItems.map((item, index) => {
-    return <NavLink key={index} url={item.url} value={item.value}/>
-  })
-
   return (
     <nav>
       <ul className="nav-link-ul">
-        {links}
+        {
+		  navItems.map((item, index) => {
+			return <NavLink key={index} {...item}/>
+		  })
+		}
       </ul>
     </nav>
   )
