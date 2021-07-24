@@ -74,9 +74,9 @@ function NavLinks ({ navItems }) {
 
 function NavLink ({ url, value }) {
   return (
-    <li>
+    <li className="list-none">
       <Link
-        className="nav-link"
+        className="nav-link text-black no-underline"
         to={url}
       >
         {value}

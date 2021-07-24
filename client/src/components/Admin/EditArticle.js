@@ -41,6 +41,7 @@ class EditArticle extends Component {
     try {
       const url = `http://localhost:5000/editor/${this.state.id}`
       await axios.delete(url)
+      alert('Article deleted, redirecting now')
       this.setState({ redirect: '/admin/new' })
     } catch (err) {
       console.log('An Error occurred in deleting data: ' + err.message)
@@ -121,8 +122,11 @@ class EditArticle extends Component {
       const { editorRef, initialValue, ...data } = this.state
       await axios.patch(url, { ...data })
       console.log('Sent Data to http://localhost:5000/editor/')
+      this.setState({success: 'success'})
+      alert('Successfully submitted data')
     } catch (err) {
       console.log('An Error occurred in posting data: ' + err.message)
+      alert('error in posting data')
     }
   }
 }

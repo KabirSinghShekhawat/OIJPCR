@@ -16,6 +16,7 @@ class ReadArticle extends Component {
       journal: {},
     }
     this.parseArticle = this.parseArticle.bind(this)
+    this.journalHasLoaded = this.journalHasLoaded.bind(this)
   }
 
   async componentDidMount () {
@@ -30,14 +31,21 @@ class ReadArticle extends Component {
   }
 
   parseArticle () {
-    const journal = this.state.journal
-    if (journal === 'undefined' || Object.keys(journal).length === 0) return '...Loading'
+    if (!this.journalHasLoaded()) return '...Loading'
     const parser = new edjsParser(undefined, customParsers)
-    return parser.parse(journal.editorJSObject)
+    return parser.parse(this.state.journal.editorJSObject)
+  }
+
+  journalHasLoaded () {
+    const journal = this.state.journal
+    return !(journal === 'undefined' || Object.keys(journal).length === 0);
+
   }
 
   render () {
-    const author = this.state.journal.author
+    const journal = this.state.journal
+    const author = journal.author
+    const content = this.journalHasLoaded() ? journal.content : ''
     const WrittenBy =
             <h1 className="text-3xl text-center mb-4">
               Written BY - {author ? author : ''}
@@ -46,7 +54,8 @@ class ReadArticle extends Component {
     return (
       <ReadContainer>
         {WrittenBy}
-        <ParseArticle article={this.parseArticle} />
+        {/*<ParseArticle article={this.parseArticle} />*/}
+        {HTMLReactParser(content.toString())}
       </ReadContainer>
     )
   }
@@ -62,7 +71,7 @@ function ReadContainer (props) {
   )
 }
 
-function ParseArticle({article}) {
+function ParseArticle ({ article }) {
   const rawArticle = article().toString()
   return (
     <>

@@ -51,14 +51,26 @@ function CardContent ({ title, slug, id, path }) {
 }
 
 function CardButton ({ slug, id, path }) {
-  const pathUrl = path ? path : '/archive/journals'
+  const pathUrl = path ? path : '/archive'
   return (
-    <Link
-      to={`${pathUrl}/${slug}/${id}`}
-      className="mt-4 sm:mt-4 py-2 px-4 max-w-max rounded-lg bg-black text-white"
-    >
-      <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
-      Read More
-    </Link>
+    <>
+      <Link
+        to={`/archive/${slug}/${id}`}
+        className="mt-4 sm:mt-4 py-2 px-4 mr-4 max-w-max rounded-lg bg-black text-white"
+      >
+        <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
+        Read More
+      </Link>
+      {
+        path && <Link
+          to={`${pathUrl}/${slug}/${id}`}
+          className="mt-4 sm:mt-4 py-2 px-4 max-w-max rounded-lg bg-black text-white"
+        >
+          <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
+          Edit
+        </Link>
+      }
+
+    </>
   )
 }

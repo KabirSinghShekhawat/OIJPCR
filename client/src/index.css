@@ -19,9 +19,7 @@
     .editor h6 {
         @apply text-sm;
     }
-    /*.editor a {*/
-    /*    @apply text-blue-600 underline;*/
-    /*}*/
+
 }
 
 @tailwind components;

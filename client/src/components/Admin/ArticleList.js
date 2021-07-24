@@ -59,7 +59,7 @@ function Journals ({ journals }) {
 function createJournals (journals) {
   return journals.map((article) => {
     const articleProps = { id: article._id, ...article }
-    return <ArticleCard {...articleProps} key={article._id}/>
+    return <ArticleCard {...articleProps} key={article._id} path="/admin" />
   })
 }
 

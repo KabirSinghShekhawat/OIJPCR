@@ -29,7 +29,7 @@ class Archive extends Component {
     return (
       <div className="flex-grow">
         <Switch>
-          <Route exact path={`${path}/journals/:urlSlug/:id`} render={(props) =>
+          <Route exact path={`${path}/:urlSlug/:id`} render={(props) =>
             <ReadArticle {...props} />}
           />
           <Route path={path} render={() =>
