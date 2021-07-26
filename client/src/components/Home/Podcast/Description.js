@@ -7,8 +7,10 @@ const podcastDescription =
 export default function Description () {
   return (
     <>
-      <p className="text-5xl font-bold">OIJPCR - The Podcast</p>
-      <p className="text-md text-gray-900 text-left pt-4 mb-6 md:mb-8 tracking-tighter w-11/12">
+      <p className="text-3xl md:text-4xl xl:text-5xl font-bold">OIJPCR - The Podcast</p>
+      <p
+        className="text-xl md:text-2xl lg:text-lg xl:text-2xl text-gray-900 text-left pt-4 mb-6 md:mb-4 tracking-tighter lg:leading-relaxed"
+      >
         {podcastDescription}
         <p>'Now streaming on all major podcast streaming platforms!'</p>
       </p>

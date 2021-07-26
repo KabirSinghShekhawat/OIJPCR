@@ -1,5 +1,5 @@
 import alertCircle from '../../assets/alert-circle.svg'
-import dollar from '../../assets/r1_c1.jpg'
+import dollar from '../../assets/stockPhotos/r1_c1.jpg'
 import { Link } from 'react-router-dom'
 import slugify from 'slugify'
 

@@ -7,8 +7,8 @@ import './App.css'
 import Nav from './components/Navigation/Nav'
 import Footer from './components/Footer/Footer'
 import NavController from './components/Navigation/NavController'
-import Admin from './components/Admin/Admin'
-import NotFound from './components/utils/NotFound'
+import Admin from './pages/Admin/Admin'
+import NotFound from './pages/NotFound'
 
 class App extends Component {
   render () {

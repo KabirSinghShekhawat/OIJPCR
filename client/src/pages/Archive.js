@@ -4,8 +4,8 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
-import ReadArticle from './ReadArticle'
-import Journals from './Journals'
+import ReadArticle from '../components/Articles/ReadArticle'
+import Journals from '../components/Articles/Journals'
 
 class Archive extends Component {
   constructor (props) {

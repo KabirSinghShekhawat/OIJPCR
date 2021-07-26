@@ -1,6 +1,6 @@
 function Container (props) {
   return (
-    <div className="flex flex-col md:flex-row md:mx-12 mx-4 my-8 p-10 rounded-md shadow-xl border">
+    <div className="flex flex-col lg:flex-row md:mx-4 mx-2 my-8 p-6 md:p-10 rounded-md shadow-xl border">
       {props.children}
     </div>
   )
@@ -8,7 +8,7 @@ function Container (props) {
 
 function Body (props) {
   return (
-    <div className="md:w-3/4">
+    <div className="lg:w-2/3">
       {props.children}
     </div>
   )

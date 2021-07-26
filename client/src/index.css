@@ -75,7 +75,4 @@
         /*@apply lg:w-3/5 border-2 md:mx-8;*/
         @apply lg:w-3/4 md:w-2/3 w-full;
     }
-    .podcast-streaming-cover {
-        @apply w-8 h-8 object-cover inline mr-4;
-    }
 }

@@ -1,51 +1,29 @@
 import { Component } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
-import EditorForm from './EditorForm'
-import { Redirect } from 'react-router-dom'
+import EditorForm from '../../components/Admin/EditorForm'
 
-class EditArticle extends Component {
+class NewArticle extends Component {
   constructor (props) {
     super(props)
     this.state = {
       editorRef: {},
-      content: '',
-      initialValue: this.props.content || '',
+      content: this.props.content || '',
       author: this.props.author || '',
       title: this.props.title || '',
       slug: this.props.slug || '',
       volume: this.props.volume || '',
-      id: '',
-      redirect: null,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
+    this.handleSave = this.handleSave.bind(this)
     this.PostData = this.PostData.bind(this)
     this.onInit = this.onInit.bind(this)
   }
 
-  async componentDidMount () {
-    try {
-      const { urlSlug, id } = this.props.match.params
-      const url = `http://localhost:5000/journals/${urlSlug}/${id}`
-      const { data } = await axios.get(url)
-      const { content: initialValue } = data
-      this.setState({ ...data, id, initialValue })
-    } catch (e) {
-      throw new Error(e.message)
-    }
-  }
-
-  async handleDelete () {
-    try {
-      const url = `http://localhost:5000/editor/${this.state.id}`
-      await axios.delete(url)
-      alert('Article deleted, redirecting now')
-      this.setState({ redirect: '/admin/new' })
-    } catch (err) {
-      console.log('An Error occurred in deleting data: ' + err.message)
-    }
+  async handleSave (evt, editor) {
+    console.log('handle Save')
+    await this.PostData()
   }
 
   handleChange (evt) {
@@ -67,27 +45,22 @@ class EditArticle extends Component {
   }
 
   render () {
-    const { content, redirect, ...formState } = this.state
-    if (redirect)
-      return <Redirect to={this.state.redirect}/>
-
+    const { content, ...formState } = this.state
     return (
       <EditorForm
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
-        handleDelete={this.handleDelete}
         {...formState}
-        isEdit={true}
       >
         <Editor
           onInit={this.onInit}
           onChange={this.handleEditorChange}
-          initialValue={this.state.initialValue}
+          initialValue={this.state.content}
           init={{
             height: 500,
             menubar: true,
             branding: false,
-            save_onsavecallback: this.PostData,
+            save_onsavecallback: this.handleSave,
             plugins: [
               'advlist autolink lists link image',
               'charmap print preview anchor help',
@@ -118,17 +91,18 @@ class EditArticle extends Component {
 
   async PostData () {
     try {
-      const url = `http://localhost:5000/editor/${this.state.id}`
-      const { editorRef, initialValue, ...data } = this.state
-      await axios.patch(url, { ...data })
+      await axios.post('http://localhost:5000/editor/', {
+        content: this.state.content,
+        author: this.state.author,
+        title: this.state.title,
+        slug: this.state.slug,
+        volume: this.state.volume,
+      })
       console.log('Sent Data to http://localhost:5000/editor/')
-      this.setState({success: 'success'})
-      alert('Successfully submitted data')
     } catch (err) {
       console.log('An Error occurred in posting data: ' + err.message)
-      alert('error in posting data')
     }
   }
 }
 
-export default EditArticle
+export default NewArticle

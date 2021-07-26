@@ -1,4 +1,4 @@
-import logo from '../../assets/logo.svg'
+import logo from '../../assets/brandIcons/logo.svg'
 import { urlLinks as NavLinks } from '../Navigation/Nav'
 import {PodcastLinks} from './PodcastLinks'
 import { FooterContainer, FooterNavContainer } from './FooterContainers'

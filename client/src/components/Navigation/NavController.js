@@ -1,8 +1,8 @@
 import { Redirect, Route, Switch } from 'react-router-dom'
-import Home from '../Home/Home'
-import About from '../About/About'
-import Archive from '../Articles/Archive'
-import SubmitArticle from '../SubmitArticle/SubmitArticle'
+import Home from '../../pages/Home'
+import About from '../../pages/About/About'
+import Archive from '../../pages/Archive'
+import SubmitArticle from '../../pages/SubmitArticle'
 import React from 'react'
 
 export default function NavController () {

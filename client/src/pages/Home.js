@@ -1,10 +1,10 @@
 import { Component } from 'react'
-import Header from './Header'
-import LeftGrid from './LeftGrid'
-import Topics from './SideBar/Topics'
-import Popular from './SideBar/Popular'
-import SubmitArticleForm from './SideBar/SubmitArticleForm'
-import Podcast from './Podcast/Podcast'
+import Header from '../components/Home/Header'
+import LeftGrid from '../components/Home/LeftGrid'
+import Topics from '../components/Home/SideBar/Topics'
+import Popular from '../components/Home/SideBar/Popular'
+import SubmitArticleForm from '../components/Home/SideBar/SubmitArticleForm'
+import Podcast from '../components/Home/Podcast/Podcast'
 
 class Home extends Component {
   render () {
@@ -12,7 +12,9 @@ class Home extends Component {
       <div className="flex-grow">
         <Header/>
         <Main/>
-        <Podcast/>
+        <div className="mx-8">
+          <Podcast/>
+        </div>
       </div>
     )
   }

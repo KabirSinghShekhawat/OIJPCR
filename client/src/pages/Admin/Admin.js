@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import FlexContainer from '../utils/FlexContainer'
+import FlexContainer from '../../components/utils/FlexContainer'
 import NewArticle from './NewArticle'
 import EditArticle from './EditArticle'
-import ArticleList from './ArticleList'
+import ArticleList from '../../components/Admin/ArticleList'
 
 class Admin extends Component {
   render () {
