@@ -21,7 +21,6 @@ function NavLink ({ url, value, cname = '', newTab }) {
             {value}
           </Link>
       }
-
     </li>
   )
 }

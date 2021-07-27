@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 import alertCircle from '../../assets/alert-circle.svg'
 
 export default function Header () {
@@ -19,13 +20,16 @@ export default function Header () {
         {headerText}
       </div>
       <div className="p-2 flex-1 max-w-prose">
-        <p className="md:text-xl text-sm">
+        <p className="md:text-xl text-sm mb-4">
           {aboutJournal}
         </p>
-        <button className="mt-4 sm:mt-4 py-2 px-4 max-w-max rounded-lg bg-black">
+        <Link
+          className="py-2 px-4 max-w-max rounded-lg bg-black"
+          to="/about"
+        >
           <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
           Learn More
-        </button>
+        </Link>
       </div>
     </div>
   )
