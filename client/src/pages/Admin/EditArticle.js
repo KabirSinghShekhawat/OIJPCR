@@ -15,11 +15,16 @@ class EditArticle extends Component {
       title: this.props.title || '',
       slug: this.props.slug || '',
       volume: this.props.volume || '',
+      cover: this.props.cover ||
+        'http://localhost:5000/editor/images/r2_c1.jpg',
+      file: null,
       id: '',
       redirect: null,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.onFileChange = this.onFileChange.bind(this)
+    this.fileUpload = this.fileUpload.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.PostData = this.PostData.bind(this)
     this.onInit = this.onInit.bind(this)
@@ -41,11 +46,20 @@ class EditArticle extends Component {
     try {
       const url = `http://localhost:5000/editor/${this.state.id}`
       await axios.delete(url)
-      alert('Article deleted, redirecting now')
-      this.setState({ redirect: '/admin/new' })
+      setTimeout(() => {
+          alert('Article deleted, redirecting now')
+          this.setState({ redirect: '/admin/list' })
+        },
+        1000,
+      )
+
     } catch (err) {
       console.log('An Error occurred in deleting data: ' + err.message)
     }
+  }
+
+  onFileChange (evt) {
+    this.setState({file: evt.target.files[0]})
   }
 
   handleChange (evt) {
@@ -56,6 +70,8 @@ class EditArticle extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
+    const imgPath = await this.fileUpload(this.state.file)
+    this.setState({cover: imgPath})
     await this.PostData()
   }
 
@@ -76,6 +92,7 @@ class EditArticle extends Component {
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
         handleDelete={this.handleDelete}
+        onFileChange={this.onFileChange}
         {...formState}
         isEdit={true}
       >
@@ -116,13 +133,26 @@ class EditArticle extends Component {
     })
   }
 
+  async fileUpload(file) {
+    const url = 'http://localhost:5000/editor/uploadFile';
+    const formData = new FormData();
+    formData.append('image', file)
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }
+    const {data} = await axios.post(url, formData,config)
+    return 'http://localhost:5000' + data.file.url
+  }
+
   async PostData () {
     try {
       const url = `http://localhost:5000/editor/${this.state.id}`
       const { editorRef, initialValue, ...data } = this.state
       await axios.patch(url, { ...data })
       console.log('Sent Data to http://localhost:5000/editor/')
-      this.setState({success: 'success'})
+      this.setState({ success: 'success' })
       alert('Successfully submitted data')
     } catch (err) {
       console.log('An Error occurred in posting data: ' + err.message)

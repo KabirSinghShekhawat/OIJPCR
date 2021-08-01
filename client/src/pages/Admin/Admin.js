@@ -15,6 +15,7 @@ class Admin extends Component {
       title: 'Title',
       slug: 'Slug',
       volume: 1,
+      cover: 'http://localhost:5000/editor/images/r2_c1.jpg'
     }
     return (
       <>

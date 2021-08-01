@@ -56,8 +56,10 @@ exports.getImageFile = async (req, res) => {
   const { name } = req.params
   const src = path.join(path.dirname(require.main.filename) + '/public/img/' + name)
   console.log(src)
-  const data = await fs.readFile(src, 'binary')
-  res.send(new Buffer.from(data, 'binary'))
+  const data = await fs.readFile(src)
+  res.writeHead(200, {'Content-Type': 'image/jpeg'});
+  res.end(data);
+  // res.send(new Buffer.from(data, 'binary'))
 }
 
 exports.uploadByUrl = (req, res) => {
@@ -74,21 +76,22 @@ exports.uploadImageFile = (req, res) => {
   console.log(file)
 
   res.send({
-    'success': 1,
-    'file': {
-      'url': '/editor/images/' + req.file.filename,
+    success: 1,
+    file: {
+      url: '/editor/images/' + req.file.filename,
     },
   })
 }
 
 exports.saveArticle = async (req, res) => {
-  const { author, title, content, slug, volume } = req.body
+  const { author, title, content, slug, volume, cover } = req.body
   const newArticle = new Journal({
     author,
     title,
     content,
     slug,
     volume,
+    cover
   })
   await newArticle.save()
   res.status(201).send({ status: 'OK' })
@@ -96,13 +99,14 @@ exports.saveArticle = async (req, res) => {
 
 exports.editArticle = async (req, res) => {
   const { id } = req.params
-  const { author, title, content, slug, volume } = req.body
+  const { author, title, content, slug, volume, cover } = req.body
   const modifiedArticle = {
     author,
     title,
     content,
     slug,
     volume,
+    cover
   }
   await Journal.findByIdAndUpdate(id, { ...modifiedArticle })
   res.status(201).send({ status: 'OK' })

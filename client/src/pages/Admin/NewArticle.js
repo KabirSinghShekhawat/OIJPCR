@@ -13,12 +13,20 @@ class NewArticle extends Component {
       title: this.props.title || '',
       slug: this.props.slug || '',
       volume: this.props.volume || '',
+      cover: this.props.cover || '',
+      file: null
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.onFileChange = this.onFileChange.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.fileUpload = this.fileUpload.bind(this)
     this.PostData = this.PostData.bind(this)
     this.onInit = this.onInit.bind(this)
+  }
+
+  onFileChange (evt) {
+    this.setState({file: evt.target.files[0]})
   }
 
   async handleSave (evt, editor) {
@@ -34,6 +42,8 @@ class NewArticle extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
+    const imgPath = await this.fileUpload(this.state.file)
+    this.setState({cover: imgPath})
     await this.PostData()
   }
 
@@ -50,12 +60,12 @@ class NewArticle extends Component {
       <EditorForm
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
+        onFileChange={this.onFileChange}
         {...formState}
       >
         <Editor
           onInit={this.onInit}
           onChange={this.handleEditorChange}
-          initialValue={this.state.content}
           init={{
             height: 500,
             menubar: true,
@@ -89,6 +99,19 @@ class NewArticle extends Component {
     })
   }
 
+  async fileUpload(file) {
+    const url = 'http://localhost:5000/editor/uploadFile';
+    const formData = new FormData();
+    formData.append('image', file)
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }
+    const {data} = await axios.post(url, formData,config)
+    return 'http://localhost:5000' + data.file.url
+  }
+
   async PostData () {
     try {
       await axios.post('http://localhost:5000/editor/', {
@@ -97,6 +120,7 @@ class NewArticle extends Component {
         title: this.state.title,
         slug: this.state.slug,
         volume: this.state.volume,
+        cover: this.state.cover
       })
       console.log('Sent Data to http://localhost:5000/editor/')
     } catch (err) {

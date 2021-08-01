@@ -29,6 +29,10 @@ const journalSchema = new mongoose.Schema({
       type: Number,
       default: 1
     },
+    cover: {
+      type: String,
+      default: 'http://localhost:5000/editor/images/r2_c1.jpg'
+    }
   },
   {
     timestamps: true,

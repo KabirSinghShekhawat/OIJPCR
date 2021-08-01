@@ -5,7 +5,12 @@ class EditorForm extends Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.onFileChange = this.onFileChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+  }
+
+  onFileChange (evt) {
+    this.props.onFileChange(evt)
   }
 
   handleDelete () {
@@ -35,6 +40,7 @@ class EditorForm extends Component {
                    type="number"
                    min={0}
         />
+        <UploadCover onFileChange={this.onFileChange} />
         {this.props.children}
         {
           isEdit
@@ -67,8 +73,17 @@ function FormContainer (props) {
   )
 }
 
+function UploadCover(props) {
+  return (
+    <div className="my-4 border-1">
+      <h1>File Upload</h1>
+      <input type="file" name="image" onChange={props.onFileChange} />
+    </div>
+  )
+}
+
 function FormField ({ name, label, type, value, min, handleChange }) {
-  const minVal = type === 'number' ? `min=${min}` : false
+  // const minVal = type === 'number' ? `min=${min}` : false
   return (
     <div className="flex flex-col mb-4">
       <label
@@ -80,7 +95,7 @@ function FormField ({ name, label, type, value, min, handleChange }) {
       <input
         className="border py-2 px-3 text-grey-800"
         type={type ? type : 'text'}
-        {...minVal}
+        min={min}
         id={name}
         value={value}
         name={name}
