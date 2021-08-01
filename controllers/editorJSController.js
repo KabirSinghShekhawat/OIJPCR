@@ -16,7 +16,7 @@ const multerStorage = multer.diskStorage({
   },
 })
 
-function createFileName (originalName, mimeType) {
+function createFileName(originalName, mimeType) {
   let fileExtension = mimeType.split('/')[1]
   let splitString = fileExtension
   // ** mime-type for both .jpg and .jpeg is jpeg
@@ -54,30 +54,34 @@ exports.getJournals = async (req, res) => {
 // ! change buffer type
 exports.getImageFile = async (req, res) => {
   const { name } = req.params
-  const src = path.join(path.dirname(require.main.filename) + '/public/img/' + name)
-  console.log(src)
-  const data = await fs.readFile(src)
-  res.writeHead(200, {'Content-Type': 'image/jpeg'});
+  // * calculate path of image in ./public/img
+  const imagePath = path.dirname(require.main.filename) + '/public/img/' + name
+  const imageSource = path.join(imagePath)
+  //  * read image
+  const data = await fs.readFile(imageSource)
+  // * send image using correct headers
+  res.writeHead(200, { 'Content-Type': 'image/jpeg' });
   res.end(data);
-  // res.send(new Buffer.from(data, 'binary'))
 }
 
-exports.uploadByUrl = (req, res) => {
-  res.send({
-    'success': 1,
-    'file': {
-      'url': '',
-    },
-  })
-}
+// TODO: Implement later
+// TODO: image upload from URL is not reuired for now.
+// exports.uploadByUrl = (req, res) => {
+//   res.send({
+//     success: 1,
+//     file: {
+//       url: '',
+//     },
+//   })
+// }
 
+// * return image URL to client, saved in MongoDB.
 exports.uploadImageFile = (req, res) => {
-  const file = req.file
-  console.log(file)
-
   res.send({
     success: 1,
     file: {
+      // * path is relative, no need to change for deployment
+      // ** ex: http://localhost:<PORT>/editor/images/<IMAGE_NAME>
       url: '/editor/images/' + req.file.filename,
     },
   })
@@ -113,7 +117,37 @@ exports.editArticle = async (req, res) => {
 }
 
 exports.deleteArticle = async (req, res) => {
-  const { id } = req.params
-  await Journal.findByIdAndDelete(id)
-  res.status(201).send({ status: 'OK' })
+  try {
+    const { id, imageName } = req.params
+    // * deleting the default image is not a good idea.
+    // * all articles use this image as default
+    if (!isDefaultImage(imageName)) {
+      await deleteCoverImage(imageName)
+    }
+    // * After deleting the cover image, article can be safely deleted.
+    await Journal.findByIdAndDelete(id)
+    res.status(201).send({ status: 'OK' })
+
+  } catch (err) {
+    res.status(404).send({ msg: 'Article not found' })
+    throw new Error(err.message)
+  }
+}
+
+
+async function deleteCoverImage(imageName) {
+  const imagePath = path.join(
+    path.dirname(require.main.filename) +
+    '/public/img/' +
+    imageName
+  )
+
+  await fs.unlink(imagePath)
+    .catch(err => {
+      throw new Error('Could not delete image: ' + imageName)
+    })
+}
+
+function isDefaultImage(imageName) {
+  return imageName === "r2_c1.jpg"
 }

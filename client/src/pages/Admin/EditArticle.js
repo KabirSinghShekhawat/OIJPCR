@@ -3,6 +3,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
 import EditorForm from '../../components/Admin/EditorForm'
 import { Redirect } from 'react-router-dom'
+import { toolbar, plugins } from '../../components/Admin/Config/TinyMCEConfig'
 
 class EditArticle extends Component {
   constructor (props) {
@@ -44,7 +45,9 @@ class EditArticle extends Component {
 
   async handleDelete () {
     try {
-      const url = `http://localhost:5000/editor/${this.state.id}`
+      let imageName = this.state.cover.split('/')
+      imageName = imageName[imageName.length - 1]
+      const url = `http://localhost:5000/editor/${this.state.id}/${imageName}`
       await axios.delete(url)
       setTimeout(() => {
           alert('Article deleted, redirecting now')
@@ -59,7 +62,7 @@ class EditArticle extends Component {
   }
 
   onFileChange (evt) {
-    this.setState({file: evt.target.files[0]})
+    this.setState({ file: evt.target.files[0] })
   }
 
   handleChange (evt) {
@@ -70,8 +73,10 @@ class EditArticle extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    const imgPath = await this.fileUpload(this.state.file)
-    this.setState({cover: imgPath})
+    if (this.state.file !== null) {
+      const imgPath = await this.fileUpload(this.state.file)
+      this.setState({ cover: imgPath })
+    }
     await this.PostData()
   }
 
@@ -105,18 +110,8 @@ class EditArticle extends Component {
             menubar: true,
             branding: false,
             save_onsavecallback: this.PostData,
-            plugins: [
-              'advlist autolink lists link image',
-              'charmap print preview anchor help',
-              'searchreplace visualblocks fullscreen',
-              'code',
-              'insertdatetime media table paste wordcount save',
-            ],
-            toolbar:
-              'save | undo redo | link | image | \
-              insert | styleselect | bold | italic | code | \
-              alignleft aligncenter alignright alignjustify | \
-              bullist numlist | outdent indent | help',
+            plugins: plugins,
+            toolbar: toolbar,
             content_css: [
               '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
               '//www.tiny.cloud/css/codepen.min.css',
@@ -133,16 +128,16 @@ class EditArticle extends Component {
     })
   }
 
-  async fileUpload(file) {
-    const url = 'http://localhost:5000/editor/uploadFile';
-    const formData = new FormData();
+  async fileUpload (file) {
+    const url = 'http://localhost:5000/editor/uploadFile'
+    const formData = new FormData()
     formData.append('image', file)
     const config = {
       headers: {
-        'content-type': 'multipart/form-data'
-      }
+        'content-type': 'multipart/form-data',
+      },
     }
-    const {data} = await axios.post(url, formData,config)
+    const { data } = await axios.post(url, formData, config)
     return 'http://localhost:5000' + data.file.url
   }
 

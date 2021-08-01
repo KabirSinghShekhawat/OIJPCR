@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
 import EditorForm from '../../components/Admin/EditorForm'
+import { toolbar, plugins } from '../../components/Admin/Config/TinyMCEConfig'
 
 class NewArticle extends Component {
   constructor (props) {
@@ -71,18 +72,8 @@ class NewArticle extends Component {
             menubar: true,
             branding: false,
             save_onsavecallback: this.handleSave,
-            plugins: [
-              'advlist autolink lists link image',
-              'charmap print preview anchor help',
-              'searchreplace visualblocks fullscreen',
-              'code',
-              'insertdatetime media table paste wordcount save',
-            ],
-            toolbar:
-              'save | undo redo | link | image | \
-              insert | styleselect | bold | italic | code | \
-              alignleft aligncenter alignright alignjustify | \
-              bullist numlist | outdent indent | help',
+            plugins: plugins,
+            toolbar: toolbar,
             content_css: [
               '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
               '//www.tiny.cloud/css/codepen.min.css',

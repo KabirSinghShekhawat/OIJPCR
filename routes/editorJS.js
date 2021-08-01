@@ -9,11 +9,17 @@ router.route('/')
 router
   .route('/:id')
   .patch(editorJSController.editArticle)
-  .delete(editorJSController.deleteArticle)
 
-router.post('/uploadFile', editorJSController.uploadImage, editorJSController.uploadImageFile)
+router
+  .delete('/:id/:imageName', editorJSController.deleteArticle)
 
-router.get('/images/:name', editorJSController.getImageFile)
-router.post('/fetchUrl', editorJSController.uploadByUrl)
+router
+  .post('/uploadFile', editorJSController.uploadImage, editorJSController.uploadImageFile)
+
+router
+  .get('/images/:name', editorJSController.getImageFile)
+
+// router
+//   .post('/fetchUrl', editorJSController.uploadByUrl)
 
 module.exports = router

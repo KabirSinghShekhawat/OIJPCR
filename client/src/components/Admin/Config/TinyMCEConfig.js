@@ -1,3 +1,16 @@
+export const toolbar = 'save | undo redo | link | image | ' +
+  'insert | styleselect | bold | italic | code | ' +
+  'alignleft aligncenter alignright alignjustify | ' +
+  'bullist numlist | outdent indent | help'
+
+export const plugins = [
+  'advlist autolink lists link image',
+  'charmap print preview anchor help',
+  'searchreplace visualblocks fullscreen',
+  'code',
+  'insertdatetime media table paste wordcount save',
+]
+
 export const config = {
   onRemove: '',
   onActivate: '',
