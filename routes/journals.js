@@ -3,7 +3,7 @@ const router = express.Router()
 const journalsController = require('./../controllers/journalsController')
 
 router.get('/', journalsController.journals)
-router.get('/:volume', journalsController.journalByVolume)
+router.get('/all/:volume', journalsController.journalByVolume)
 
 router
   .route('/:id')
@@ -12,7 +12,6 @@ router
 router
   .route('/:slug/:id')
   .get(journalsController.getJournal)
-  .post(journalsController.postComment)
 
 
 

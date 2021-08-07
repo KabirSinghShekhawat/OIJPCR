@@ -1,81 +1,37 @@
 const slugify = require('slugify')
-const dateFormat = require('../public/js/dateFormat')
+const catchAsync = require('../utils/catchAsync')
+const AppError = require('../utils/appError')
 const Journal = require('../models/journal')
-const Comment = require('../models/comment')
 
 const css = 'app.min.css'
 
-exports.journals = async (request, response) => {
-  try {
-    const journals = await Journal
-      .find({})
-      .select('-editorJSObject -content')
-      .sort({ createdAt: -1 })
-      .exec()
-    // const options = {
-    //   title: 'Journals',
-    //   css: css,
-    //   isHomePage: false,
-    //   journals: journals,
-    //   slugify: slugify,
-    // }
-    // response.render('journals', options)
-    response.send(journals)
-  } catch (err) {
-    response.status(404).send({ status: 'NA', msg: 'Article Not Found' })
-  }
-}
+exports.journals = catchAsync(async (request, response, next) => {
+  const journals = await Journal
+    .find({})
+    .select('-content')
+    .sort({ createdAt: -1 })
+    .exec()
+  response
+})
 
-exports.journalByVolume = async (request, response) => {
+exports.journalByVolume = catchAsync(async (request, response, next) => {
   const { volume } = request.params
-  try {
-    const journals = await Journal.find({ 'volume': volume }).sort({ createdAt: -1 })
-    const options = {
-      title: 'Journals',
-      css: css,
-      isHomePage: false,
-      journals: journals,
-      slugify: slugify,
-    }
-    response.render('journals', options)
-  } catch (err) {
-    response.status(404).send('Journal Not Found')
-  }
-}
 
-exports.getJournal = async (request, response) => {
+  if (isNaN(parseInt(volume, 10))) {
+    return next(new AppError('Volume is not a valid number', 400))
+  }
+
+  const journals = await Journal.find({ 'volume': volume }).sort({ createdAt: -1 })
+  response.status(200).json(journals)
+})
+
+exports.getJournal = catchAsync(async (request, response, next) => {
   const { id } = request.params
-  try {
-    const journal = await Journal.findById(id)
-    // const comments = await Comment.find({'journal_id': id});
-    // const options = {
-    //     title: 'Journal',
-    //     css: css,
-    //     isHomePage: false,
-    //     journal: journal,
-    //     comments: comments,
-    //     dateFormat: dateFormat
-    // }
+  const journal = await Journal.findById(id)
 
-    response.send(journal)
-  } catch (err) {
-    console.log('error')
-    response.status(404).send('Journal Not Found')
+  if (!journal) {
+    return next(new AppError(`Found no journal with ID ${id}`, 404))
   }
 
-}
-
-exports.postComment = async (request, response) => {
-  const { slug, id } = request.params
-  const { name, email, comment: commentText } = request.body
-  const newComment = {
-    username: name,
-    email: email,
-    comment: commentText,
-    journal_id: id,
-  }
-  const comment = new Comment(newComment)
-  await comment.save()
-  request.flash('success', 'Comment Awaiting Moderation')
-  return response.redirect(`/journals/${slug}/${id}`)
-}
+  response.send(journal)
+})

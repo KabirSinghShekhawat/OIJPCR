@@ -31,26 +31,5 @@ router.route('/journal/:id')
 .put(authController.isLoggedIn, adminController.putJournal)
 .delete(authController.isLoggedIn, adminController.deleteJournal)
 
-// Podcasts
-
-router.route('/podcast')
-.get(authController.isLoggedIn, adminController.addPodcast)
-.post(authController.isLoggedIn, adminController.postPodcast)
-
-router.route('/podcast/list')
-.get(authController.isLoggedIn, adminController.podcastList)
-
-router.route('/podcast/:id')
-.get(authController.isLoggedIn, adminController.editPodcast)
-.put(authController.isLoggedIn, adminController.putPodcast)
-.delete(authController.isLoggedIn, adminController.deletePodcast)
-
-router.route('/comments')
-.get(authController.isLoggedIn, adminController.commentsPage)
-
-router.route('/comments/:id')
-.put(authController.isLoggedIn, adminController.publishComment)
-.patch(authController.isLoggedIn, adminController.draftComment)
-.delete(authController.isLoggedIn, adminController.deleteComment)
 
 module.exports = router;

@@ -53,19 +53,20 @@ function dayName (day) {
 function UTCToFormalDate(date) {
   /* yyyy-mm-dd to Month day, year*/
   // dates may begin with 0, like 08, then parseInt() is used.
+  /*! always provide radix base when using parseInt() */
   if (date == null) return ''
   date = date.split('-')
   if (date.length < 3) return ''
 
   let year = date[0]
-  let month = monthName(parseInt(date[1]))
+  let month = monthName(parseInt(date[1], 10))
   let superScript = dayName(date[2])
 
   return {
     year,
     month,
     superScript,
-    day: parseInt(date[2])
+    day: parseInt(date[2], 10)
   }
 }
 

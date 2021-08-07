@@ -1,26 +1,26 @@
 const express = require('express')
 const router = express.Router()
-const Editor = require('../controllers/editorController')
+const editorController = require('../controllers/editorController')
 
 router.route('/')
-  .get(Editor.getJournals)
-  .post(Editor.saveArticle)
+  .get(editorController.getJournals)
+  .post(editorController.saveArticle)
 
 router
   .route('/:id')
-  .patch(Editor.editArticle)
+  .patch(editorController.editArticle)
 
 router
-  .delete('/:id/:imageName', Editor.deleteArticle)
-  .delete('/:imageName', Editor.deleteImage)
+  .delete('/:id/:imageName', editorController.deleteArticle)
+  .delete('/:imageName', editorController.deleteImage)
 
 router
-  .post('/uploadFile', Editor.uploadImage, Editor.uploadImageFile)
+  .post('/uploadFile', editorController.uploadImage, editorController.uploadImageFile)
 
 router
-  .get('/images/:name', Editor.getImageFile)
+  .get('/images/:name', editorController.getImageFile)
 
 // router
-//   .post('/fetchUrl', editorJSController.uploadByUrl)
+//   .post('/fetchUrl', editorController.uploadByUrl)
 
 module.exports = router
