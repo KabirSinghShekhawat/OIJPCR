@@ -6,6 +6,7 @@ import Popular from '../components/Home/SideBar/Popular'
 import SubmitArticleForm from '../components/Home/SideBar/SubmitArticleForm'
 import Podcast from '../components/Home/Podcast/Podcast'
 
+
 class Home extends Component {
   render () {
     return (

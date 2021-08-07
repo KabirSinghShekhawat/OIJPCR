@@ -17,7 +17,7 @@ const adminRoute = require('./routes/admin');
 const submitArticleRoute = require('./routes/submitArticle');
 const homeRoute = require('./routes/home');
 const podcastRoute = require('./routes/podcast');
-const editorJSRoute = require('./routes/editorJS');
+const editorRoute = require('./routes/editor');
 require('dotenv').config()
 
 /*-----------Global Middlewares------------*/
@@ -115,7 +115,7 @@ app.use('/journals', journalsRoute);
 app.use('/submit', submitArticleRoute);
 app.use('/podcast', podcastRoute);
 app.use('/admin', adminRoute);
-app.use('/editor', editorJSRoute);
+app.use('/editor', editorRoute);
 app.get('*', (req, res) => {
     res.status(404).send('<h1>Page Not Found</h1>')
 })

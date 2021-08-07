@@ -113,7 +113,7 @@ class NewArticle extends Component {
         volume: this.state.volume,
         cover: this.state.cover
       })
-      console.log('Sent Data to http://localhost:5000/editor/')
+      alert('Created New Article')
     } catch (err) {
       console.log('An Error occurred in posting data: ' + err.message)
     }

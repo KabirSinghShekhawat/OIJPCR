@@ -1,4 +1,4 @@
-import ArticleCard from '../Home/ArticleCard'
+import ArticleCard from '../Cards/ArticleCard'
 
 export default function Journals ({ journals }) {
   const journalList = createJournals(journals)

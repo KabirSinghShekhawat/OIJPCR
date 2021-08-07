@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
-import ArticleCard from '../Home/ArticleCard'
+import ArticleCardAdmin from '../Admin/Cards/ArticleCardAdmin'
 import ReadArticle from '../Articles/ReadArticle'
 
 class ArticleList extends Component {
@@ -43,8 +43,10 @@ class ArticleList extends Component {
 
 function Journals ({ journals }) {
   let journalList
-  if (typeof journals == 'undefined' || journals.length === 0)
+  if (typeof journals == 'undefined')
     journalList = '...Loading'
+  if (journals.length === 0)
+    journalList = 'No Articles Found'
   else journalList = createJournals(journals)
 
   return (
@@ -58,8 +60,17 @@ function Journals ({ journals }) {
 
 function createJournals (journals) {
   return journals.map((article) => {
-    const articleProps = { id: article._id, coverPhoto: article.cover, ...article }
-    return <ArticleCard {...articleProps} key={article._id} path="/admin" />
+    const articleProps = {
+      id: article._id,
+      coverPhoto: article.cover,
+      cname: {
+        container: '',
+        button: 'mt-10',
+      },
+      path: '/admin',
+      ...article,
+    }
+    return <ArticleCardAdmin {...articleProps} key={article._id}/>
   })
 }
 

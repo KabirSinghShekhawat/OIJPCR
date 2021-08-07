@@ -26,7 +26,8 @@ class EditArticle extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.onFileChange = this.onFileChange.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
+    this.deleteArticle = this.deleteArticle.bind(this)
+    this.deletePreviousCoverImage = this.deletePreviousCoverImage.bind(this)
     this.PostData = this.PostData.bind(this)
     this.onInit = this.onInit.bind(this)
   }
@@ -43,22 +44,29 @@ class EditArticle extends Component {
     }
   }
 
-  async handleDelete () {
+  async deleteArticle () {
     try {
       let imageName = this.state.cover.split('/')
       imageName = imageName[imageName.length - 1]
       const url = `http://localhost:5000/editor/${this.state.id}/${imageName}`
       await axios.delete(url)
+
       setTimeout(() => {
           alert('Article deleted, redirecting now')
           this.setState({ redirect: '/admin/list' })
         },
         1000,
       )
-
     } catch (err) {
       console.log('An Error occurred in deleting data: ' + err.message)
     }
+  }
+
+  async deletePreviousCoverImage() {
+    let imageName = this.state.cover.split('/')
+    imageName = imageName[imageName.length - 1]
+    const url = `http://localhost:5000/editor/${imageName}`
+    await axios.delete(url)
   }
 
   onFileChange (evt) {
@@ -75,6 +83,7 @@ class EditArticle extends Component {
     evt.preventDefault()
     if (this.state.file !== null) {
       const imgPath = await this.fileUpload(this.state.file)
+      await this.deletePreviousCoverImage()
       this.setState({ cover: imgPath })
     }
     await this.PostData()
@@ -96,7 +105,7 @@ class EditArticle extends Component {
       <EditorForm
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
-        handleDelete={this.handleDelete}
+        handleDelete={this.deleteArticle}
         onFileChange={this.onFileChange}
         {...formState}
         isEdit={true}
@@ -146,7 +155,7 @@ class EditArticle extends Component {
       const url = `http://localhost:5000/editor/${this.state.id}`
       const { editorRef, initialValue, ...data } = this.state
       await axios.patch(url, { ...data })
-      console.log('Sent Data to http://localhost:5000/editor/')
+
       this.setState({ success: 'success' })
       alert('Successfully submitted data')
     } catch (err) {

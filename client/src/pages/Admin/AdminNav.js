@@ -18,12 +18,17 @@ function AdminNav () {
 
 function LinkItems ({ links }) {
   const styles = {
-    padding: ' lg:p-4 py-3 px-0 ',
-    font: ' font-semibold text-xl text-gray-50 ',
-    border: ' border-b-4 border-transparent hover:border-gray-50 ',
-    misc: ' block cursor-pointer'
+    padding: 'lg:p-4 py-3 px-0',
+    border: 'border-b-4 border-transparent hover:border-gray-50 ',
+    font: 'font-semibold text-xl text-gray-50 ',
+    display: 'block cursor-pointer'
   }
-  const cname = styles.padding + styles.font + styles.border + styles.misc
+
+  let cname = ''
+  for (let style in styles) {
+    cname = cname + styles[style] + ' '
+  }
+
   return (
     links.map((item, index) => {
       return <NavLink key={index} {...item} cname={cname}/>

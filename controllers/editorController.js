@@ -16,7 +16,7 @@ const multerStorage = multer.diskStorage({
   },
 })
 
-function createFileName(originalName, mimeType) {
+function createFileName (originalName, mimeType) {
   let fileExtension = mimeType.split('/')[1]
   let splitString = fileExtension
   // ** mime-type for both .jpg and .jpeg is jpeg
@@ -58,14 +58,20 @@ exports.getImageFile = async (req, res) => {
   const imagePath = path.dirname(require.main.filename) + '/public/img/' + name
   const imageSource = path.join(imagePath)
   //  * read image
-  const data = await fs.readFile(imageSource)
+  try {
+    const data = await fs.readFile(imageSource)
+    res.writeHead(200, { 'Content-Type': 'image/jpeg' })
+    res.end(data)
+  } catch (err) {
+    console.log(err)
+    res.status(404).send('Image not found')
+  }
   // * send image using correct headers
-  res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-  res.end(data);
+
 }
 
 // TODO: Implement later
-// TODO: image upload from URL is not reuired for now.
+// TODO: image upload from URL is not required for now.
 // exports.uploadByUrl = (req, res) => {
 //   res.send({
 //     success: 1,
@@ -95,7 +101,7 @@ exports.saveArticle = async (req, res) => {
     content,
     slug,
     volume,
-    cover
+    cover,
   })
   await newArticle.save()
   res.status(201).send({ status: 'OK' })
@@ -110,7 +116,7 @@ exports.editArticle = async (req, res) => {
     content,
     slug,
     volume,
-    cover
+    cover,
   }
   await Journal.findByIdAndUpdate(id, { ...modifiedArticle })
   res.status(201).send({ status: 'OK' })
@@ -122,7 +128,11 @@ exports.deleteArticle = async (req, res) => {
     // * deleting the default image is not a good idea.
     // * all articles use this image as default
     if (!isDefaultImage(imageName)) {
-      await deleteCoverImage(imageName)
+      try {
+        await deleteCoverImage(imageName)
+      } catch (e) {
+        console.log(e)
+      }
     }
     // * After deleting the cover image, article can be safely deleted.
     await Journal.findByIdAndDelete(id)
@@ -134,12 +144,21 @@ exports.deleteArticle = async (req, res) => {
   }
 }
 
+exports.deleteImage = async (req, res) => {
+  const { imageName } = req.params
+  try {
+    await deleteCoverImage(imageName)
+    res.status(204).send({ status: 'OK' })
+  } catch (err) {
+    res.status(404).send({ msg: 'Could not delete Image' })
+  }
+}
 
-async function deleteCoverImage(imageName) {
+async function deleteCoverImage (imageName) {
   const imagePath = path.join(
     path.dirname(require.main.filename) +
     '/public/img/' +
-    imageName
+    imageName,
   )
 
   await fs.unlink(imagePath)
@@ -148,6 +167,6 @@ async function deleteCoverImage(imageName) {
     })
 }
 
-function isDefaultImage(imageName) {
-  return imageName === "r2_c1.jpg"
+function isDefaultImage (imageName) {
+  return imageName === 'r2_c1.jpg'
 }

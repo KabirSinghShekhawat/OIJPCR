@@ -56,9 +56,9 @@
     .article-card-container {
         @apply max-w-sm md:max-w-md h-auto;
         @apply rounded-md overflow-hidden shadow-lg m-4;
-        /*@apply lg:max-w-max lg:h-auto;*/
-        @apply lg:max-w-xl lg:h-auto;
+        @apply lg:max-w-lg lg:h-auto;
     }
+
     .article-card-title {
         @apply font-bold text-2xl text-gray-600 mb-4 text-center;
     }

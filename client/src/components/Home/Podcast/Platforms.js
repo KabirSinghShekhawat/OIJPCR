@@ -1,14 +1,14 @@
 export default function PodcastPlatforms ({ covers, links }) {
   return (
-    <>
+    <div className="mt-8">
       {
-        Object.keys(links).map((link) => {
+        Object.keys(links).map((link, index) => {
           return (
-            <Platform url={links[link]} icon={covers[link]} link={link}/>
+            <Platform url={links[link]} icon={covers[link]} link={link} key={index} />
           )
         })
       }
-    </>
+    </div>
   )
 }
 
