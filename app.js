@@ -100,7 +100,10 @@ const mongoOptions = {
 mongoose.connect(dbUrl, mongoOptions)
   .then(() => {
     console.log('Connected to MongoDB: OIJPCR 🐦 🐦 🐦')
-  });
+  })
+  .catch(err => {
+    throw new Error(`Error Message: ${err.message}`);
+  })
 
 /**
  * ROUTES

@@ -20,7 +20,4 @@ const multerFilter = (req, file, cb) => {
   } else cb(new Error('Not an Image'), false)
 }
 
-module.exports = upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
-})
+module.exports = {multerStorage, multerFilter}

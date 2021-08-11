@@ -48,7 +48,7 @@ class EditArticle extends Component {
     try {
       let imageName = this.state.cover.split('/')
       imageName = imageName[imageName.length - 1]
-      const url = `http://localhost:5000/editor/${this.state.id}/${imageName}`
+      const url = `http://localhost:5000/admin/editor/${this.state.id}/${imageName}`
       await axios.delete(url)
 
       setTimeout(() => {
@@ -65,7 +65,8 @@ class EditArticle extends Component {
   async deletePreviousCoverImage() {
     let imageName = this.state.cover.split('/')
     imageName = imageName[imageName.length - 1]
-    const url = `http://localhost:5000/editor/${imageName}`
+    console.log("imageName", imageName)
+    const url = `http://localhost:5000/admin/editor/${imageName}`
     await axios.delete(url)
   }
 
@@ -93,7 +94,6 @@ class EditArticle extends Component {
     this.setState({
       content: this.state.editorRef.getContent(),
     })
-    console.log('Content was updated:')
   }
 
   render () {
@@ -138,7 +138,7 @@ class EditArticle extends Component {
   }
 
   async fileUpload (file) {
-    const url = 'http://localhost:5000/editor/uploadFile'
+    const url = 'http://localhost:5000/admin/editor/uploadFile'
     const formData = new FormData()
     formData.append('image', file)
     const config = {
@@ -147,12 +147,13 @@ class EditArticle extends Component {
       },
     }
     const { data } = await axios.post(url, formData, config)
+    console.log(data.file.url)
     return 'http://localhost:5000' + data.file.url
   }
 
   async PostData () {
     try {
-      const url = `http://localhost:5000/editor/${this.state.id}`
+      const url = `http://localhost:5000/admin/editor/${this.state.id}`
       const { editorRef, initialValue, ...data } = this.state
       await axios.patch(url, { ...data })
 

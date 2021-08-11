@@ -48,7 +48,7 @@ class ReadArticle extends Component {
     return (
       <ReadContainer>
         <h1 className="text-center font-black mb-4">
-          <span className="text-5xl">{journal.title}</span>
+          <span className="text-3xl md:text-5xl">{journal.title}</span>
         </h1>
 
         <div className="flex flex-row justify-center py-1">

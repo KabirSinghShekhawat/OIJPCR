@@ -1,9 +1,7 @@
-const slugify = require('slugify')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const Journal = require('../models/journal')
-
-const css = 'app.min.css'
+const Volume = require('../models/volume')
 
 exports.journals = catchAsync(async (request, response, next) => {
   const journals = await Journal
@@ -11,7 +9,7 @@ exports.journals = catchAsync(async (request, response, next) => {
     .select('-content')
     .sort({ createdAt: -1 })
     .exec()
-  response
+  response.status(200).json(journals)
 })
 
 exports.journalByVolume = catchAsync(async (request, response, next) => {
@@ -35,3 +33,11 @@ exports.getJournal = catchAsync(async (request, response, next) => {
 
   response.send(journal)
 })
+
+
+exports.archive = catchAsync(async (req, res, next) => {
+  const archives = await Volume.find({}).sort({ volume: 1 })
+  res.status(200).json(archives)
+})
+
+

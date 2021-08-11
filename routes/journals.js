@@ -1,17 +1,19 @@
 const express = require('express')
 const router = express.Router()
-const journalsController = require('./../controllers/journalsController')
+const journalController = require('./../controllers/journalsController')
 
-router.get('/', journalsController.journals)
-router.get('/all/:volume', journalsController.journalByVolume)
+router.get('/', journalController.journals)
+router.get('/all/:volume', journalController.journalByVolume)
+
+router.get('/archive', journalController.archive)
 
 router
   .route('/:id')
-  .get(journalsController.getJournal)
+  .get(journalController.getJournal)
 
 router
   .route('/:slug/:id')
-  .get(journalsController.getJournal)
+  .get(journalController.getJournal)
 
 
 

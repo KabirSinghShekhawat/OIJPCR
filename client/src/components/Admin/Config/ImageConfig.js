@@ -1,7 +1,7 @@
 // backend file uploader endpoint
-const uploadImageByFile = 'http://localhost:5000/editor/uploadFile'
+const uploadImageByFile = 'http://localhost:5000/admin/editor/uploadFile'
 // endpoint that provides uploading by Url
-const uploadImageByUrl = 'http://localhost:5000/editor/fetchUrl'
+const uploadImageByUrl = 'http://localhost:5000/admin/editor/fetchUrl'
 
 export const ImageConfig = {
   endpoints: {

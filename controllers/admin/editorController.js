@@ -1,15 +1,23 @@
 const fs = require('fs/promises')
 const path = require('path')
-const Journal = require('../models/journal')
-const upload = require('./ImageUpload/ArticleCoverImage')
-const catchAsync = require('../utils/catchAsync')
-const AppError = require('../utils/appError')
+const Journal = require('../../models/journal')
+const {multerStorage, multerFilter} = require('../ImageUpload/ArticleCoverImage')
+const catchAsync = require('../../utils/catchAsync')
+const AppError = require('../../utils/appError')
+const multer = require('multer')
+
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+})
+
 
 exports.uploadImage = upload.single('image')
 
 // ! testing only
 // TODO: Remove later
-exports.getJournals = catchAsync(async (req, res) => {
+exports.getJournals = catchAsync(async (req, res, next) => {
   const journals = await Journal.find()
   res.json(journals)
 })
@@ -22,20 +30,12 @@ exports.getImageFile = catchAsync(async (req, res, next) => {
   const imageSource = path.join(imagePath)
   //  * read image
   const data = await fs.readFile(imageSource)
+  if(!data) return next(new AppError('Could not load image', 400))
   // * send image using correct headers
   res.writeHead(200, { 'Content-Type': 'image/jpeg' })
   res.end(data)
 })
 
-// TODO: Implement image upload from URL later (if required).
-// exports.uploadByUrl = (req, res) => {
-//   res.send({
-//     success: 1,
-//     file: {
-//       url: '',
-//     },
-//   })
-// }
 
 // * return image URL to client, also available in MongoDB.
 exports.uploadImageFile = (req, res) => {
@@ -59,7 +59,12 @@ exports.saveArticle = catchAsync(async (req, res, next) => {
     volume,
     cover,
   })
-  await newArticle.save()
+
+  const result = await newArticle.save()
+
+  if (!result)
+    return next(new AppError('Could not create Article', 400))
+
   res.status(201).send({ status: 'success' })
 })
 
@@ -74,7 +79,12 @@ exports.editArticle = catchAsync(async (req, res, next) => {
     volume,
     cover,
   }
-  await Journal.findByIdAndUpdate(id, { ...modifiedArticle })
+
+  const result = await Journal.findByIdAndUpdate(id, { ...modifiedArticle })
+
+  if (!result)
+    return next(new AppError('Could not update Article', 400))
+
   res.status(201).send({ status: 'success' })
 })
 
@@ -83,21 +93,26 @@ exports.deleteArticle = catchAsync(async (req, res, next) => {
   // * deleting the default image is not a good idea.
   // * all articles use this image as default
   if (!isDefaultImage(imageName)) {
-    await deleteCoverImage(imageName)
+    await deleteCoverImage(imageName, next)
   }
   // * After deleting the cover image, article can be safely deleted.
-  await Journal.findByIdAndDelete(id)
+  const result = await Journal.findByIdAndDelete(id)
+
+  if (!result)
+    return next(new AppError('Could not delete Article', 400))
+
   res.status(201).send({ status: 'success' })
 })
 
 exports.deleteImage = catchAsync(async (req, res, next) => {
   const { imageName } = req.params
 
-  await deleteCoverImage(imageName)
+  await deleteCoverImage(imageName, next)
+
   res.status(204).send({ status: 'success' })
 })
 
-async function deleteCoverImage (imageName) {
+const deleteCoverImage = catchAsync(async (imageName, next) => {
   const imagePath = path.join(
     path.dirname(require.main.filename) +
     '/public/img/' +
@@ -106,10 +121,11 @@ async function deleteCoverImage (imageName) {
 
   await fs.unlink(imagePath)
     .catch(err => {
-      next(new AppError('Could not delete image: ' + imageName, 404))
+      return next(new AppError('Could not delete image: ' + imageName, 404))
     })
-}
+})
 
 function isDefaultImage (imageName) {
   return imageName === 'r2_c1.jpg'
 }
+

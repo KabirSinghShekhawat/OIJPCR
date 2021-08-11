@@ -1,7 +1,7 @@
 import { Redirect, Route, Switch } from 'react-router-dom'
 import Home from '../../pages/Home'
 import About from '../../pages/About'
-import Archive from '../../pages/Archive'
+import Archive from '../../pages/Archive/Archive'
 import SubmitArticle from '../../pages/SubmitArticle'
 import React from 'react'
 

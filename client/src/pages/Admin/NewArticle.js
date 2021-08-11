@@ -91,7 +91,7 @@ class NewArticle extends Component {
   }
 
   async fileUpload(file) {
-    const url = 'http://localhost:5000/editor/uploadFile';
+    const url = 'http://localhost:5000/admin/editor/uploadFile';
     const formData = new FormData();
     formData.append('image', file)
     const config = {
@@ -105,7 +105,7 @@ class NewArticle extends Component {
 
   async PostData () {
     try {
-      await axios.post('http://localhost:5000/editor/', {
+      await axios.post('http://localhost:5000/admin/editor/', {
         content: this.state.content,
         author: this.state.author,
         title: this.state.title,

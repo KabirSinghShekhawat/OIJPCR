@@ -45,7 +45,7 @@ function Journals ({ journals }) {
   let journalList
   if (typeof journals == 'undefined')
     journalList = '...Loading'
-  if (journals.length === 0)
+  else if (journals.length === 0)
     journalList = 'No Articles Found'
   else journalList = createJournals(journals)
 

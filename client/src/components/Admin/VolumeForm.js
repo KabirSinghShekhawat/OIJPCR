@@ -4,8 +4,7 @@ import FormField from './Form/FormField'
 import UploadCover from './Form/UploadCover'
 import { Button, ButtonGroup } from './Form/FormButtons'
 
-
-class EditorForm extends Component {
+class VolumeForm extends Component {
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
@@ -31,20 +30,19 @@ class EditorForm extends Component {
   }
 
   render () {
-    const { author, title, slug, volume, isEdit=false } = this.props
+    const { volume, about, date, isEdit=false } = this.props
     return (
       <FormContainer heading="Submit Form" handleSubmit={this.handleSubmit}>
-        {/* Author */}
-        <FormField name="author" value={author} label="Author" handleChange={this.handleChange}/>
-        {/* Title */}
-        <FormField name="title" value={title} label="Title" handleChange={this.handleChange}/>
-        {/*Slug*/}
-        <FormField name="slug" value={slug} label="Slug" handleChange={this.handleChange}/>
         {/*Volume*/}
         <FormField name="volume" value={volume} label="Volume" handleChange={this.handleChange}
                    type="number"
                    min={0}
         />
+        {/* Title */}
+        <FormField name="date" value={date} label="Date" handleChange={this.handleChange}/>
+        {/*About*/}
+        <FormField name="about" value={about} label="About" handleChange={this.handleChange}/>
+
         <UploadCover onFileChange={this.onFileChange} />
         {this.props.children}
         {
@@ -65,4 +63,4 @@ class EditorForm extends Component {
 }
 
 
-export default EditorForm
+export default VolumeForm

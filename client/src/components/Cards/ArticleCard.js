@@ -37,14 +37,15 @@ function CardCover ({ coverPhoto, authorText }) {
 
 function CardContent ({ title, slug, id, path, cname }) {
   const start = 0,
-        end = slug.length >= 250 ? 250 : slug.length
+        end = slug.length >= 250 ? 250 : slug.length,
+        urlLength = 40
           /**
            * slug length limit is 250 for optimal viewing.
            * url slug limit will be enforced later
            * changing urls always causes trouble (-_-).
            */
   const aboutSlug = slug.slice(start, end)
-  const urlSlug = slugify(slug)
+  const urlSlug = slugify(slug.slice(start, urlLength))
 
   return (
     <div className="mx-6 my-4 border-gray-light">

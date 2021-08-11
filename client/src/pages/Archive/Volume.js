@@ -4,20 +4,21 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
-import ReadArticle from './Articles/ReadArticle'
-import Journals from './Articles/Journals'
+import ReadArticle from '../Articles/ReadArticle'
+import Journals from '../Articles/Journals'
 
 class Archive extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      journals: [],
+      journals: null,
     }
   }
 
   async componentDidMount () {
     try {
-      const { data } = await axios.get('http://localhost:5000/journals')
+      const { volume } = this.props.match.params
+      const { data } = await axios.get(`http://localhost:5000/journals/all/${volume}`)
       this.setState({ journals: data })
     } catch (e) {
       throw new Error(e.message)
@@ -26,6 +27,7 @@ class Archive extends Component {
 
   render () {
     const { path } = this.props.match
+    // const { volume } = this.props.match.params
     return (
       <div className="flex-grow">
         <Switch>

@@ -3,7 +3,7 @@ import alertCircle from '../../../assets/alert-circle.svg'
 
 function CardButton (props) {
   const { slug, id, path, cname } = props
-  const pathUrl = path ? path : '/archive'
+  const pathUrl = path || '/archive'
   return (
     <div className={cname}>
       <Link
