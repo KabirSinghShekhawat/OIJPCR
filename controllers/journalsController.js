@@ -23,15 +23,15 @@ exports.journalByVolume = catchAsync(async (request, response, next) => {
   response.status(200).json(journals)
 })
 
-exports.getJournal = catchAsync(async (request, response, next) => {
-  const { id } = request.params
+exports.getJournal = catchAsync(async (req, res, next) => {
+  const { id } = req.params
   const journal = await Journal.findById(id)
 
   if (!journal) {
     return next(new AppError(`Found no journal with ID ${id}`, 404))
   }
 
-  response.send(journal)
+  res.status(200).json(journal)
 })
 
 

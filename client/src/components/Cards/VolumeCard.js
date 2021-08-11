@@ -8,6 +8,7 @@ function VolumeCard (props) {
           about,
           cover,
           date,
+          isAdmin,
         } = props
 
   return (
@@ -16,7 +17,7 @@ function VolumeCard (props) {
            rounded-md overflow-hidden shadow-lg m-4 lg:max-w-lg lg:h-auto"
     >
       <CardCover volumeCover={cover || fallback} volume={volume} date={date}/>
-      <CardContent volume={volume} about={about}/>
+      <CardContent volume={volume} about={about} isAdmin={isAdmin}/>
     </div>
   )
 }
@@ -33,7 +34,7 @@ function CardCover ({ volumeCover, volume, date }) {
   )
 }
 
-function CardContent ({ about, volume }) {
+function CardContent ({ about, volume, isAdmin }) {
   const start = 0,
         end   = about.length >= 250 ? 250 : about.length
   /**
@@ -52,22 +53,28 @@ function CardContent ({ about, volume }) {
         {volumeSlug}
       </p>
       <div>
-        <CardButton text={`Explore Vol. ${volume}`} volume={volume} />
+        <CardButton text={`Explore Vol. ${volume}`} volume={volume}/>
+        {
+          isAdmin
+          &&
+          <CardButton text={`Edit Vol. ${volume}`} volume={volume} isAdmin={isAdmin}/>
+        }
       </div>
     </div>
   )
 }
 
-function CardButton ({text, volume}) {
+function CardButton ({ text, volume, isAdmin }) {
+  let link = `/archive/${volume}`
+  if (isAdmin)
+    link = `/admin/list/volume/${volume}`
   return (
-    <div>
       <Link
-        to={`/archive/${volume}`}
+        to={link}
         className="my-4 sm:my-4 py-2 px-4 mr-4 max-w-max rounded-lg bg-black text-white"
       >
         {text}
       </Link>
-    </div>
   )
 }
 

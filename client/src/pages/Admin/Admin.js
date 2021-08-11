@@ -4,7 +4,9 @@ import FlexContainer from '../../components/utils/FlexContainer'
 import NewArticle from './NewArticle'
 import EditArticle from './EditArticle'
 import ArticleList from '../../components/Admin/ArticleList'
+import NewVolume from './NewVolume'
 import AdminNav from './AdminNav'
+import VolumeList from '../../components/Admin/VolumeList'
 
 class Admin extends Component {
   render () {
@@ -23,12 +25,22 @@ class Admin extends Component {
         <FlexContainer cname="m-8">
           {/*/admin/:urlSlug/:id*/}
           <Switch>
+            <Route exact path="/admin/new/volume">
+              <NewVolume />
+            </Route>
+
+            <Route exact path="/admin/list/volume"
+                   render={(props) => <VolumeList {...props} />}
+            />
+
             <Route exact path={`${path}/:urlSlug/:id`}
                    render={(props) => <EditArticle {...props} />}
             />
+
             <Route exact path="/admin/new">
               <NewArticle {...NewArticleProps} />
             </Route>
+
             <Route exact path="/admin/list"
                    render={(props) => <ArticleList {...props} />}
             />

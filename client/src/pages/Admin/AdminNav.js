@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 export const urlLinks = [
   { url: '/admin', value: 'Admin Home' },
   { url: '/admin/new', value: 'New Article' },
+  { url: '/admin/new/volume', value: 'New Volume' },
+  { url: '/admin/list/volume', value: 'All Volumes' },
   { url: '/admin/list', value: 'All Articles' },
 ]
 

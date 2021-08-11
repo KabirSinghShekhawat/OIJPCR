@@ -30,6 +30,7 @@ class NewArticle extends Component {
     this.setState({file: evt.target.files[0]})
   }
 
+  // Editor Save Function
   async handleSave (evt, editor) {
     console.log('handle Save')
     await this.PostData()
