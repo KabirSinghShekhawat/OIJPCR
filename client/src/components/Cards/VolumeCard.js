@@ -12,8 +12,7 @@ function VolumeCard (props) {
         } = props
 
   return (
-    <div className=
-           "min-40 max-w-sm md:max-w-md h-auto
+    <div className="min-40 max-w-sm md:max-w-md h-auto
            rounded-md overflow-hidden shadow-lg m-4 lg:h-auto"
     >
       <CardCover volumeCover={cover || fallback} volume={volume} date={date}/>
@@ -46,7 +45,7 @@ function CardContent ({ about, volume, isAdmin }) {
 
   return (
     <div className="mx-6 my-4 border-gray-light">
-      <div className="font-bold text-2xl text-gray-600 mb-4 text-center">
+      <div className="font-bold text-4xl text-gray-900 mb-4 text-center">
         Volume {volume}
       </div>
       <p className="font-normal text-gray-700 text-sm mb-6 text-center">

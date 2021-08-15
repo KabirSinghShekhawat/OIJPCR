@@ -28,7 +28,7 @@ class Archive extends Component {
       <div className="flex-grow">
         <div className="px-4 py-6 mx-12 my-6">
           <h1 className="text-gray-900 font-black text-5xl">Volume {volume}</h1>
-          <p className="max-w-4xl border mt-4 text-lg">{about}</p>
+          <p className="max-w-4xl mt-4 text-lg">{about}</p>
         </div>
         <div>
           <ArticleList journals={this.state.journals} path={path} />

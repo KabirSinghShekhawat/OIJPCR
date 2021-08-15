@@ -3,9 +3,12 @@ import axios from 'axios'
 import HTMLReactParser from 'html-react-parser'
 import UTCToFormalDate from '../../utils/DateTime'
 import member_1 from '../../assets/teamMembers/member_1.jpg'
+import twitter from '../../assets/shareIcons/twitter.svg'
+import linkedin from '../../assets/shareIcons/linkedin.svg'
+import shareIcon from '../../assets/shareIcons/shareLink.svg'
 
 class ReadArticle extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       journal: {},
@@ -13,7 +16,7 @@ class ReadArticle extends Component {
     this.journalHasLoaded = this.journalHasLoaded.bind(this)
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     try {
       const { urlSlug, id } = this.props
       const url = `http://localhost:5000/journals/${urlSlug}/${id}`
@@ -24,13 +27,13 @@ class ReadArticle extends Component {
     }
   }
 
-  journalHasLoaded () {
+  journalHasLoaded() {
     const journal = this.state.journal
     return !(journal === 'undefined' || Object.keys(journal).length === 0)
 
   }
 
-  render () {
+  render() {
     const journal = this.state.journal
     const author = journal.author
     const content = this.journalHasLoaded() ? journal.content : ''
@@ -52,7 +55,7 @@ class ReadArticle extends Component {
         </h1>
 
         <div className="flex flex-row justify-center py-1">
-          <img src={member_1} alt="Author" className="h-16 w-16 inline rounded-full"/>
+          <img src={member_1} alt="Author" className="h-16 w-16 inline rounded-full" />
           <h2 className="text-base text-center font-semibold inline py-4 ml-4">
             <span className="text-base block leading-3">by {author ? author : ''}</span>
             {publishedDate}
@@ -60,19 +63,56 @@ class ReadArticle extends Component {
         </div>
 
         <div className="my-4 flex flex-row justify-center">
-          <img src={journal.cover} alt="Article Cover" className="w-full md:w-3/4 h-98 rounded-lg"/>
+          <img src={journal.cover} alt="Article Cover" className="w-full md:w-3/4 h-98 rounded-lg" />
         </div>
-        {HTMLReactParser(content.toString())}
+        <ShareArticleLinks />
+        <div className="lg:mx-4 mt-16">
+          {HTMLReactParser(content.toString())}
+        </div>
       </ReadContainer>
     )
   }
 }
 
-function ReadContainer (props) {
+function ReadContainer(props) {
   return (
-    <div className="h-full md:mx-16 mx-4">
+    <div className="h-full md:mx-16 mx-4 relative">
       <div className="flex flex-col h-full py-2 my-4 w-full editor">
         {props.children}
+      </div>
+    </div>
+  )
+}
+
+
+function ShareArticleLinks() {
+  const links = [
+    {
+      url: "https://www.twitter.com",
+      img: twitter,
+      alt: "Twitter"
+    },
+    {
+      url: "https://www.linkedin.com",
+      img: linkedin,
+      alt: "LinkedIn"
+    },
+    {
+      url: "https://www.google.com",
+      img: shareIcon,
+      alt: "shareable link"
+    },
+  ]
+  return (
+    <div className="fixed right-0 z-50 bg-white shadow-xl rounded-sm top-1/2 p-1">
+      <div className="flex flex-col">
+        {links.map((link, index) => {
+          return (
+            <a href={link.url} className="mx-2 my-2 block">
+              <img src={link.img} className="h-6 w-6" alt={link.alt} />
+            </a>
+          )
+        })}
       </div>
     </div>
   )

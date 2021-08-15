@@ -7,10 +7,6 @@ import ReadArticle from '../../pages/Articles/ReadArticle'
 import ArticleCard from '../../components/Cards/ArticleCard'
 
 class ArticleList extends Component {
-  constructor (props) {
-    super(props)
-  }
-
   render () {
     const { path } = this.props
     return (

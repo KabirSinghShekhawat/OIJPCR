@@ -1,11 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import {
-  Switch,
-  Route,
-} from 'react-router-dom'
-import ArticleCardAdmin from '../Admin/Cards/ArticleCardAdmin'
-import ReadArticle from '../../pages/Articles/ReadArticle'
 import VolumeCard from '../Cards/VolumeCard'
 
 class VolumeList extends Component {
@@ -26,7 +20,7 @@ class VolumeList extends Component {
   }
 
   render () {
-    const { path } = this.props.match
+    // const { path } = this.props.match
     return (
       <div className="flex-grow">
         <Volumes volumes={this.state.volumes}/>
