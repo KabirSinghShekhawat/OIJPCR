@@ -51,7 +51,7 @@ exports.uploadImageFile = (req, res) => {
 }
 
 exports.saveArticle = catchAsync(async (req, res, next) => {
-  const { author, title, content, slug, volume, cover } = req.body
+  const { author, title, content, slug, volume, cover, tags } = req.body
   const newArticle = new Journal({
     author,
     title,
@@ -59,6 +59,7 @@ exports.saveArticle = catchAsync(async (req, res, next) => {
     slug,
     volume,
     cover,
+    tags
   })
 
   const result = await newArticle.save()
@@ -71,7 +72,7 @@ exports.saveArticle = catchAsync(async (req, res, next) => {
 
 exports.editArticle = catchAsync(async (req, res, next) => {
   const { id } = req.params
-  const { author, title, content, slug, volume, cover } = req.body
+  const { author, title, content, slug, volume, cover, tags } = req.body
   const modifiedArticle = {
     author,
     title,
@@ -79,6 +80,7 @@ exports.editArticle = catchAsync(async (req, res, next) => {
     slug,
     volume,
     cover,
+    tags
   }
 
   const result = await Journal.findByIdAndUpdate(id, { ...modifiedArticle })

@@ -15,12 +15,12 @@ class NewArticle extends Component {
       slug: this.props.slug || '',
       volume: this.props.volume || '',
       cover: this.props.cover || '',
+      tags: this.props.tags || '',
       file: null
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.onFileChange = this.onFileChange.bind(this)
-    this.handleSave = this.handleSave.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
     this.PostData = this.PostData.bind(this)
     this.onInit = this.onInit.bind(this)
@@ -28,12 +28,6 @@ class NewArticle extends Component {
 
   onFileChange (evt) {
     this.setState({file: evt.target.files[0]})
-  }
-
-  // Editor Save Function
-  async handleSave (evt, editor) {
-    console.log('handle Save')
-    await this.PostData()
   }
 
   handleChange (evt) {
@@ -49,11 +43,10 @@ class NewArticle extends Component {
     await this.PostData()
   }
 
-  handleEditorChange = (editor) => {
+  handleEditorChange = () => {
     this.setState({
       content: this.state.editorRef.getContent(),
     })
-    console.log('Content was updated:')
   }
 
   render () {
@@ -72,7 +65,6 @@ class NewArticle extends Component {
             height: 500,
             menubar: true,
             branding: false,
-            save_onsavecallback: this.handleSave,
             plugins: plugins,
             toolbar: toolbar,
             content_css: [
@@ -106,14 +98,8 @@ class NewArticle extends Component {
 
   async PostData () {
     try {
-      await axios.post('http://localhost:5000/admin/editor/', {
-        content: this.state.content,
-        author: this.state.author,
-        title: this.state.title,
-        slug: this.state.slug,
-        volume: this.state.volume,
-        cover: this.state.cover
-      })
+      const {editorRef, file, ...rest} = this.state
+      await axios.post('http://localhost:5000/admin/editor/', { ...rest })
       alert('Created New Article')
     } catch (err) {
       console.log('An Error occurred in posting data: ' + err.message)

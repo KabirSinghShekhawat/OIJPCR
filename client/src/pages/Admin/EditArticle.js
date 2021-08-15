@@ -19,6 +19,7 @@ class EditArticle extends Component {
       cover: this.props.cover ||
         'http://localhost:5000/editor/images/r2_c1.jpg',
       file: null,
+      tags: this.props.tags || '',
       id: '',
       redirect: null,
     }
@@ -46,8 +47,7 @@ class EditArticle extends Component {
 
   async deleteArticle () {
     try {
-      let imageName = this.state.cover.split('/')
-      imageName = imageName[imageName.length - 1]
+      const imageName = this.state.cover.split('/').pop()
       const url = `http://localhost:5000/admin/editor/${this.state.id}/${imageName}`
       await axios.delete(url)
 
@@ -96,6 +96,7 @@ class EditArticle extends Component {
 
   render () {
     const { content, redirect, ...formState } = this.state
+
     if (redirect)
       return <Redirect to={this.state.redirect}/>
 
@@ -152,7 +153,7 @@ class EditArticle extends Component {
   async PostData () {
     try {
       const url = `http://localhost:5000/admin/editor/${this.state.id}`
-      const { editorRef, initialValue, ...data } = this.state
+      const { editorRef, initialValue, id, redirect, ...data } = this.state
       await axios.patch(url, { ...data })
 
       this.setState({ success: 'success' })

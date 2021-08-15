@@ -31,7 +31,11 @@ class Archive extends Component {
           <p className="max-w-4xl mt-4 text-lg">{about}</p>
         </div>
         <div>
-          <ArticleList journals={this.state.journals} path={path} />
+          <ArticleList
+            journals={this.state.journals}
+            path={path}
+            volume={volume}
+          />
         </div>
       </div>
     )

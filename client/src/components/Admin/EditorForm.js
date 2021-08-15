@@ -31,7 +31,7 @@ class EditorForm extends Component {
   }
 
   render () {
-    const { author, title, slug, volume, isEdit=false } = this.props
+    const { author, title, slug, volume, tags, isEdit=false } = this.props
     return (
       <FormContainer heading="Submit Form" handleSubmit={this.handleSubmit}>
         {/* Author */}
@@ -40,6 +40,8 @@ class EditorForm extends Component {
         <FormField name="title" value={title} label="Title" handleChange={this.handleChange}/>
         {/*Slug*/}
         <FormField name="slug" value={slug} label="Slug" handleChange={this.handleChange}/>
+        {/*tags*/}
+        <FormField name="tags" value={tags} label="Tags" handleChange={this.handleChange}/>
         {/*Volume*/}
         <FormField name="volume" value={volume} label="Volume" handleChange={this.handleChange}
                    type="number"

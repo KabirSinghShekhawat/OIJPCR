@@ -4,35 +4,39 @@ const journalSchema = new mongoose.Schema({
     author: {
       type: String,
       required: true,
-      default: "Anonymous"
+      default: 'Anonymous',
     },
 
     title: {
       type: String,
       required: true,
-      default: "Title NA"
+      default: 'Title NA',
     },
 
     content: {
       type: String,
       required: true,
-      default: "Content NA"
+      default: 'Content NA',
     },
 
     slug: {
       type: String,
       required: true,
-      default: "Slug NA"
+      default: 'Slug NA',
     },
 
     volume: {
       type: Number,
-      default: 1
+      default: 1,
+    },
+    tags: {
+      type: String,
+      default: ',',
     },
     cover: {
       type: String,
-      default: 'http://localhost:5000/editor/images/r2_c1.jpg'
-    }
+      default: 'http://localhost:5000/editor/images/r2_c1.jpg',
+    },
   },
   {
     timestamps: true,

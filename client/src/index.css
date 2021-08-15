@@ -55,7 +55,7 @@
     /* Card */
     .article-card-container {
         @apply md:max-w-md h-auto;
-        @apply rounded-md overflow-hidden shadow-lg md:m-4;
+        @apply rounded-md overflow-hidden shadow-lg my-4 md:m-4;
         @apply lg:h-auto;
     }
 

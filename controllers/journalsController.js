@@ -13,7 +13,7 @@ exports.journals = catchAsync(async (request, response, next) => {
 })
 
 
-exports.journalByVolume = catchAsync(async (request, response, next) => {
+exports.journalsByVolume = catchAsync(async (request, response, next) => {
   const { volume, full } = request.params
 
   if (isNaN(parseInt(volume, 10))) {
@@ -31,6 +31,29 @@ exports.journalByVolume = catchAsync(async (request, response, next) => {
     .sort({ createdAt: -1 })
   response.status(200).json(journals)
 })
+
+
+exports.getLimitedJournalsByVolume = catchAsync(async (request, response, next) => {
+  const { volume, limit } = request.params
+
+  const volumeInt = parseInt(volume, 10)
+  if (isNaN(volumeInt) || volumeInt < 1) {
+    return next(new AppError('Volume is not a valid value', 400))
+  }
+
+  const numberOfArticles = parseInt(limit, 10)
+  if (isNaN(numberOfArticles) || numberOfArticles < 1) {
+    return next(new AppError('Limit is not a valid value', 400))
+  }
+
+  const journals = await Journal
+    .find({ 'volume': volume })
+    .select('-content')
+    .sort({ createdAt: -1 })
+    .limit(numberOfArticles)
+  response.status(200).json(journals)
+})
+
 
 exports.getJournal = catchAsync(async (req, res, next) => {
   const { id } = req.params

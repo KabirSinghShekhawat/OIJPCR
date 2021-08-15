@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import {
   Switch,
-  Route,
+  Route, Redirect,
 } from 'react-router-dom'
-import ReadArticle from '../../pages/Articles/ReadArticle'
 import ArticleCard from '../../components/Cards/ArticleCard'
 
 class ArticleList extends Component {
@@ -15,9 +14,8 @@ class ArticleList extends Component {
           <Route path={path} render={(routeProps) =>
             <Journals journals={this.props.journals} {...routeProps}/>}
           />
-
-          <Route exact path={`${path}/journals/:urlSlug/:id`}
-                 component={DisplayArticle}
+          <Route exact path={`${path}/*`}
+                 render={() => <Redirect to="/notFound"/>}
           />
         </Switch>
       </div>
@@ -34,7 +32,7 @@ function Journals ({ journals }) {
   else journalList = createJournals(journals)
 
   return (
-    <div className="h-full md:mx-4">
+    <div className="h-full mx-2 md:mx-4">
       <div className="flex flex-row flex-wrap h-full justify-evenly py-2 my-4 w-full editor">
         {journalList}
       </div>
@@ -57,14 +55,5 @@ function createJournals (journals) {
   })
 }
 
-function DisplayArticle (props) {
-  const { urlSlug, id } = props.match.params
-  return (
-    <ReadArticle
-      urlSlug={urlSlug}
-      id={id}
-    />
-  )
-}
 
 export default ArticleList
