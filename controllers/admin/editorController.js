@@ -1,10 +1,11 @@
 const fs = require('fs/promises')
 const path = require('path')
 const Journal = require('../../models/journal')
-const {multerStorage, multerFilter} = require('../ImageUpload/ArticleCoverImage')
 const catchAsync = require('../../utils/catchAsync')
 const AppError = require('../../utils/appError')
 const multer = require('multer')
+const {isDefaultImage, deleteCoverImage} = require('./utils')
+const {multerStorage, multerFilter} = require('../ImageUpload/ArticleCoverImage')
 
 
 const upload = multer({
@@ -111,21 +112,3 @@ exports.deleteImage = catchAsync(async (req, res, next) => {
 
   res.status(204).send({ status: 'success' })
 })
-
-const deleteCoverImage = catchAsync(async (imageName, next) => {
-  const imagePath = path.join(
-    path.dirname(require.main.filename) +
-    '/public/img/' +
-    imageName,
-  )
-
-  await fs.unlink(imagePath)
-    .catch(err => {
-      return next(new AppError('Could not delete image: ' + imageName, 404))
-    })
-})
-
-function isDefaultImage (imageName) {
-  return imageName === 'r2_c1.jpg'
-}
-

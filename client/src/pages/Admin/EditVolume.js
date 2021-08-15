@@ -13,6 +13,7 @@ class EditVolume extends Component {
       date: 'loading...',
       isEdit: true,
       file: null,
+      redirect: null
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -26,6 +27,9 @@ class EditVolume extends Component {
   async componentDidMount () {
     const { volume } = this.props.match.params
     const { data } = await axios.get(`http://localhost:5000/admin/volume/${volume}`)
+    if (!data) {
+      this.setState({redirect: '/notFound'})
+    }
     this.setState({
       volume: data[0].volume,
       about: data[0].about,
@@ -46,9 +50,8 @@ class EditVolume extends Component {
 
   async deleteVolume () {
     try {
-      let imageName = this.state.cover.split('/')
-      imageName = imageName[imageName.length - 1]
-      const url = `http://localhost:5000/admin/editor/${imageName}`
+      const imageName = this.state.cover.split('/').pop()
+      const url = `http://localhost:5000/admin/volume/${this.state.volume}/${imageName}`
       await axios.delete(url)
 
       setTimeout(() => {
@@ -116,6 +119,7 @@ class EditVolume extends Component {
       <VolumeForm
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
+        handleDelete={this.deleteVolume}
         onFileChange={this.onFileChange}
         {...this.state}
       >

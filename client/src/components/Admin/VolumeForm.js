@@ -51,6 +51,7 @@ class VolumeForm extends Component {
             <ButtonGroup
               handleSubmit={this.handleSubmit}
               handleDelete={this.handleDelete}
+              deleteTxt="Delete Volume"
             />
             :
             <Button handleClick={this.handleSubmit} cname="primary-color-bg text-white">

@@ -1,7 +1,7 @@
 const catchAsync = require('../../utils/catchAsync')
 const AppError = require('../../utils/appError')
 const Volume = require('../../models/volume')
-
+const {isDefaultImage, deleteCoverImage} = require('./utils')
 
 exports.volumes = catchAsync(async (req, res, next) => {
   const volumes = await Volume.find({}).sort({ volume: 1 })
@@ -59,12 +59,15 @@ exports.deleteVolume = catchAsync(async (req, res, next) => {
   if (isNaN(parseInt(volume, 10))) {
     return next(new AppError('Volume is not a valid number', 400))
   }
-
+  const { imageName } = req.params
+  // * deleting the default image is not a good idea.
+  // * all volumes use this image as default
+  if (!isDefaultImage(imageName)) {
+    await deleteCoverImage(imageName, next)
+  }
+  // * After deleting the cover image, article can be safely deleted.
   const result = await Volume.deleteOne({ 'volume': volume })
 
   if (!result)
     return next(new AppError('Could not delete Volume', 400))
-
-  res.status(201).send({ status: 'success' })
-
 })

@@ -12,6 +12,8 @@ router
   .route('/:volume')
   .get(volumeController.getVolume)
   .patch(volumeController.editVolume)
+router
+  .route('/:volume/:imageName')
   .delete(volumeController.deleteVolume)
 
 

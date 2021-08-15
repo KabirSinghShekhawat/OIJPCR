@@ -1,39 +1,27 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import {
   Switch,
   Route,
 } from 'react-router-dom'
-import ArticleCardAdmin from '../Admin/Cards/ArticleCardAdmin'
 import ReadArticle from '../../pages/Articles/ReadArticle'
+import ArticleCard from '../../components/Cards/ArticleCard'
 
 class ArticleList extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      journals: [],
-    }
-  }
-
-  async componentDidMount () {
-    try {
-      const { data } = await axios.get('http://localhost:5000/journals')
-      this.setState({ journals: data })
-    } catch (e) {
-      throw new Error(e.message)
-    }
   }
 
   render () {
-    const { path } = this.props.match
+    const { path } = this.props
     return (
       <div className="flex-grow">
         <Switch>
-          <Route exact path={`${path}/journals/:urlSlug/:id`} render={(props) =>
-            <ReadArticle {...props} />}
+          <Route path={path} render={(routeProps) =>
+            <Journals journals={this.props.journals} {...routeProps}/>}
           />
-          <Route path={path} render={() =>
-            <Journals journals={this.state.journals}/>}
+
+          <Route exact path={`${path}/journals/:urlSlug/:id`}
+                 component={DisplayArticle}
           />
         </Switch>
       </div>
@@ -43,7 +31,7 @@ class ArticleList extends Component {
 
 function Journals ({ journals }) {
   let journalList
-  if (typeof journals == 'undefined')
+  if (!journals)
     journalList = '...Loading'
   else if (journals.length === 0)
     journalList = 'No Articles Found'
@@ -67,11 +55,20 @@ function createJournals (journals) {
         container: '',
         button: 'mt-10 flex flex-wrap',
       },
-      path: '/admin',
       ...article,
     }
-    return <ArticleCardAdmin {...articleProps} key={article._id}/>
+    return <ArticleCard {...articleProps} key={article._id}/>
   })
+}
+
+function DisplayArticle (props) {
+  const { urlSlug, id } = props.match.params
+  return (
+    <ReadArticle
+      urlSlug={urlSlug}
+      id={id}
+    />
+  )
 }
 
 export default ArticleList

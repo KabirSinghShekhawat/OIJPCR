@@ -54,9 +54,9 @@
 
     /* Card */
     .article-card-container {
-        @apply max-w-sm md:max-w-md h-auto;
-        @apply rounded-md overflow-hidden shadow-lg m-4;
-        @apply lg:max-w-lg lg:h-auto;
+        @apply md:max-w-md h-auto;
+        @apply rounded-md overflow-hidden shadow-lg md:m-4;
+        @apply lg:h-auto;
     }
 
     .article-card-title {

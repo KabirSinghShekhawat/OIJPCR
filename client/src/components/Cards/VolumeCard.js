@@ -14,7 +14,7 @@ function VolumeCard (props) {
   return (
     <div className=
            "min-40 max-w-sm md:max-w-md h-auto
-           rounded-md overflow-hidden shadow-lg m-4 lg:max-w-lg lg:h-auto"
+           rounded-md overflow-hidden shadow-lg m-4 lg:h-auto"
     >
       <CardCover volumeCover={cover || fallback} volume={volume} date={date}/>
       <CardContent volume={volume} about={about} isAdmin={isAdmin}/>

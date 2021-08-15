@@ -11,7 +11,7 @@ export const urlLinks = [
 function AdminNav () {
   return (
     <div className="w-full bg-gradient-to-r from-green-400 to-blue-500">
-      <div className="flex flex-row justify-evenly text-black text-lg">
+      <div className="flex flex-row flex-wrap justify-evenly text-black text-lg">
         <LinkItems links={urlLinks}/>
       </div>
     </div>

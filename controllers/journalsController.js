@@ -12,14 +12,23 @@ exports.journals = catchAsync(async (request, response, next) => {
   response.status(200).json(journals)
 })
 
+
 exports.journalByVolume = catchAsync(async (request, response, next) => {
-  const { volume } = request.params
+  const { volume, full } = request.params
 
   if (isNaN(parseInt(volume, 10))) {
     return next(new AppError('Volume is not a valid number', 400))
   }
 
-  const journals = await Journal.find({ 'volume': volume }).sort({ createdAt: -1 })
+  let fieldsToRemove = '-content'
+  if (full === 'full') {
+    fieldsToRemove = ''
+  }
+
+  const journals = await Journal
+    .find({ 'volume': volume })
+    .select(fieldsToRemove)
+    .sort({ createdAt: -1 })
   response.status(200).json(journals)
 })
 

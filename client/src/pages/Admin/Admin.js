@@ -23,7 +23,7 @@ class Admin extends Component {
     return (
       <>
         <AdminNav/>
-        <FlexContainer cname="m-8">
+        <FlexContainer cname="m-2">
           {/*/admin/:urlSlug/:id*/}
           <Switch>
             <Route exact path="/admin/new/volume">

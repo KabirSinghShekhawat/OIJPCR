@@ -29,15 +29,7 @@ class VolumeList extends Component {
     const { path } = this.props.match
     return (
       <div className="flex-grow">
-        {/*<Switch>*/}
-        {/*<Route exact path={`${path}/journals/:urlSlug/:id`} render={(props) =>*/}
-        {/*  <ReadArticle {...props} />}*/}
-        {/*/>*/}
-        {/*<Route path={path} render={() =>*/}
         <Volumes volumes={this.state.volumes}/>
-        {/*//   }*/}
-        {/*//   />/*/}
-        {/*// </Switch>*/}
       </div>
     )
   }
@@ -52,9 +44,9 @@ function Volumes ({ volumes }) {
   else volumeList = createVolumeCards(volumes)
 
   return (
-    <div className="h-full md:mx-16 mx-4">
+    <div className="h-full lg:mx-0 mx-4">
       <div className="flex flex-row flex-wrap h-full justify-evenly py-2 my-4 w-full editor">
-        <div className="flex md:flex-row flex-column flex-wrap justify-evenly">
+        <div className="flex flex-column md:flex-row flex-wrap justify-evenly">
           {volumeList}
         </div>
       </div>

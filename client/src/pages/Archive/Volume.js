@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import {
-  Switch,
-  Route,
-} from 'react-router-dom'
-import ReadArticle from '../Articles/ReadArticle'
-import Journals from '../Articles/Journals'
+import ArticleList from './ArticleList'
+
 
 class Archive extends Component {
   constructor (props) {
@@ -17,27 +13,26 @@ class Archive extends Component {
 
   async componentDidMount () {
     try {
-      const { volume } = this.props.match.params
-      const { data } = await axios.get(`http://localhost:5000/journals/all/${volume}`)
-      this.setState({ journals: data })
+      const { volume } = this.props
+      const { data: journals } = await axios.get(`http://localhost:5000/journals/all/${volume}/info`)
+      this.setState({ journals: journals })
     } catch (e) {
       throw new Error(e.message)
     }
   }
 
   render () {
-    const { path } = this.props.match
-    // const { volume } = this.props.match.params
+    const { path, volume, archive: volumeInfo } = this.props
+    const about = volumeInfo ? volumeInfo.about : ''
     return (
       <div className="flex-grow">
-        <Switch>
-          <Route exact path={`${path}/:urlSlug/:id`} render={(props) =>
-            <ReadArticle {...props} />}
-          />
-          <Route path={path} render={() =>
-            <Journals journals={this.state.journals}/>}
-          />
-        </Switch>
+        <div className="px-4 py-6 mx-12 my-6">
+          <h1 className="text-gray-900 font-black text-5xl">Volume {volume}</h1>
+          <p className="max-w-4xl border mt-4 text-lg">{about}</p>
+        </div>
+        <div>
+          <ArticleList journals={this.state.journals} path={path} />
+        </div>
       </div>
     )
   }

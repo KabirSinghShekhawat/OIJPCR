@@ -16,7 +16,7 @@ class Archive extends Component {
 
   async componentDidMount () {
     try {
-      const {data} = await axios.get(`http://localhost:5000/journals/archive`)
+      const { data } = await axios.get(`http://localhost:5000/journals/archive`)
       this.setState({ archive: data })
     } catch (e) {
       throw new Error(e.message)
@@ -25,18 +25,28 @@ class Archive extends Component {
 
   render () {
     const { path } = this.props.match
+
     return (
       <FlexContainer>
         <Switch>
           <Route exact path="/archive"
                  render={(props) => <Home {...props} archive={this.state.archive}/>}
           />
+          {/* Archives must be passed as a prop */}
           <Route exact path="/archive/:volume"
-                 render={(props) => <Volume {...props} />}
+                 render={
+                   (routeProps) =>
+                     <RenderVolumePage
+                       archive={this.state.archive}
+                       {...routeProps}
+                     />
+                 }
           />
-          <Route exact path={`${path}/:urlSlug/:id`} render={(props) =>
-            <ReadArticle {...props} />}
+
+          <Route exact path={`${path}/:urlSlug/:id`}
+                 component={DisplayArticle}
           />
+
           <Route exact path="/archive/*"
                  render={() => <Redirect to="/notFound"/>}
           />
@@ -53,6 +63,28 @@ function Home (props) {
         <VolumeCard {...archive} key={index}/>,
       )}
     </div>
+  )
+}
+
+function RenderVolumePage (props) {
+  const { path } = props.match
+  const { volume } = props.match.params
+  const archive = props.archive.filter(ele => ele.volume === parseInt(volume))
+  return (
+    <Volume path={path}
+            volume={volume}
+            archive={archive[0]}
+    />
+  )
+}
+
+function DisplayArticle (props) {
+  const { urlSlug, id } = props.match.params
+  return (
+    <ReadArticle
+      urlSlug={urlSlug}
+      id={id}
+    />
   )
 }
 

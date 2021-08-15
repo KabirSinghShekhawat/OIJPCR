@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import VolumeForm from '../../components/Admin/VolumeForm'
 import axios from 'axios'
 
@@ -6,12 +6,12 @@ class NewVolume extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      volume: null,
+      volume: '',
       about: 'This is a volume',
-      cover: '',
+      cover: 'http://localhost:5000/editor/images/r2_c1.jpg',
       date: 'January 2021',
       isEdit: false,
-      file: null
+      file: null,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -21,7 +21,7 @@ class NewVolume extends Component {
   }
 
   onFileChange (evt) {
-    this.setState({file: evt.target.files[0]})
+    this.setState({ file: evt.target.files[0] })
   }
 
   handleChange (evt) {
@@ -32,9 +32,13 @@ class NewVolume extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    const imgPath = await this.fileUpload(this.state.file)
-    this.setState({cover: imgPath})
-    await this.PostData()
+    if (this.state.file === null) {
+      alert('Please upload cover image')
+      return
+    }
+      const imgPath = await this.fileUpload(this.state.file)
+      this.setState({ cover: imgPath })
+      await this.PostData()
   }
 
   async PostData () {
@@ -43,7 +47,7 @@ class NewVolume extends Component {
         volume: this.state.volume,
         about: this.state.about,
         cover: this.state.cover,
-        date: this.state.date
+        date: this.state.date,
       })
       alert('Created New Volume')
     } catch (err) {
@@ -51,16 +55,16 @@ class NewVolume extends Component {
     }
   }
 
-  async fileUpload(file) {
-    const url = 'http://localhost:5000/admin/editor/uploadFile';
-    const formData = new FormData();
+  async fileUpload (file) {
+    const url = 'http://localhost:5000/admin/editor/uploadFile'
+    const formData = new FormData()
     formData.append('image', file)
     const config = {
       headers: {
-        'content-type': 'multipart/form-data'
-      }
+        'content-type': 'multipart/form-data',
+      },
     }
-    const {data} = await axios.post(url, formData,config)
+    const { data } = await axios.post(url, formData, config)
     return 'http://localhost:5000' + data.file.url
   }
 

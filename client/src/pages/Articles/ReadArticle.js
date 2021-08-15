@@ -15,7 +15,7 @@ class ReadArticle extends Component {
 
   async componentDidMount () {
     try {
-      const { urlSlug, id } = this.props.match.params
+      const { urlSlug, id } = this.props
       const url = `http://localhost:5000/journals/${urlSlug}/${id}`
       const { data } = await axios.get(url)
       this.setState({ journal: data })

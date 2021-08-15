@@ -88,7 +88,7 @@ class EditArticle extends Component {
     await this.PostData()
   }
 
-  handleEditorChange = (editor) => {
+  handleEditorChange = () => {
     this.setState({
       content: this.state.editorRef.getContent(),
     })
