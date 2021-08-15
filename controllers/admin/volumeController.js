@@ -37,11 +37,15 @@ exports.createVolume = catchAsync(async (req, res, next) => {
 
 exports.editVolume = catchAsync(async (req, res, next) => {
   const { volume, about, cover, date } = req.body
-  const modifiedVolume = new Volume({
-    volume, about, cover, date,
-  })
 
-  const result = await Volume.findOneAndUpdate({volume: volume}, {...modifiedVolume})
+  const filter = { volume: volume}
+  const update = {
+    volume, about, cover, date,
+  }
+
+  const result = await Volume.findOneAndUpdate(filter, update, {
+    returnOriginal: false
+  })
 
   if (!result)
     return next(new AppError('Could not edit volume ' + volume, 400))

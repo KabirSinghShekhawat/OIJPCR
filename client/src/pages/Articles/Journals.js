@@ -12,7 +12,8 @@ export default function Journals ({ journals }) {
 }
 
 function createJournals (journals) {
-  if (typeof journals == 'undefined' || journals.length === 0) return '...Loading'
+  if (!journals) return '...Loading'
+  if (journals.length === 0) return 'No articles found'
   return journals.map((article) => {
     const articleProps = { id: article._id, coverPhoto: article.cover,  ...article }
     return <ArticleCard {...articleProps} key={article._id}/>

@@ -63,9 +63,7 @@ class EditArticle extends Component {
   }
 
   async deletePreviousCoverImage() {
-    let imageName = this.state.cover.split('/')
-    imageName = imageName[imageName.length - 1]
-    console.log("imageName", imageName)
+    const imageName = this.state.cover.split('/').pop()
     const url = `http://localhost:5000/admin/editor/${imageName}`
     await axios.delete(url)
   }

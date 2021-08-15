@@ -7,6 +7,7 @@ import ArticleList from '../../components/Admin/ArticleList'
 import NewVolume from './NewVolume'
 import AdminNav from './AdminNav'
 import VolumeList from '../../components/Admin/VolumeList'
+import EditVolume from './EditVolume'
 
 class Admin extends Component {
   render () {
@@ -31,6 +32,10 @@ class Admin extends Component {
 
             <Route exact path="/admin/list/volume"
                    render={(props) => <VolumeList {...props} />}
+            />
+
+            <Route exact path="/admin/list/volume/:volume"
+                   render={(props) => <EditVolume {...props} />}
             />
 
             <Route exact path={`${path}/:urlSlug/:id`}
