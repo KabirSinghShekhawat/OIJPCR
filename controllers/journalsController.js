@@ -12,7 +12,6 @@ exports.journals = catchAsync(async (request, response, next) => {
   response.status(200).json(journals)
 })
 
-
 exports.journalsByVolume = catchAsync(async (request, response, next) => {
   const { volume, full } = request.params
 
@@ -31,7 +30,6 @@ exports.journalsByVolume = catchAsync(async (request, response, next) => {
     .sort({ createdAt: -1 })
   response.status(200).json(journals)
 })
-
 
 exports.getLimitedJournalsByVolume = catchAsync(async (request, response, next) => {
   const { volume, limit } = request.params
@@ -54,7 +52,6 @@ exports.getLimitedJournalsByVolume = catchAsync(async (request, response, next) 
   response.status(200).json(journals)
 })
 
-
 exports.getJournal = catchAsync(async (req, res, next) => {
   const { id } = req.params
   const journal = await Journal.findById(id)
@@ -66,10 +63,26 @@ exports.getJournal = catchAsync(async (req, res, next) => {
   res.status(200).json(journal)
 })
 
-
 exports.archive = catchAsync(async (req, res, next) => {
   const archives = await Volume.find({}).sort({ volume: 1 })
   res.status(200).json(archives)
 })
 
+exports.tags = catchAsync(async (req, res, next) => {
+  const {tag} = req.params
+
+  if (typeof tag !== 'string' || tag.length < 1) {
+    return next(new AppError(`Invalid tag: ${tag}`, 404))
+  }
+
+  const articles = await Journal.find(
+    {
+      $text:
+        {
+          $search: tag,
+        },
+    }).select('-content')
+
+  res.status(200).json(articles)
+})
 

@@ -16,6 +16,7 @@ exports.admin = catchAsync(async (request, response, next) => {
   response.render('admin/admin', options)
 })
 
+
 exports.addJournal = catchAsync(async (request, response, next) => {
   const options = {
     title: 'Add New Journal',
@@ -24,6 +25,7 @@ exports.addJournal = catchAsync(async (request, response, next) => {
   }
   response.render('admin/newJournal', options)
 })
+
 
 exports.postJournal = catchAsync(async (request, response, next) => {
   const { author, title, editordata, slug, volume } = request.body
@@ -39,6 +41,7 @@ exports.postJournal = catchAsync(async (request, response, next) => {
   response.redirect('/admin')
 })
 
+
 exports.editJournal = catchAsync(async (request, response, next) => {
   const { id } = request.params
   const journal = await Journal.findById(id)
@@ -50,6 +53,7 @@ exports.editJournal = catchAsync(async (request, response, next) => {
   }
   response.render('admin/editJournal', options)
 })
+
 
 exports.putJournal = catchAsync(async (request, response, next) => {
   const { id } = request.params
@@ -64,6 +68,7 @@ exports.putJournal = catchAsync(async (request, response, next) => {
   await Journal.findByIdAndUpdate(id, updatedJournal)
   response.redirect('/admin')
 })
+
 
 exports.deleteJournal = catchAsync(async (request, response, next) => {
   const { id } = request.params

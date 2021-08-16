@@ -158,14 +158,14 @@ function ShareArticleLinks () {
 
 function Tags ({ tags }) {
   return (
-    <div className="my-10">
+    <div className="my-10 flex flex-wrap flex-row">
       {
         tags?.split(', ').map(
           (tag, index) => {
             return (
               <span
                 key={index}
-                className="mx-4 px-4 py-2 font-semibold text-gray-900 bg-gray-300">
+                className="mx-4 my-2 px-4 py-2 block font-semibold text-gray-900 bg-gray-300">
             {tag}
           </span>
             )

@@ -43,6 +43,8 @@ const journalSchema = new mongoose.Schema({
   },
 )
 
+journalSchema.index({tags: 'text'})
+
 const Journal = mongoose.model('Journal', journalSchema)
 
 module.exports = Journal
