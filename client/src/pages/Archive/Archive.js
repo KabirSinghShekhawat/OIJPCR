@@ -90,11 +90,13 @@ function RenderVolumePage (props) {
 }
 
 function DisplayArticle (props) {
+  const {path} = props.match
   const { urlSlug, id } = props.match.params
   return (
     <ReadArticle
       urlSlug={urlSlug}
       id={id}
+      path={path}
     />
   )
 }

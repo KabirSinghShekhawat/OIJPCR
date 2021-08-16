@@ -17,6 +17,7 @@ class ReadArticle extends Component {
       moreJournals: {},
     }
     this.journalHasLoaded = this.journalHasLoaded.bind(this)
+    this.handleClickOtherArticle = this.handleClickOtherArticle.bind(this)
   }
 
   async componentDidMount () {
@@ -33,6 +34,26 @@ class ReadArticle extends Component {
       })
     } catch (e) {
       throw new Error(e.message)
+    }
+  }
+
+  async handleClickOtherArticle(url) {
+    const { urlSlug, id} = url
+    const articleURL = `http://localhost:5000/journals/${urlSlug}/${id}`
+    const { data: journal } = await axios.get(articleURL)
+    this.setState({
+      journal: journal,
+    })
+
+    try {
+      window.scroll({
+        top: -10,
+        left: 0,
+        behavior: 'smooth',
+      })
+    } catch (e) {
+      // fallback for older browsers
+      window.scrollTo(0, 0)
     }
   }
 
@@ -74,12 +95,18 @@ class ReadArticle extends Component {
         <div className="my-4 flex flex-row justify-center">
           <img src={journal.cover} alt="Article Cover" className="w-full md:w-3/4 h-98 rounded-lg"/>
         </div>
+
         <ShareArticleLinks/>
         <div className="lg:mx-4 mt-16">
           {HTMLReactParser(content.toString())}
         </div>
+
         <Tags tags={journal.tags}/>
-        <MoreArticles journals={this.state.moreJournals}/>
+        <MoreArticles
+          journals={this.state.moreJournals}
+          handleClick={this.handleClickOtherArticle}
+          path={this.props.path}
+        />
         <SubmitArticleFormFullWidth />
       </ReadContainer>
     )
@@ -148,7 +175,7 @@ function Tags ({ tags }) {
   )
 }
 
-function MoreArticles ({journals}) {
+function MoreArticles ({journals, path, handleClick}) {
   return (
     <div className="my-4">
       <h1 className="text-2xl primary-color font-bold border-b-2 border-gray-900">
@@ -168,10 +195,15 @@ function MoreArticles ({journals}) {
               ...journal,
             }
             return (
-              <ArticleCardSmall {...journalProps} key={journal._id}/>
+              <ArticleCardSmall
+                {...journalProps}
+                handleClick={handleClick}
+                key={journal._id}
+                path={path}
+              />
             )
           }) :
-          ''
+          'No articles available'
         }
       </div>
     </div>

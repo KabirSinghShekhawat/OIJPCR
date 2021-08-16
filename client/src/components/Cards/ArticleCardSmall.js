@@ -1,53 +1,75 @@
 import dollar from '../../assets/stockPhotos/r1_c1.jpg'
 import slugify from 'slugify'
-import { Link, Redirect } from 'react-router-dom'
-import { Component } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { useEffect } from 'react'
 
-export default class ArticleCardSmall extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      redirect: null
-    }
-    this.handleClick = this.handleClick.bind(this)
+export default function ArticleCardSmall (props) {
+  const { slug, id, path } = props
+
+  const urlSlug = slugify(slug.slice(0, 40))
+  // const url = `/archive/${urlSlug}/${id}`
+  const url = {
+    slug: urlSlug,
+    id: id
   }
 
-  handleClick() {
-    const {slug, id} = this.props
-    const urlSlug = slugify(slug.slice(0, 40))
-    const url = `/archive/${urlSlug}/${id}`
-    this.setState({
-      redirect: url
-    })
+  let history = useHistory()
+
+  // useEffect(() => {
+  //   try {
+  //     window.scroll({
+  //       top: -10,
+  //       left: 0,
+  //       behavior: 'smooth',
+  //     })
+  //   } catch (e) {
+  //     // fallback for older browsers
+  //     window.scrollTo(0, 0)
+  //   }
+  // })
+
+
+  function handleClick () {
+      // try {
+      //   window.scroll({
+      //     top: -10,
+      //     left: 0,
+      //     behavior: 'smooth',
+      //   })
+      // } catch (e) {
+      //   // fallback for older browsers
+      //   window.scrollTo(0, 0)
+      // }
+    // history.push(url)
+    props.handleClick(url)
+    // window.location.reload()
   }
 
-  render () {
-    const {
-            coverPhoto,
-            author,
-            volume,
-            title,
-            slug,
-            id,
-          } = this.props
+  const {
+          coverPhoto,
+          author,
+          volume,
+          title,
+        } = props
 
-    const authorText =
-            `BY ${author.toUpperCase()} ${String.fromCharCode(183)} VOLUME ${volume}`
-    const defaultPhoto = coverPhoto ? coverPhoto : dollar
+  const authorText =
+          `BY ${author.toUpperCase()} ${String.fromCharCode(183)} VOLUME ${volume}`
+  const defaultPhoto = coverPhoto ? coverPhoto : dollar
 
-    if (this.state.redirect)
-      return <Redirect to={this.state.redirect}/>
-
-    return (
-      <div className={`md:max-w-xs h-auto rounded-md
+  return (
+    <div className={`md:max-w-xs h-auto rounded-md
                      overflow-hidden shadow-lg my-4
                      md:m-4 lg:h-auto`}
-      >
-        <CardCover coverPhoto={defaultPhoto} authorText={authorText}/>
-        <CardContent title={title} slug={slug} id={id} handleClick={this.handleClick}/>
-      </div>
-    )
-  }
+    >
+      <CardCover coverPhoto={defaultPhoto} authorText={authorText}/>
+      <CardContent
+        handleClick={handleClick}
+        title={title}
+        slug={slug}
+        id={id}
+      />
+    </div>
+  )
 }
 
 function CardCover ({ coverPhoto, authorText }) {
