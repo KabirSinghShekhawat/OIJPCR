@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import FormContainer from './Form/FormContainer'
 import FormField from './Form/FormField'
-import UploadCover from './Form/UploadCover'
+import UploadFile from './Form/UploadFile'
 import { Button, ButtonGroup } from './Form/FormButtons'
 
 
@@ -47,7 +47,18 @@ class EditorForm extends Component {
                    type="number"
                    min={0}
         />
-        <UploadCover onFileChange={this.onFileChange} />
+        {/*Article Cover Image upload*/}
+        <UploadFile
+          name="articleCoverImage"
+          label="Article Cover Image"
+          onFileChange={this.onFileChange}
+        />
+        {/* Author Profile pic upload*/}
+        <UploadFile
+          name="authorImage"
+          label="Author Profile Pic"
+          onFileChange={this.onFileChange}
+        />
         {this.props.children}
         {
           isEdit

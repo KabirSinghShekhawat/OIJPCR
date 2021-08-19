@@ -17,7 +17,7 @@ const deleteCoverImage = catchAsync(async (imageName, next) => {
 })
 
 function isDefaultImage (imageName) {
-  return imageName === 'r2_c1.jpg'
+  return imageName === 'article_cover_fallback.jpg'
 }
 
 module.exports = {isDefaultImage, deleteCoverImage}

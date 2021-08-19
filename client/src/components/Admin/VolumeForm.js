@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import FormContainer from './Form/FormContainer'
 import FormField from './Form/FormField'
-import UploadCover from './Form/UploadCover'
+import UploadFile from './Form/UploadFile'
 import { Button, ButtonGroup } from './Form/FormButtons'
 
 class VolumeForm extends Component {
@@ -43,7 +43,7 @@ class VolumeForm extends Component {
         {/*About*/}
         <FormField name="about" value={about} label="About" handleChange={this.handleChange}/>
 
-        <UploadCover onFileChange={this.onFileChange} />
+        <UploadFile onFileChange={this.onFileChange} />
         {this.props.children}
         {
           isEdit

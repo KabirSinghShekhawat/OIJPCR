@@ -3,23 +3,25 @@ import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
 import EditorForm from '../../../components/Admin/EditorForm'
 import { Redirect } from 'react-router-dom'
-import { toolbar, plugins } from '../../../components/Admin/Config/TinyMCEConfig'
+import { initEditor } from '../../../components/Admin/Config/TinyMCEConfig'
 
 class EditArticle extends Component {
   constructor (props) {
     super(props)
     this.state = {
       editorRef: {},
-      content: '',
       initialValue: this.props.content || '',
+      content: '',
       author: this.props.author || '',
       title: this.props.title || '',
       slug: this.props.slug || '',
       volume: this.props.volume || '',
-      cover: this.props.cover ||
-        'http://localhost:5000/editor/images/r2_c1.jpg',
-      file: null,
       tags: this.props.tags || '',
+      cover: this.props.cover ||
+        'http://localhost:5000/editor/images/article_cover_fallback.jpg',
+      authorPhoto: this.props.authorPhoto || '',
+      articleCoverImage: null,
+      authorImage: null,
       id: '',
       redirect: null,
     }
@@ -47,8 +49,9 @@ class EditArticle extends Component {
 
   async deleteArticle () {
     try {
-      const imageName = this.state.cover.split('/').pop()
-      const url = `http://localhost:5000/admin/editor/${this.state.id}/${imageName}`
+      const articleCover = this.state.cover.split('/').pop()
+      const authorPhoto = this.state.authorPhoto.split('/').pop()
+      let url = `http://localhost:5000/admin/editor/${this.state.id}/${articleCover}/${authorPhoto}`
       await axios.delete(url)
 
       setTimeout(() => {
@@ -62,14 +65,14 @@ class EditArticle extends Component {
     }
   }
 
-  async deletePreviousCoverImage() {
-    const imageName = this.state.cover.split('/').pop()
+  async deletePreviousCoverImage (imagePath) {
+    const imageName = imagePath.split('/').pop()
     const url = `http://localhost:5000/admin/editor/${imageName}`
     await axios.delete(url)
   }
 
   onFileChange (evt) {
-    this.setState({ file: evt.target.files[0] })
+    this.setState({ [evt.target.name]: evt.target.files[0] })
   }
 
   handleChange (evt) {
@@ -80,11 +83,25 @@ class EditArticle extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    if (this.state.file !== null) {
-      const imgPath = await this.fileUpload(this.state.file)
-      await this.deletePreviousCoverImage()
+
+    if (this.state.articleCoverImage !== null) {
+      const imgPath = await this.fileUpload(this.state.articleCoverImage)
+      // before sending delete request
+      // check if cover exists on server
+      if(this.state.cover)
+        await this.deletePreviousCoverImage(this.state.cover)
       this.setState({ cover: imgPath })
     }
+
+    if (this.state.authorImage !== null) {
+      const imgPath = await this.fileUpload(this.state.authorImage)
+      // before sending delete request
+      // check if author photo exists on server
+      if(this.state.authorPhoto)
+        await this.deletePreviousCoverImage(this.state.authorPhoto)
+      this.setState({ authorPhoto: imgPath })
+    }
+
     await this.PostData()
   }
 
@@ -95,7 +112,13 @@ class EditArticle extends Component {
   }
 
   render () {
-    const { content, redirect, ...formState } = this.state
+    const {
+            content,
+            redirect,
+            articleCoverImage,
+            authorImage,
+            ...formState
+          } = this.state
 
     if (redirect)
       return <Redirect to={this.state.redirect}/>
@@ -113,18 +136,7 @@ class EditArticle extends Component {
           onInit={this.onInit}
           onChange={this.handleEditorChange}
           initialValue={this.state.initialValue}
-          init={{
-            height: 500,
-            menubar: true,
-            branding: false,
-            save_onsavecallback: this.PostData,
-            plugins: plugins,
-            toolbar: toolbar,
-            content_css: [
-              '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-              '//www.tiny.cloud/css/codepen.min.css',
-            ],
-          }}
+          init={{...initEditor}}
         />
       </EditorForm>
     )
@@ -152,8 +164,16 @@ class EditArticle extends Component {
 
   async PostData () {
     try {
+      const {
+              editorRef,
+              initialValue,
+              redirect,
+              articleCoverImage,
+              authorImage,
+              id,
+              ...data
+            } = this.state
       const url = `http://localhost:5000/admin/editor/${this.state.id}`
-      const { editorRef, initialValue, id, redirect, ...data } = this.state
       await axios.patch(url, { ...data })
 
       this.setState({ success: 'success' })

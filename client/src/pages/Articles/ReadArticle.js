@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import HTMLReactParser from 'html-react-parser'
 import UTCToFormalDate from '../../utils/DateTime'
-import member_1 from '../../assets/teamMembers/member_1.jpg'
+import female_avatar from '../../assets/teamMembers/female_avatar.svg'
 import twitter from '../../assets/shareIcons/twitter.svg'
 import linkedin from '../../assets/shareIcons/linkedin.svg'
 import shareIcon from '../../assets/shareIcons/shareLink.svg'
@@ -81,19 +81,29 @@ class ReadArticle extends Component {
     return (
       <ReadContainer>
         <h1 className="text-center font-black mb-4">
-          <span className="text-3xl md:text-5xl">{journal.title}</span>
+          <span className="text-3xl md:text-5xl">
+            {journal.title}
+          </span>
         </h1>
 
         <div className="flex flex-row justify-center py-1">
-          <img src={member_1} alt="Author" className="h-16 w-16 inline rounded-full"/>
+          <img src={journal?.authorPhoto || female_avatar}
+               className="h-16 w-16 inline rounded-full object-cover"
+               alt="Author"
+          />
           <h2 className="text-base text-center font-semibold inline py-4 ml-4">
-            <span className="text-base block leading-3">by {author ? author : ''}</span>
+            <span className="text-base block leading-3">
+              by {author ? author : ''}
+            </span>
             {publishedDate}
           </h2>
         </div>
 
         <div className="my-4 flex flex-row justify-center">
-          <img src={journal.cover} alt="Article Cover" className="w-full md:w-3/4 h-98 rounded-lg"/>
+          <img src={journal.cover}
+               className="w-full md:w-3/4 h-98 rounded-lg"
+               alt="Article Cover"
+          />
         </div>
 
         <ShareArticleLinks/>

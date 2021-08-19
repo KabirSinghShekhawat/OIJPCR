@@ -11,7 +11,7 @@ router
   .patch(editorController.editArticle)
 
 router
-  .delete('/:id/:imageName', editorController.deleteArticle)
+  .delete('/:id/:articleCover/:authorPhoto', editorController.deleteArticle)
   .delete('/:imageName', editorController.deleteImage)
 
 router

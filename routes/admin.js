@@ -4,13 +4,11 @@ const adminController = require('../controllers/adminController');
 const authController = require('../controllers/auth/authController');
 const volumeRoute = require('./Admin/volume')
 const editorRoute = require('./Admin/editor')
-const authorRoute = require('./Admin/author')
 /**
  * Routes
  */
 router.use('/volume', volumeRoute)
 router.use('/editor', editorRoute)
-router.use('/author', authorRoute)
 
 // deprecated
 router.route('/')

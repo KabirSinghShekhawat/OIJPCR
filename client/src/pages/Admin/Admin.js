@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+
 import FlexContainer from '../../components/utils/FlexContainer'
+import AdminNav from './AdminNav'
+
 import NewArticle from './Article/NewArticle'
 import EditArticle from './Article/EditArticle'
 import ArticleList from '../../components/Admin/ArticleList'
+
 import NewVolume from './Volume/NewVolume'
-import AdminNav from './AdminNav'
-import VolumeList from '../../components/Admin/VolumeList'
 import EditVolume from './Volume/EditVolume'
-import NewAuthor from './Author/NewAuthor'
-import AuthorList from './Author/AuthorList'
+import VolumeList from '../../components/Admin/VolumeList'
 
 class Admin extends Component {
   render () {

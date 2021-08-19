@@ -2,21 +2,23 @@ import { Component } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
 import EditorForm from '../../../components/Admin/EditorForm'
-import { toolbar, plugins } from '../../../components/Admin/Config/TinyMCEConfig'
+import { initEditor } from '../../../components/Admin/Config/TinyMCEConfig'
 
 class NewArticle extends Component {
   constructor (props) {
     super(props)
     this.state = {
       editorRef: {},
-      content: this.props.content || '',
+      content: '',
       author: this.props.author || '',
       title: this.props.title || '',
       slug: this.props.slug || '',
       volume: this.props.volume || '',
-      cover: this.props.cover || '',
       tags: this.props.tags || '',
-      file: null
+      cover: this.props.cover || '',
+      authorPhoto: this.props.authorPhoto || '',
+      articleCoverImage: null,
+      authorImage: null,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -27,7 +29,7 @@ class NewArticle extends Component {
   }
 
   onFileChange (evt) {
-    this.setState({file: evt.target.files[0]})
+    this.setState({ [evt.target.name]: evt.target.files[0] })
   }
 
   handleChange (evt) {
@@ -38,8 +40,19 @@ class NewArticle extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    const imgPath = await this.fileUpload(this.state.file)
-    this.setState({cover: imgPath})
+    const cover = await this.fileUpload(this.state.articleCoverImage)
+    const authorPhoto = await this.fileUpload(this.state.authorImage)
+
+    if(!cover)
+      return alert('Article cover image not uploaded')
+
+    if (!authorPhoto)
+      return alert('Author profile photo not uploaded')
+
+    this.setState({
+      cover: cover,
+      authorPhoto: authorPhoto,
+    })
     await this.PostData()
   }
 
@@ -50,28 +63,24 @@ class NewArticle extends Component {
   }
 
   render () {
-    const { content, ...formState } = this.state
+    const {
+            content,
+            articleCoverImage,
+            authorImage,
+            ...formState
+          } = this.state
     return (
       <EditorForm
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
         onFileChange={this.onFileChange}
         {...formState}
+        isEdit={false}
       >
         <Editor
           onInit={this.onInit}
           onChange={this.handleEditorChange}
-          init={{
-            height: 500,
-            menubar: true,
-            branding: false,
-            plugins: plugins,
-            toolbar: toolbar,
-            content_css: [
-              '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-              '//www.tiny.cloud/css/codepen.min.css',
-            ],
-          }}
+          init={{...initEditor}}
         />
       </EditorForm>
     )
@@ -83,23 +92,29 @@ class NewArticle extends Component {
     })
   }
 
-  async fileUpload(file) {
-    const url = 'http://localhost:5000/admin/editor/uploadFile';
-    const formData = new FormData();
+  async fileUpload (file) {
+    const url = 'http://localhost:5000/admin/editor/uploadFile'
+    const formData = new FormData()
     formData.append('image', file)
     const config = {
       headers: {
-        'content-type': 'multipart/form-data'
-      }
+        'content-type': 'multipart/form-data',
+      },
     }
-    const {data} = await axios.post(url, formData,config)
+    const { data } = await axios.post(url, formData, config)
     return 'http://localhost:5000' + data.file.url
   }
 
   async PostData () {
     try {
-      const {editorRef, file, ...rest} = this.state
-      await axios.post('http://localhost:5000/admin/editor/', { ...rest })
+      const {
+              editorRef,
+              articleCoverImage,
+              authorImage,
+              ...data
+            } = this.state
+      const url = 'http://localhost:5000/admin/editor/'
+      await axios.post(url, { ...data })
       alert('Created New Article')
     } catch (err) {
       console.log('An Error occurred in posting data: ' + err.message)

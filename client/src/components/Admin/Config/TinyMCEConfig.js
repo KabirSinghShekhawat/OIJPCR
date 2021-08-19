@@ -11,6 +11,18 @@ export const plugins = [
   'insertdatetime media table paste wordcount save',
 ]
 
+export const initEditor = {
+  height: 500,
+  menubar: true,
+  branding: false,
+  plugins: plugins,
+  toolbar: toolbar,
+  content_css: [
+    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+    '//www.tiny.cloud/css/codepen.min.css',
+  ],
+}
+
 export const config = {
   onRemove: '',
   onActivate: '',

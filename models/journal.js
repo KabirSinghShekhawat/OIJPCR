@@ -7,6 +7,10 @@ const journalSchema = new mongoose.Schema({
       default: 'Anonymous',
     },
 
+    authorPhoto: {
+      type: String,
+    },
+
     title: {
       type: String,
       required: true,
@@ -29,10 +33,12 @@ const journalSchema = new mongoose.Schema({
       type: Number,
       default: 1,
     },
+
     tags: {
       type: String,
       default: ',',
     },
+
     cover: {
       type: String,
       default: 'http://localhost:5000/editor/images/r2_c1.jpg',
@@ -43,7 +49,7 @@ const journalSchema = new mongoose.Schema({
   },
 )
 
-journalSchema.index({tags: 'text'})
+journalSchema.index({ tags: 'text' })
 
 const Journal = mongoose.model('Journal', journalSchema)
 
