@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import FlexContainer from '../../components/utils/FlexContainer'
-import NewArticle from './NewArticle'
-import EditArticle from './EditArticle'
+import NewArticle from './Article/NewArticle'
+import EditArticle from './Article/EditArticle'
 import ArticleList from '../../components/Admin/ArticleList'
-import NewVolume from './NewVolume'
+import NewVolume from './Volume/NewVolume'
 import AdminNav from './AdminNav'
 import VolumeList from '../../components/Admin/VolumeList'
-import EditVolume from './EditVolume'
+import EditVolume from './Volume/EditVolume'
+import NewAuthor from './Author/NewAuthor'
+import AuthorList from './Author/AuthorList'
 
 class Admin extends Component {
   render () {
@@ -18,7 +20,7 @@ class Admin extends Component {
       title: 'Title',
       slug: 'Slug',
       volume: 1,
-      cover: 'http://localhost:5000/editor/images/r2_c1.jpg'
+      cover: 'http://localhost:5000/editor/images/article_cover_fallback.jpg'
     }
     return (
       <>
