@@ -1,0 +1,79 @@
+@tailwind base;
+
+@layer base {
+    .editor h1 {
+        @apply text-4xl;
+    }
+    .editor h2 {
+        @apply text-2xl;
+    }
+    .editor h3 {
+        @apply text-xl;
+    }
+    .editor h4 {
+        @apply text-lg;
+    }
+    .editor h5 {
+        @apply text-base;
+    }
+    .editor h6 {
+        @apply text-sm;
+    }
+
+}
+
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* utils */
+    .header-nav {
+        @apply sm:px-6;
+        @apply px-4 py-2 shadow-lg md:shadow-none bg-white;
+        @apply flex flex-wrap items-center;
+        @apply lg:px-16 lg:py-1;
+    }
+
+    .header-home {
+        @apply sm:mx-8 sm:rounded-md;
+        @apply flex flex-col flex-wrap;
+        @apply mx-4 mt-8 mb-4 p-2 rounded-lg text-white;
+        @apply md:flex-row md:p-12 md:mx-12 md:mt-8 md:mb-6;
+    }
+
+    .nav-link-ul {
+        @apply items-center justify-between text-base pt-4 lg:pt-0;
+        @apply lg:flex;
+    }
+
+    .nav-link {
+        @apply lg:p-4 py-3 px-0 block;
+        @apply font-semibold text-xl;
+        @apply border-b-2 border-transparent hover:border-indigo-400;
+    }
+
+    /* Card */
+    .article-card-container {
+        @apply md:max-w-md h-auto;
+        @apply rounded-md overflow-hidden shadow-lg my-4 md:m-4;
+        @apply lg:h-auto;
+    }
+
+    .article-card-title {
+        @apply font-bold text-2xl text-gray-600 mb-4 text-center;
+    }
+    .article-card-slug {
+        @apply font-normal text-gray-700 text-sm mb-6 text-center;
+    }
+    .article-card-author {
+        @apply text-gray-500 font-medium text-sm text-center mt-2;
+    }
+
+    /* cards grid left pane home */
+    .card-grid-home {
+        @apply grid grid-cols-1 grid-flow-row grid-rows-5;
+        @apply lg:grid-cols-2 lg:grid-rows-3;
+        /*@apply lg:w-3/5 border-2 md:mx-8;*/
+        @apply lg:w-3/4 md:w-2/3 w-full;
+    }
+}

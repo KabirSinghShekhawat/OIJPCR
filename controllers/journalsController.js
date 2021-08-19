@@ -1,76 +1,88 @@
-const slugify = require('slugify');
-const dateFormat = require('../public/js/dateFormat');
-const Journal = require('../models/journal');
-const Comment = require('../models/comment');
+const catchAsync = require('../utils/catchAsync')
+const AppError = require('../utils/appError')
+const Journal = require('../models/journal')
+const Volume = require('../models/volume')
 
-const css = 'app.min.css'
+exports.journals = catchAsync(async (request, response, next) => {
+  const journals = await Journal
+    .find({})
+    .select('-content')
+    .sort({ createdAt: -1 })
+    .exec()
+  response.status(200).json(journals)
+})
 
-exports.journals = async (request, response) => {
-    try {
-        const journals = await Journal.find({}).sort({createdAt: -1});
-        const options = {
-            title: 'Journals',
-            css: css,
-            isHomePage: false,
-            journals: journals,
-            slugify: slugify
-        }
-        response.render('journals', options);
-    } catch (err) {
-        response.status(404).send('Journals not found');
-    }
-}
+exports.journalsByVolume = catchAsync(async (request, response, next) => {
+  const { volume, full } = request.params
 
-exports.journalByVolume = async (request, response) => {
-    const { volume } = request.params;
-    try {
-        const journals = await Journal.find({'volume': volume}).sort({createdAt: -1});
-        const options = {
-            title: 'Journals',
-            css: css,
-            isHomePage: false,
-            journals: journals,
-            slugify: slugify
-        }
-        response.render('journals', options);
-    } catch (err) {
-        response.status(404).send('Journal Not Found');
-    }
-}
+  if (isNaN(parseInt(volume, 10))) {
+    return next(new AppError('Volume is not a valid number', 400))
+  }
 
-exports.getJournal = async (request, response) => {
-    const { id } = request.params;
-    try {
-        const journal = await Journal.findById(id);
-        const comments = await Comment.find({'journal_id': id});
-        const options = {
-            title: 'Journal',
-            css: css,
-            isHomePage: false,
-            journal: journal,
-            comments: comments, 
-            dateFormat: dateFormat
-        }
-        
-        response.render('readJournal', options);
-    } catch (err) {
-        console.log('error')
-        response.status(404).send('Journal Not Found');
-    }
+  let fieldsToRemove = '-content'
+  if (full === 'full') {
+    fieldsToRemove = ''
+  }
 
-}
+  const journals = await Journal
+    .find({ 'volume': volume })
+    .select(fieldsToRemove)
+    .sort({ createdAt: -1 })
+  response.status(200).json(journals)
+})
 
-exports.postComment = async (request, response) => {
-    const { slug, id } = request.params;
-    const { name, email, comment: commentText } = request.body
-    const newComment = {
-        username: name,
-        email: email,
-        comment: commentText,
-        journal_id: id
-    }
-    const comment = new Comment(newComment);
-    await comment.save();
-    request.flash('success', 'Comment Awaiting Moderation');
-    return response.redirect(`/journals/${slug}/${id}`);
-}
+exports.getLimitedJournalsByVolume = catchAsync(async (request, response, next) => {
+  const { volume, limit } = request.params
+
+  const volumeInt = parseInt(volume, 10)
+  if (isNaN(volumeInt) || volumeInt < 1) {
+    return next(new AppError('Volume is not a valid value', 400))
+  }
+
+  const numberOfArticles = parseInt(limit, 10)
+  if (isNaN(numberOfArticles) || numberOfArticles < 1) {
+    return next(new AppError('Limit is not a valid value', 400))
+  }
+
+  const journals = await Journal
+    .find({ 'volume': volume })
+    .select('-content')
+    .sort({ createdAt: -1 })
+    .limit(numberOfArticles)
+  response.status(200).json(journals)
+})
+
+exports.getJournal = catchAsync(async (req, res, next) => {
+  const { id } = req.params
+  const journal = await Journal.findById(id)
+
+  if (!journal) {
+    return next(new AppError(`Found no journal with ID ${id}`, 404))
+  }
+
+  res.status(200).json(journal)
+})
+
+exports.archive = catchAsync(async (req, res, next) => {
+  const archives = await Volume.find({}).sort({ volume: 1 })
+  res.status(200).json(archives)
+})
+
+exports.tags = catchAsync(async (req, res, next) => {
+  const {tag} = req.params
+
+  if (typeof tag !== 'string' || tag.length < 1) {
+    return next(new AppError(`Invalid tag: ${tag}`, 404))
+  }
+
+  const articles = await Journal.find(
+    {
+      $text:
+        {
+          $search: tag,
+        },
+    }).select('-content')
+
+  res.status(200).json(articles)
+})
+

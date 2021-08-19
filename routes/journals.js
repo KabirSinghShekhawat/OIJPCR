@@ -1,13 +1,21 @@
-const express = require('express');
-const router = express.Router();
-const journalsController = require('./../controllers/journalsController');
+const express = require('express')
+const router = express.Router()
+const journalController = require('./../controllers/journalsController')
+
+router.get('/', journalController.journals)
+router.get('/tags/:tag', journalController.tags)
+router.get('/all/:volume/:full', journalController.journalsByVolume)
+router.get('/limit/:volume/:limit', journalController.getLimitedJournalsByVolume)
+router.get('/archive', journalController.archive)
+
+router
+  .route('/:id')
+  .get(journalController.getJournal)
+
+router
+  .route('/:slug/:id')
+  .get(journalController.getJournal)
 
 
-router.get('/', journalsController.journals);
-router.get('/:volume', journalsController.journalByVolume);
 
-router.route('/:slug/:id')
-.get(journalsController.getJournal)
-.post(journalsController.postComment);
-
-module.exports = router;
+module.exports = router
