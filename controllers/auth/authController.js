@@ -2,93 +2,81 @@ const User = require('../../models/user')
 const AppError = require('../../utils/appError')
 const catchAsync = require('../../utils/catchAsync')
 const {
-        isValidUser,
         generatePasswordHash,
-        searchUser,
-        authMessage,
+        signToken,
       } = require('./utils')
 
 require('dotenv').config()
 
-exports.isLoggedIn = (req, res, next) => {
-  if (!req.session.user_id) {
-    return res.status(401).json({
-      msg: 'Unauthorized access',
-    })
+exports.isLoggedIn = catchAsync((req, res, next) => {
+  let token
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1]
   }
 
-  console.log(`Session Set: ${req.session.user_id}`)
+  if(!token)
+    return next(new AppError('Please log in to access this resource', 401))
+
   return next()
-}
+})
 
 exports.login = catchAsync(async (req, res, next) => {
   const { username, password } = req.body
 
-  if (!isValidUser(username, password)) {
-    return res.status(401).json(
-      authMessage(`Invalid credentials\n User: ${username}`)
-    )
-  }
+  if (!(username && password))
+    return next(new AppError('Please provide username and password', 400))
 
-  if (!(await searchUser(username, password, req))) {
-    return res.status(401)
-      .json(authMessage(`Invalid credentials\n User: ${username}`))
-  }
+  const user = await User.findOne({ username }).select('+password')
 
-  res.status(200).json(authMessage(
-      'Logged in Successfully',
-      true,
-    ),
-  )
+  if (
+    !user ||
+    !(await user.matchPassword(password, user.password))
+  ) return next(new AppError('Incorrect username or password', 401))
+
+  const token = signToken(user._id)
+
+  res.status(200).json({
+    status: 'success',
+    token,
+  })
 })
 
-
 exports.logout = (req, res) => {
-  req.session.user_id = null
-  res.status(200).json(
-    authMessage('Logged out successfully')
-  )
+  return res.status(200).json({
+    status: 'success',
+    isAdmin: false,
+  })
 }
-
 
 exports.register = catchAsync(async (req, res, next) => {
   const { username, password, key } = req.body
 
-  if (key !== process.env.SECRET) {
-    return res.status(401).json(
-      authMessage(
-        'Invalid username or password',
-        false,
-      ),
-    )
-  }
+  if (!key || key !== process.env.SECRET)
+    return next(new AppError('Incorrect Key', 401))
 
-  if (!isValidUser(username, password))
-    return res.redirect('/admin/register')
+  if (!(username && password))
+    return next(new AppError('Please provide valid username and password', 400))
 
-  if ((await searchUser(username, password, req, res))) {
-    return res.status(409).json(
-      authMessage(
-        `User already exists: ${username}`,
-        false,
-      ),
-    )
-  }
+  const newUser = await createNewUser(username, password)
 
-  const user = await createUser(username, password, req)
+  if (!newUser)
+    return next(new AppError('Could not create user: ' + username, 500))
 
-  if (!user)
-    return next(new AppError('Could not create user', 500))
+  const token = signToken(newUser._id)
 
-  res.status(201).json(
-    authMessage(
-      `User created successfully: ${username}`,
-      true,
-    ),
+  res.status(201).json({
+      status: 'success',
+      msg: `User created successfully: ${username}`,
+      isAdmin: true,
+      token,
+    },
   )
 })
 
-async function  createUser (username, password, req) {
+async function createNewUser (username, password) {
   const hash = await generatePasswordHash(password)
   const newUser = {
     username: username,
@@ -97,9 +85,6 @@ async function  createUser (username, password, req) {
 
   const user = new User(newUser)
   await user.save()
-  if (!user) return
-
-  req.session.user_id = user._id
   return user
 }
 
