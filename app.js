@@ -74,11 +74,9 @@ app.use(flash())
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
-// process.env.NODE_ENV = "dev"
-// process.env.NODE_ENV = "prod"
-// ENV becomes "dev ", trim() fixes issue.
+
 let dbUrl
-if (process.env.NODE_ENV.trim() === "dev") {
+if (process.env.NODE_ENV === "dev") {
   dbUrl = 'mongodb://localhost/oijpcr'
   app.use(morgan('dev'))
 } else {
