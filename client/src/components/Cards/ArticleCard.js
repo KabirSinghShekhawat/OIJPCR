@@ -45,7 +45,8 @@ function CardContent ({ title, slug, id, path, cname }) {
            * changing urls always causes trouble (-_-).
            */
   const aboutSlug = slug.slice(start, end)
-  const urlSlug = slugify(slug.slice(start, urlLength))
+  // const urlSlug = slugify(slug.slice(start, urlLength))
+  const urlSlug = slugify(title)
 
   return (
     <div className="mx-6 my-4 border-gray-light">

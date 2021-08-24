@@ -1,10 +1,9 @@
 import dollar from '../../assets/stockPhotos/r1_c1.jpg'
 import slugify from 'slugify'
-import { Link, useHistory } from 'react-router-dom'
-import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ArticleCardSmall (props) {
-  const { slug, id, path } = props
+  const { slug, id } = props
 
   const urlSlug = slugify(slug.slice(0, 40))
   // const url = `/archive/${urlSlug}/${id}`
@@ -13,36 +12,9 @@ export default function ArticleCardSmall (props) {
     id: id
   }
 
-  let history = useHistory()
-
-  // useEffect(() => {
-  //   try {
-  //     window.scroll({
-  //       top: -10,
-  //       left: 0,
-  //       behavior: 'smooth',
-  //     })
-  //   } catch (e) {
-  //     // fallback for older browsers
-  //     window.scrollTo(0, 0)
-  //   }
-  // })
-
 
   function handleClick () {
-      // try {
-      //   window.scroll({
-      //     top: -10,
-      //     left: 0,
-      //     behavior: 'smooth',
-      //   })
-      // } catch (e) {
-      //   // fallback for older browsers
-      //   window.scrollTo(0, 0)
-      // }
-    // history.push(url)
     props.handleClick(url)
-    // window.location.reload()
   }
 
   const {
@@ -94,7 +66,8 @@ function CardContent ({ title, slug, id, handleClick }) {
    * changing urls always causes trouble (-_-).
    */
   const aboutSlug = slug.slice(start, end)
-  const urlSlug = slugify(slug.slice(start, urlLength))
+  // const urlSlug = slugify(slug.slice(start, urlLength))
+  const urlSlug = slugify(title)
 
   return (
     <div className="mx-6 my-4 border-gray-light">

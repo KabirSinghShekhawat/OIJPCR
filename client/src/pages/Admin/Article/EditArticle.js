@@ -24,6 +24,7 @@ class EditArticle extends Component {
       authorImage: null,
       id: '',
       redirect: null,
+      postDataFlag: true
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -56,7 +57,7 @@ class EditArticle extends Component {
 
       setTimeout(() => {
           alert('Article deleted, redirecting now')
-          this.setState({ redirect: '/admin/list' })
+          this.setState({ redirect: '/admin/list', postDataFlag: false })
         },
         1000,
       )
@@ -101,7 +102,7 @@ class EditArticle extends Component {
         await this.deletePreviousCoverImage(this.state.authorPhoto)
       this.setState({ authorPhoto: imgPath })
     }
-
+    this.setState({ postDataFlag: true })
     await this.PostData()
   }
 
@@ -158,7 +159,6 @@ class EditArticle extends Component {
       },
     }
     const { data } = await axios.post(url, formData, config)
-    console.log(data.file.url)
     return 'http://localhost:5000' + data.file.url
   }
 

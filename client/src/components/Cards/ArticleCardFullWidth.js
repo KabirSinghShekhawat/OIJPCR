@@ -40,7 +40,9 @@ function CardContent ({ title, slug, id, path, cname }) {
   const start = 0,
         end = slug.length >= 250 ? 250 : slug.length
   const aboutSlug = slug.slice(start, end)
-  const urlSlug = slugify(slug)
+  // const urlSlug = slugify(slug)
+  const urlSlug = slugify(title)
+
   return (
     <div className="mx-6 my-4 border-gray-light">
       <div className="font-bold text-4xl text-gray-600 mb-8 text-center"> {title} </div>

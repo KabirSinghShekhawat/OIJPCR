@@ -1,130 +1,105 @@
-const bcrypt = require('bcrypt')
-const User = require('./../../models/user')
+const User = require('../../models/user')
+const AppError = require('../../utils/appError')
+const catchAsync = require('../../utils/catchAsync')
+const {
+        isValidUser,
+        generatePasswordHash,
+        searchUser,
+        authMessage,
+      } = require('./utils')
+
 require('dotenv').config()
-const css = 'auth.css'
 
 exports.isLoggedIn = (req, res, next) => {
-  try {
-    console.log(`Session Set`)
-    if (!req.session.user_id)
-      return res.redirect('/admin/login')
-    return next()
-  } catch (err) {
-    req.flash('error', 'Not logged in')
-    res.status(500).send('Login Failed')
+  if (!req.session.user_id) {
+    return res.status(401).json({
+      msg: 'Unauthorized access',
+    })
   }
+
+  console.log(`Session Set: ${req.session.user_id}`)
+  return next()
 }
 
-exports.loginPage = (req, res) => {
-  const options = {
-    title: 'Login',
-    css: css,
-  }
-  res.render('auth/login', options)
-}
-
-exports.registerPage = (req, res) => {
-  const options = {
-    title: 'Register',
-    css: css,
-  }
-  res.render('auth/register', options)
-}
-
-exports.login = async (req, res) => {
+exports.login = catchAsync(async (req, res, next) => {
   const { username, password } = req.body
-  try {
-    if (!isValidUser(username, password)) {
-      req.flash('error', 'Invalid Credentials')
-      return res.redirect('/admin/login')
-    }
 
-    if (!(await searchUser(username, password, req))) {
-      req.flash('error', 'Invalid Credentials')
-      return res.redirect('/admin/login')
-    }
-
-    req.flash('success', 'Successfully Logged In')
-    res.redirect('/admin')
-  } catch (err) {
-    req.flash('error', 'Login Failed')
-    res.redirect('/admin/login')
-    throw new Error('Login Error ' + err.message)
+  if (!isValidUser(username, password)) {
+    return res.status(401).json(
+      authMessage(`Invalid credentials\n User: ${username}`)
+    )
   }
-}
+
+  if (!(await searchUser(username, password, req))) {
+    return res.status(401)
+      .json(authMessage(`Invalid credentials\n User: ${username}`))
+  }
+
+  res.status(200).json(authMessage(
+      'Logged in Successfully',
+      true,
+    ),
+  )
+})
+
 
 exports.logout = (req, res) => {
   req.session.user_id = null
-  res.redirect('/admin/login')
+  res.status(200).json(
+    authMessage('Logged out successfully')
+  )
 }
 
-exports.register = async (req, res) => {
+
+exports.register = catchAsync(async (req, res, next) => {
   const { username, password, key } = req.body
 
   if (key !== process.env.SECRET) {
-    req.flash('error', 'Incorrect Credentials')
+    return res.status(401).json(
+      authMessage(
+        'Invalid username or password',
+        false,
+      ),
+    )
+  }
+
+  if (!isValidUser(username, password))
     return res.redirect('/admin/register')
+
+  if ((await searchUser(username, password, req, res))) {
+    return res.status(409).json(
+      authMessage(
+        `User already exists: ${username}`,
+        false,
+      ),
+    )
   }
 
-  try {
-    if (!isValidUser(username, password))
-      return res.redirect('/admin/register')
+  const user = await createUser(username, password, req)
 
-    if ((await searchUser(username, password, req, res))) {
-      req.flash('error', 'User already exists')
-      console.log(`error: 'User Already Exists'`)
-      return res.redirect('/admin/register')
-    }
+  if (!user)
+    return next(new AppError('Could not create user', 500))
 
-    await createUser(username, password, req, res)
+  res.status(201).json(
+    authMessage(
+      `User created successfully: ${username}`,
+      true,
+    ),
+  )
+})
 
-    return res.redirect('/admin')
-  } catch (err) {
-    res.redirect('/admin/register')
-    throw new Error('Could not Register ' + err.message)
+async function  createUser (username, password, req) {
+  const hash = await generatePasswordHash(password)
+  const newUser = {
+    username: username,
+    password: hash,
   }
+
+  const user = new User(newUser)
+  await user.save()
+  if (!user) return
+
+  req.session.user_id = user._id
+  return user
 }
 
-const createUser = async (username, password, req, res) => {
-  try {
-    const hash = await generatePasswordHash(password)
-    const newUser = {
-      username: username,
-      password: hash,
-    }
-    const user = new User(newUser)
-    await user.save()
-    req.session.user_id = user._id
-  } catch (err) {
-    res.status(500).send('Error creating user')
-    throw new Error('Error in Password Generation ' + err.message)
-  }
-}
-
-const searchUser = async (username, password, req) => {
-  try {
-    // TODO: sanitize username
-    const user = await User.findOne({ username })
-    if (typeof user == 'undefined' || user == null) return false
-    if (!(user.username && user.password)) return false
-
-    const match = await bcrypt.compare(password, user.password)
-    if (!match) return false
-
-    req.session.user_id = user._id
-    return true
-  } catch (err) {
-    throw new Error('Search User: ' + err.message)
-  }
-}
-
-const isValidUser = (username, password) => {
-  const usernameValid = typeof username !== 'undefined' && username
-  const passwordValid = typeof password !== 'undefined' && password
-
-  return passwordValid && usernameValid
-}
-
-const generatePasswordHash = async (password) => {
-  return await bcrypt.hash(password, 10)
-}

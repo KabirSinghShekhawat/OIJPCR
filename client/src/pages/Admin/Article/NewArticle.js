@@ -40,14 +40,15 @@ class NewArticle extends Component {
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    const cover = await this.fileUpload(this.state.articleCoverImage)
-    const authorPhoto = await this.fileUpload(this.state.authorImage)
 
-    if(!cover)
+    if(!this.state.articleCoverImage)
       return alert('Article cover image not uploaded')
 
-    if (!authorPhoto)
+    if (!this.state.authorImage)
       return alert('Author profile photo not uploaded')
+
+    const cover = await this.fileUpload(this.state.articleCoverImage)
+    const authorPhoto = await this.fileUpload(this.state.authorImage)
 
     this.setState({
       cover: cover,

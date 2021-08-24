@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import VolumeForm from '../../../components/Admin/VolumeForm'
 import axios from 'axios'
+import PopUp from '../../../components/utils/Popup'
 
 class NewVolume extends Component {
   constructor (props) {
@@ -12,12 +13,28 @@ class NewVolume extends Component {
       date: 'January 2021',
       isEdit: false,
       file: null,
+      notification: {
+        show: false,
+        msg: '',
+      },
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handlePopUp = this.handlePopUp.bind(this)
     this.onFileChange = this.onFileChange.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
     this.PostData = this.PostData.bind(this)
+  }
+
+  handlePopUp () {
+    this.setState(prevState => {
+      return {
+        notification: {
+          show: false,
+          msg: ''
+        }
+      }
+    })
   }
 
   onFileChange (evt) {
@@ -33,12 +50,18 @@ class NewVolume extends Component {
   async handleSubmit (evt) {
     evt.preventDefault()
     if (this.state.file === null) {
-      alert('Please upload cover image')
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Please upload cover image',
+        },
+      })
+      // alert('Please upload cover image')
       return
     }
-      const imgPath = await this.fileUpload(this.state.file)
-      this.setState({ cover: imgPath })
-      await this.PostData()
+    const imgPath = await this.fileUpload(this.state.file)
+    this.setState({ cover: imgPath })
+    await this.PostData()
   }
 
   async PostData () {
@@ -49,9 +72,21 @@ class NewVolume extends Component {
         cover: this.state.cover,
         date: this.state.date,
       })
-      alert('Created New Volume')
+
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Created New Volume',
+        },
+      })
+
     } catch (err) {
-      console.log('An Error occurred in creating volume: ' + err.message)
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'An Error occurred in creating volume',
+        },
+      })
     }
   }
 
@@ -64,19 +99,40 @@ class NewVolume extends Component {
         'content-type': 'multipart/form-data',
       },
     }
+    try {
     const { data } = await axios.post(url, formData, config)
     return 'http://localhost:5000' + data.file.url
+    } catch (e) {
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Error in uploading file',
+        },
+      })
+    }
   }
 
   render () {
     return (
-      <VolumeForm
-        handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-        onFileChange={this.onFileChange}
-        {...this.state} >
+      <>
+        <VolumeForm
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          onFileChange={this.onFileChange}
+          {...this.state} >
 
-      </VolumeForm>
+        </VolumeForm>
+        {
+          (this.state.notification.show) ?
+            <PopUp
+              heading={this.state.notification.msg}
+              handlePopUp={this.handlePopUp}
+              text=""
+              buttonText=""
+              buttonColor=""
+            /> : ''
+        }
+      </>
     )
   }
 }

@@ -15,7 +15,7 @@ class VolumeList extends Component {
       const { data } = await axios.get('http://localhost:5000/admin/volume')
       this.setState({ volumes: data })
     } catch (e) {
-      throw new Error(e.message)
+      // throw new Error(e.message)
     }
   }
 

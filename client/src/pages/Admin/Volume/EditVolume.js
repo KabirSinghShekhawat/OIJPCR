@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import VolumeForm from '../../../components/Admin/VolumeForm'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
+import PopUp from '../../../components/utils/Popup'
 
 class EditVolume extends Component {
   constructor (props) {
@@ -13,7 +14,11 @@ class EditVolume extends Component {
       date: 'loading...',
       isEdit: true,
       file: null,
-      redirect: null
+      redirect: null,
+      notification: {
+        show: false,
+        msg: ''
+      }
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -61,7 +66,13 @@ class EditVolume extends Component {
         1000,
       )
     } catch (err) {
-      console.log('An Error occurred in deleting data: ' + err.message)
+      // console.log('An Error occurred in deleting data: ' + err.message)
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Could not Delete data'
+        }
+      })
     }
   }
 
@@ -114,6 +125,16 @@ class EditVolume extends Component {
     const { redirect } = this.state
     if (redirect)
       return <Redirect to={this.state.redirect}/>
+
+    if (this.state.notification.show) {
+      const {msg} = this.state.notification
+      return (<PopUp
+        heading={msg}
+        text=""
+        buttonText=""
+        buttonColor=""
+      />)
+    }
 
     return (
       <VolumeForm
