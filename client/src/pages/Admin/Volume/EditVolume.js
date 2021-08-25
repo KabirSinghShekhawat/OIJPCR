@@ -78,26 +78,20 @@ class EditVolume extends Component {
   async deleteVolume () {
     try {
       const imageName = this.state.cover.split('/').pop()
-      const url = `${config.host}admin/volume`
-      await axios.delete(url, {
-        data: {
-          volume: this.state.volume,
-          imageName: imageName
-        }
-      })
 
-      setTimeout(() => {
-          this.setState({
-            postDataFlag: false,
-            redirect: '/admin/list',
-            notification: {
-              show: true,
-              msg: 'Volume deleted',
-            },
-          })
-        },
-        1000,
-      )
+      const url = `${config.host}admin/volume`
+
+      const data = {
+        volume: this.state.volume,
+        imageName: imageName,
+      }
+
+      await axios.delete(url, { data: { ...data } })
+
+      this.setState({
+        redirect: '/admin/list',
+        postDataFlag: false,
+      })
     } catch (err) {
       this.setState({
         notification: {
@@ -117,27 +111,28 @@ class EditVolume extends Component {
   async handleSubmit (evt) {
     evt.preventDefault()
 
+    if (!this.state.postDataFlag) return
+
     if (this.state.file) {
       const imgPath = await this.fileUpload(this.state.file)
       await this.deletePreviousCoverImage()
       this.setState({ cover: imgPath })
     }
 
-    this.setState({ postDataFlag: true })
     await this.PatchData()
   }
 
   async PatchData () {
     try {
-      if (!this.postDataFlag) return
+      if (!this.state.postDataFlag) return
 
       const { volume, about, date, id } = this.state
+
       const cover =
               this.state.file
                 ?
                 this.state.cover : ''
-      console.log('%cPatching Data Now \n Cover:', "font-size: 2rem; color: white")
-      console.log(cover)
+
       const url = `${config.host}admin/volume`
 
       await axios.patch(url, {
@@ -203,7 +198,7 @@ class EditVolume extends Component {
           handleSubmit={this.handleSubmit}
           handleDelete={this.deleteVolume}
           onFileChange={this.onFileChange}
-          heading={"Edit Volume"}
+          heading={'Edit Volume'}
           {...this.state}
         >
         </VolumeForm>

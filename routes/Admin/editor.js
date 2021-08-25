@@ -5,10 +5,12 @@ const editorController = require('../../controllers/admin/editorController')
 router.route('/')
   .get(editorController.getJournals)
   .post(editorController.saveArticle)
-
-router
-  .route('/:id')
   .patch(editorController.editArticle)
+  .delete(editorController.deleteArticle)
+
+// router
+//   .route('/:id')
+//   .patch(editorController.editArticle)
 
 router
   .delete('/:id/:articleCover/:authorPhoto', editorController.deleteArticle)

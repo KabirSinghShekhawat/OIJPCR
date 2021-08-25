@@ -12,15 +12,16 @@ function LeftGrid () {
     async function fetchJournals () {
       return await axios.get(`${config.host}journals/home/5`)
     }
-    const result =  fetchJournals();
-    console.log(result)
-    setCardData(result?.data)
+
+    fetchJournals().then((result) => {
+      setCardData(result?.data)
+    })
   }, [])
 
   const cardGrid = cardData?.map((card, index) => {
     const cname = {
       container: '',
-      button: 'ml-4',
+      button: 'ml-4 mt-8',
     }
 
     return (
@@ -28,6 +29,8 @@ function LeftGrid () {
         <ArticleCardFullWidth
           key={index}
           {...card}
+          coverPhoto={card.cover}
+          id={card._id}
           volume={index + 1}
           cname={cname}
         />
@@ -35,8 +38,10 @@ function LeftGrid () {
         <ArticleCard
           key={index}
           {...card}
+          coverPhoto={card.cover}
+          id={card._id}
           volume={index + 1}
-          cname="mt-10 md:mt-6"
+          cname={cname}
         />
     )
   })

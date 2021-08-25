@@ -53,12 +53,11 @@ exports.editVolume = catchAsync(async (req, res, next) => {
   if (!result)
     return next(new AppError('Could not edit volume ' + volume, 400))
 
-  res.status(201).send({ status: 'success' })
+  res.status(201).json({ status: 'success' })
 })
 
 exports.deleteVolume = catchAsync(async (req, res, next) => {
   const {volume, imageName} = req.body
-
   if (isNaN(parseInt(volume, 10))) {
     return next(new AppError('Volume is not a valid number', 400))
   }
@@ -72,4 +71,6 @@ exports.deleteVolume = catchAsync(async (req, res, next) => {
 
   if (!result)
     return next(new AppError('Could not delete Volume', 400))
+
+  res.status(204).json({status: 'success'})
 })

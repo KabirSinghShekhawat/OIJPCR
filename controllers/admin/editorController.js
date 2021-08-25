@@ -69,8 +69,17 @@ exports.saveArticle = catchAsync(async (req, res, next) => {
 })
 
 exports.editArticle = catchAsync(async (req, res, next) => {
-  const { id } = req.params
-  const { author, title, content, slug, volume, cover, tags, authorPhoto } = req.body
+  const { id } = req.body
+  const {
+          author,
+          title,
+          content,
+          slug,
+          volume,
+          cover,
+          tags,
+          authorPhoto,
+        } = req.body
   const modifiedArticle = {
     author,
     title,
@@ -91,7 +100,7 @@ exports.editArticle = catchAsync(async (req, res, next) => {
 })
 
 exports.deleteArticle = catchAsync(async (req, res, next) => {
-  const { id, articleCover, authorPhoto } = req.params
+  const { id, articleCover, authorPhoto } = req.body
   // * deleting the fallback image is not a good idea.
   // * all articles use this image as a fallback
   if (articleCover !== 'article_cover_fallback')

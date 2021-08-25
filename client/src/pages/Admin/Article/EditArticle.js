@@ -75,13 +75,22 @@ class EditArticle extends Component {
     try {
       const articleCover = this.state.cover.split('/').pop()
       const authorPhoto = this.state.authorPhoto.split('/').pop()
-      let url = `${config.host}admin/editor/${this.state.id}/${articleCover}/${authorPhoto}`
-      await axios.delete(url)
-      
+
+      let url = `${config.host}admin/editor`
+
+      const data = {
+        id: this.state.id,
+        articleCover,
+        authorPhoto,
+      }
+
+      await axios.delete(url, { data: { ...data } })
+
       this.setState({
         redirect: '/admin/list',
         postDataFlag: false,
       })
+
     } catch (err) {
       this.setState({
         notification: {
@@ -111,7 +120,7 @@ class EditArticle extends Component {
   async handleSubmit (evt) {
     evt.preventDefault()
 
-    if(!this.state.postDataFlag) return
+    if (!this.state.postDataFlag) return
 
     if (this.state.articleCoverImage) {
       const imgPath = await this.fileUpload(this.state.articleCoverImage)
@@ -131,7 +140,6 @@ class EditArticle extends Component {
       this.setState({ authorPhoto: imgPath })
     }
 
-    this.setState({ postDataFlag: true })
     await this.PostData()
   }
 
@@ -162,7 +170,7 @@ class EditArticle extends Component {
           onFileChange={this.onFileChange}
           {...formState}
           isEdit={true}
-          heading={"Edit Article"}
+          heading={'Edit Article'}
         >
           <Editor
             onInit={this.onInit}
@@ -209,7 +217,7 @@ class EditArticle extends Component {
 
   async PostData () {
     try {
-      if(!this.postDataFlag) return
+      if (!this.state.postDataFlag) return
 
       const {
               editorRef,
@@ -217,10 +225,9 @@ class EditArticle extends Component {
               redirect,
               articleCoverImage,
               authorImage,
-              id,
               ...data
             } = this.state
-      const url = `${config.host}admin/editor/${this.state.id}`
+      const url = `${config.host}admin/editor`
       await axios.patch(url, { ...data })
 
       this.setState({

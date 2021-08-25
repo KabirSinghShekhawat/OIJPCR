@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import ArticleCardAdmin from '../Admin/Cards/ArticleCardAdmin'
 import ReadArticle from '../../pages/Articles/ReadArticle'
+import config from '../../config/config'
 
 class ArticleList extends Component {
   constructor (props) {
@@ -17,7 +18,7 @@ class ArticleList extends Component {
 
   async componentDidMount () {
     try {
-      const { data } = await axios.get('http://localhost:5000/journals')
+      const { data } = await axios.get(`${config.host}journals`)
       this.setState({ journals: data })
     } catch (e) {
       throw new Error(e.message)
