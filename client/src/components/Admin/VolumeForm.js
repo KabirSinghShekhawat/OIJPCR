@@ -30,9 +30,15 @@ class VolumeForm extends Component {
   }
 
   render () {
-    const { volume, about, date, isEdit=false } = this.props
+    const {
+            volume,
+            about,
+            date,
+            isEdit  = false,
+            heading = 'Submit Form',
+          } = this.props
     return (
-      <FormContainer heading="Submit Form" handleSubmit={this.handleSubmit}>
+      <FormContainer heading={heading} handleSubmit={this.handleSubmit}>
         {/*Volume*/}
         <FormField name="volume" value={volume} label="Volume" handleChange={this.handleChange}
                    type="number"
@@ -43,7 +49,7 @@ class VolumeForm extends Component {
         {/*About*/}
         <FormField name="about" value={about} label="About" handleChange={this.handleChange}/>
 
-        <UploadFile onFileChange={this.onFileChange} />
+        <UploadFile onFileChange={this.onFileChange}/>
         {this.props.children}
         {
           isEdit
@@ -54,7 +60,10 @@ class VolumeForm extends Component {
               deleteTxt="Delete Volume"
             />
             :
-            <Button handleClick={this.handleSubmit} cname="primary-color-bg text-white">
+            <Button
+              handleClick={this.handleSubmit}
+              cname="primary-color-bg text-white"
+            >
               Save Data
             </Button>
         }
@@ -62,6 +71,5 @@ class VolumeForm extends Component {
     )
   }
 }
-
 
 export default VolumeForm

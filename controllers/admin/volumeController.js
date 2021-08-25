@@ -36,12 +36,15 @@ exports.createVolume = catchAsync(async (req, res, next) => {
 
 
 exports.editVolume = catchAsync(async (req, res, next) => {
-  const { volume, about, cover, date } = req.body
+  const { volume, about, cover, date, id } = req.body
 
-  const filter = { volume: volume}
+  const filter = { _id: id}
   const update = {
     volume, about, cover, date,
   }
+
+  if (cover.length === 0)
+    delete update.cover
 
   const result = await Volume.findOneAndUpdate(filter, update, {
     returnOriginal: false
@@ -54,18 +57,17 @@ exports.editVolume = catchAsync(async (req, res, next) => {
 })
 
 exports.deleteVolume = catchAsync(async (req, res, next) => {
-  const { volume } = req.params
+  const {volume, imageName} = req.body
 
   if (isNaN(parseInt(volume, 10))) {
     return next(new AppError('Volume is not a valid number', 400))
   }
-  const { imageName } = req.params
   // * deleting the default image is not a good idea.
   // * all volumes use this image as default
-  if (!isDefaultImage(imageName)) {
+  if (imageName !== 'volume_cover_fallback.jpeg') {
     await deleteCoverImage(imageName, next)
   }
-  // * After deleting the cover image, article can be safely deleted.
+  // * After deleting the cover image, volume can be safely deleted.
   const result = await Volume.deleteOne({ 'volume': volume })
 
   if (!result)

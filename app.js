@@ -12,7 +12,6 @@ const helmet = require('helmet')
 const path = require('path')
 const AppError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
-
 // Routes
 const journalsRoute = require('./routes/journals')
 const adminRoute = require('./routes/admin')
@@ -36,17 +35,16 @@ app.use(
     contentSecurityPolicy: false,
   }),
 )
-// cors
+// CORS
 app.use(cors())
 // Rate Limiter
-
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 100,
   message: 'Too many requests, try again later',
 })
 
-app.use('/admin', limiter)
+app.use('*', limiter)
 
 // Method Override
 app.use(method_override('_method'))
@@ -74,18 +72,18 @@ app.use(flash())
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
+let mongoConnectionString
 
-let dbUrl
-if (process.env.NODE_ENV === "dev") {
-  dbUrl = 'mongodb://localhost/oijpcr'
-  app.use(morgan('dev'))
-} else {
+if (process.env.NODE_ENV === 'prod') {
   app.use(morgan('tiny'))
-  dbUrl = process.env.DB_URL
+  mongoConnectionString = process.env.MONGO_URI
+} else {
+  app.use(morgan('dev'))
+  mongoConnectionString = 'mongodb://localhost/oijpcr'
 }
 
 /**
- *Mongo setup
+ * Connect to mongo
  */
 
 const mongoOptions = {
@@ -95,17 +93,15 @@ const mongoOptions = {
   useFindAndModify: false,
 }
 
-mongoose.connect(dbUrl, mongoOptions)
+mongoose.connect(mongoConnectionString, mongoOptions)
   .then(() => {
     console.log('Connected to MongoDB: OIJPCR 🐦 🐦 🐦')
   })
   .catch(err => {
-    throw new Error(`Error Message: ${err.message}`);
+    throw new Error(`Error Message: ${err.message}`)
   })
 
-/**
- * ROUTES
- */
+
 app.use((req, res, next) => {
   res.locals.success = req.flash('success')
   res.locals.error = req.flash('error')
@@ -118,6 +114,14 @@ app.use('/submit', submitArticleRoute)
 app.use('/podcast', podcastRoute)
 app.use('/admin', adminRoute)
 app.use('/editor', editorRoute)
+
+// Serve static assets (react) in production
+if (process.env.NODE_ENV === 'prod') {
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 // 404 page
 app.get('*', (req, res) => {

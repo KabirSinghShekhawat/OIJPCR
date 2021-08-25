@@ -6,6 +6,7 @@ import axios from 'axios'
 import FlexContainer from '../../components/utils/FlexContainer'
 import ReadArticle from '../Articles/ReadArticle'
 import SubmitArticleFormFullWidth from './SubmitArticleFormFullWidth'
+import config from '../../config/config'
 
 class Archive extends Component {
   constructor (props) {
@@ -17,10 +18,10 @@ class Archive extends Component {
 
   async componentDidMount () {
     try {
-      const { data } = await axios.get(`http://localhost:5000/journals/archive`)
+      const { data } = await axios.get(`${config.host}journals/archive`)
       this.setState({ archive: data })
     } catch (e) {
-      throw new Error(e.message)
+      console.log(e.message)
     }
   }
 

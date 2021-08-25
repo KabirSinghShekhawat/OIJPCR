@@ -1,5 +1,6 @@
 import dollar from '../../assets/stockPhotos/r1_c1.jpg'
 import CardButton from '../utils/CardButton'
+import CardCover from './CardCover'
 import slugify from 'slugify'
 
 export default function ArticleCard (props) {
@@ -16,44 +17,52 @@ export default function ArticleCard (props) {
           `BY ${author.toUpperCase()} ${String.fromCharCode(183)} VOLUME ${volume}`
   const defaultPhoto = coverPhoto ? coverPhoto : dollar
   return (
-    <div className={`article-card-container min-40`}>
+    <div className={
+      `rounded-md overflow-hidden shadow-lg my-4 md:m-4
+       md:max-w-md lg:h-auto
+       min-40`
+    }
+    >
       <CardCover coverPhoto={defaultPhoto} authorText={authorText}/>
-      <CardContent title={title} slug={slug} id={id} path={path} cname={cname} />
-    </div>
-  )
-}
-
-function CardCover ({ coverPhoto, authorText }) {
-  return (
-    <>
-      <img className="h-64 w-full object-cover hover:bg-gray"
-           src={coverPhoto}
-           alt="ArticleList cover"
+      <CardContent
+        title={title}
+        slug={slug}
+        id={id}
+        path={path}
+        cname={cname}
       />
-      <p className="article-card-author">{authorText}</p>
-    </>
+    </div>
   )
 }
 
 function CardContent ({ title, slug, id, path, cname }) {
   const start = 0,
-        end = slug.length >= 250 ? 250 : slug.length,
-        urlLength = 40
-          /**
-           * slug length limit is 250 for optimal viewing.
-           * url slug limit will be enforced later
-           * changing urls always causes trouble (-_-).
-           */
-  const aboutSlug = slug.slice(start, end)
+        end   = slug.length >= 250 ? 250 : slug.length
+  /**
+   * slug length limit is 250 for optimal viewing.
+   * url slug limit will be enforced later
+   * changing urls may cause problems (-_-).
+   */
+  const aboutSlug = slug.slice(start, end) + '...'
   // const urlSlug = slugify(slug.slice(start, urlLength))
   const urlSlug = slugify(title)
 
   return (
     <div className="mx-6 my-4 border-gray-light">
-      <div className="article-card-title"> {title} </div>
-      <p className="article-card-slug"> {aboutSlug} </p>
+      <div className="font-bold text-2xl text-gray-600 mb-4 text-center">
+        {title}
+      </div>
+      <p className="font-normal text-gray-700 text-lg md:text-sm mb-8 md:mb-0 px-2 md:pl-4">
+        {aboutSlug}
+      </p>
       <div>
-        <CardButton text="Read More" slug={urlSlug} id={id} path={path} cname={cname}/>
+        <CardButton
+          text="Read More"
+          slug={urlSlug}
+          id={id}
+          path={path}
+          cname={cname.button}
+        />
       </div>
     </div>
   )

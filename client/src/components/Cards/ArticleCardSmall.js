@@ -58,15 +58,13 @@ function CardCover ({ coverPhoto, authorText }) {
 
 function CardContent ({ title, slug, id, handleClick }) {
   const start     = 0,
-        end       = slug.length >= 100 ? 100 : slug.length,
-        urlLength = 40
+        end       = slug.length >= 100 ? 100 : slug.length
   /**
    * slug length limit is 250 for optimal viewing.
    * url slug limit will be enforced later
    * changing urls always causes trouble (-_-).
    */
   const aboutSlug = slug.slice(start, end)
-  // const urlSlug = slugify(slug.slice(start, urlLength))
   const urlSlug = slugify(title)
 
   return (

@@ -6,6 +6,8 @@ router
   .route('/')
   .get(volumeController.volumes)
   .post(volumeController.createVolume)
+  .patch(volumeController.editVolume)
+  .delete(volumeController.deleteVolume)
 
 
 router

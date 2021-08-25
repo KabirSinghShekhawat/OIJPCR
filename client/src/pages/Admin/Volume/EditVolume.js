@@ -1,3 +1,4 @@
+import config from '../../../config/config'
 import React, { Component } from 'react'
 import VolumeForm from '../../../components/Admin/VolumeForm'
 import axios from 'axios'
@@ -8,20 +9,23 @@ class EditVolume extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      volume: '',
+      volume: this.props.volume || '',
       about: 'loading...',
       cover: '',
       date: 'loading...',
+      id: '',
       isEdit: true,
       file: null,
       redirect: null,
+      postDataFlag: true,
       notification: {
         show: false,
-        msg: ''
-      }
+        msg: '',
+      },
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handlePopUp = this.handlePopUp.bind(this)
     this.onFileChange = this.onFileChange.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
     this.PatchData = this.PatchData.bind(this)
@@ -31,15 +35,33 @@ class EditVolume extends Component {
 
   async componentDidMount () {
     const { volume } = this.props.match.params
-    const { data } = await axios.get(`http://localhost:5000/admin/volume/${volume}`)
+    const { data } = await axios.get(`${config.host}admin/volume/${volume}`)
+
     if (!data) {
-      this.setState({redirect: '/notFound'})
+      this.setState({ redirect: '/notFound' })
     }
+
+    if (!data || data.length === 0)
+      return
+
+    const { about, cover, date, _id: id } = data[0]
     this.setState({
       volume: data[0].volume,
-      about: data[0].about,
-      cover: data[0].cover,
-      date: data[0].date,
+      about: about,
+      cover: cover,
+      date: date,
+      id: id,
+    })
+  }
+
+  handlePopUp () {
+    this.setState(prevState => {
+      return {
+        notification: {
+          show: !prevState.notification.show,
+          msg: '',
+        },
+      }
     })
   }
 
@@ -56,69 +78,117 @@ class EditVolume extends Component {
   async deleteVolume () {
     try {
       const imageName = this.state.cover.split('/').pop()
-      const url = `http://localhost:5000/admin/volume/${this.state.volume}/${imageName}`
-      await axios.delete(url)
+      const url = `${config.host}admin/volume`
+      await axios.delete(url, {
+        data: {
+          volume: this.state.volume,
+          imageName: imageName
+        }
+      })
 
       setTimeout(() => {
-          alert('Volume deleted, redirecting now')
-          this.setState({ redirect: '/admin/list' })
+          this.setState({
+            postDataFlag: false,
+            redirect: '/admin/list',
+            notification: {
+              show: true,
+              msg: 'Volume deleted',
+            },
+          })
         },
         1000,
       )
     } catch (err) {
-      // console.log('An Error occurred in deleting data: ' + err.message)
       this.setState({
         notification: {
           show: true,
-          msg: 'Could not Delete data'
-        }
+          msg: 'Error: Volume could not be deleted',
+        },
       })
     }
   }
 
   async deletePreviousCoverImage () {
     const imageName = this.state.cover.split('/').pop()
-    const url = `http://localhost:5000/admin/editor/${imageName}`
+    const url = `${config.host}admin/editor/${imageName}`
     await axios.delete(url)
   }
 
   async handleSubmit (evt) {
     evt.preventDefault()
-    if (this.state.file !== null) {
+
+    if (this.state.file) {
       const imgPath = await this.fileUpload(this.state.file)
       await this.deletePreviousCoverImage()
       this.setState({ cover: imgPath })
     }
+
+    this.setState({ postDataFlag: true })
     await this.PatchData()
   }
 
   async PatchData () {
     try {
-      const url = `http://localhost:5000/admin/volume/${this.state.volume}`
-      const { volume, about, cover, date } = this.state
+      if (!this.postDataFlag) return
+
+      const { volume, about, date, id } = this.state
+      const cover =
+              this.state.file
+                ?
+                this.state.cover : ''
+      console.log('%cPatching Data Now \n Cover:', "font-size: 2rem; color: white")
+      console.log(cover)
+      const url = `${config.host}admin/volume`
+
       await axios.patch(url, {
         volume,
         about,
         cover,
         date,
+        id,
       })
-      alert('Edited Volume')
+
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Edited Volume: ' + this.state.volume,
+        },
+      })
+
     } catch (err) {
-      console.log('An Error occurred in creating volume: ' + err.message)
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'An Error occurred in editing volume: ' +
+            this.state.volume,
+        },
+      })
     }
   }
 
   async fileUpload (file) {
-    const url = 'http://localhost:5000/admin/editor/uploadFile'
+    const url = `${config.host}admin/editor/uploadFile`
+
     const formData = new FormData()
     formData.append('image', file)
-    const config = {
+
+    const headerConfig = {
       headers: {
         'content-type': 'multipart/form-data',
       },
     }
-    const { data } = await axios.post(url, formData, config)
-    return 'http://localhost:5000' + data.file.url
+    try {
+      const { data } = await axios.post(url, formData, headerConfig)
+      const { host } = config
+      return host.slice(0, host.length - 1) + data.file.url
+    } catch (e) {
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Error in uploading file',
+        },
+      })
+    }
   }
 
   render () {
@@ -126,26 +196,28 @@ class EditVolume extends Component {
     if (redirect)
       return <Redirect to={this.state.redirect}/>
 
-    if (this.state.notification.show) {
-      const {msg} = this.state.notification
-      return (<PopUp
-        heading={msg}
-        text=""
-        buttonText=""
-        buttonColor=""
-      />)
-    }
-
     return (
-      <VolumeForm
-        handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-        handleDelete={this.deleteVolume}
-        onFileChange={this.onFileChange}
-        {...this.state}
-      >
-
-      </VolumeForm>
+      <>
+        <VolumeForm
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          handleDelete={this.deleteVolume}
+          onFileChange={this.onFileChange}
+          heading={"Edit Volume"}
+          {...this.state}
+        >
+        </VolumeForm>
+        {
+          (this.state.notification.show) ?
+            <PopUp
+              heading={this.state.notification.msg}
+              handlePopUp={this.handlePopUp}
+              text=""
+              buttonText=""
+              buttonColor=""
+            /> : ''
+        }
+      </>
     )
   }
 }

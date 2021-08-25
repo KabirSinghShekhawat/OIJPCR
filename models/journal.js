@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 const journalSchema = new mongoose.Schema({
     author: {
@@ -41,7 +42,7 @@ const journalSchema = new mongoose.Schema({
 
     cover: {
       type: String,
-      default: 'http://localhost:5000/editor/images/r2_c1.jpg',
+      default: `${process.env.HOST}editor/images/article_cover_fallback.jpg`,
     },
   },
   {

@@ -8,7 +8,7 @@ function CardButton (props) {
     <div className={cname}>
       <Link
         to={`/archive/${slug}/${id}`}
-        className="my-4 sm:my-4 py-2 px-4 mr-4 max-w-max rounded-lg bg-black text-white"
+        className="my-4 sm:my-2 py-2 px-4 mr-4 max-w-max rounded-lg bg-black text-white"
       >
         <img src={alertCircle} className="mr-2 mb-1 inline" alt="alert icon"/>
         Read More

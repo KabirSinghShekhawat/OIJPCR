@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import ArticleList from './ArticleList'
+import config from '../../config/config'
 
-
-class Archive extends Component {
+class Volume extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -14,7 +14,11 @@ class Archive extends Component {
   async componentDidMount () {
     try {
       const { volume } = this.props
-      const { data: journals } = await axios.get(`http://localhost:5000/journals/all/${volume}/info`)
+
+      const { data: journals } = await axios.get(
+        `${config.host}journals/all/${volume}/info`,
+      )
+
       this.setState({ journals: journals })
     } catch (e) {
       throw new Error(e.message)
@@ -42,5 +46,4 @@ class Archive extends Component {
   }
 }
 
-
-export default Archive
+export default Volume

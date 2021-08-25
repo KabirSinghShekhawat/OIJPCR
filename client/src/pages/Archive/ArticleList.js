@@ -47,7 +47,7 @@ function createJournals (journals) {
       coverPhoto: article.cover,
       cname: {
         container: '',
-        button: 'mt-10 flex flex-wrap',
+        button: 'mt-6 flex flex-wrap',
       },
       ...article,
     }

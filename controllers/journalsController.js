@@ -12,6 +12,17 @@ exports.journals = catchAsync(async (request, response, next) => {
   response.status(200).json(journals)
 })
 
+exports.journalsByLimit = catchAsync(async (request, response, next) => {
+  const {limit} = request.params
+
+  if (isNaN(parseInt(limit, 10))) {
+    return next(new AppError('limit is not a valid number', 400))
+  }
+
+  const journals = await getJournals(parseInt(limit, 10))
+  response.status(200).json(journals)
+})
+
 exports.journalsByVolume = catchAsync(async (request, response, next) => {
   const { volume, full } = request.params
 
@@ -86,3 +97,11 @@ exports.tags = catchAsync(async (req, res, next) => {
   res.status(200).json(articles)
 })
 
+async function getJournals(limit) {
+  return await Journal
+    .find({})
+    .select('-content -authorPhoto')
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .exec()
+}

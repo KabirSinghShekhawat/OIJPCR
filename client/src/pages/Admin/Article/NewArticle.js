@@ -1,8 +1,10 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
 import EditorForm from '../../../components/Admin/EditorForm'
 import { initEditor } from '../../../components/Admin/Config/TinyMCEConfig'
+import config from '../../../config/config'
+import PopUp from '../../../components/utils/Popup'
 
 class NewArticle extends Component {
   constructor (props) {
@@ -19,13 +21,29 @@ class NewArticle extends Component {
       authorPhoto: this.props.authorPhoto || '',
       articleCoverImage: null,
       authorImage: null,
+      notification: {
+        show: false,
+        msg: '',
+      },
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handlePopUp = this.handlePopUp.bind(this)
     this.onFileChange = this.onFileChange.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
     this.PostData = this.PostData.bind(this)
     this.onInit = this.onInit.bind(this)
+  }
+
+  handlePopUp () {
+    this.setState(prevState => {
+      return {
+        notification: {
+          show: !prevState.notification.show,
+          msg: '',
+        },
+      }
+    })
   }
 
   onFileChange (evt) {
@@ -41,11 +59,35 @@ class NewArticle extends Component {
   async handleSubmit (evt) {
     evt.preventDefault()
 
-    if(!this.state.articleCoverImage)
-      return alert('Article cover image not uploaded')
+    if (!this.state.articleCoverImage) {
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Article cover image not uploaded',
+        },
+      })
+      return
+    }
 
-    if (!this.state.authorImage)
-      return alert('Author profile photo not uploaded')
+    if (!this.state.authorImage) {
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Author profile photo not uploaded',
+        },
+      })
+      return
+    }
+
+    if (this.state.content.length === 0) {
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Empty Article',
+        },
+      })
+      return
+    }
 
     const cover = await this.fileUpload(this.state.articleCoverImage)
     const authorPhoto = await this.fileUpload(this.state.authorImage)
@@ -71,19 +113,32 @@ class NewArticle extends Component {
             ...formState
           } = this.state
     return (
-      <EditorForm
-        handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
-        onFileChange={this.onFileChange}
-        {...formState}
-        isEdit={false}
-      >
-        <Editor
-          onInit={this.onInit}
-          onChange={this.handleEditorChange}
-          init={{...initEditor}}
-        />
-      </EditorForm>
+      <>
+        <EditorForm
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          onFileChange={this.onFileChange}
+          isEdit={false}
+          heading={"New Article"}
+          {...formState}
+        >
+          <Editor
+            onInit={this.onInit}
+            onChange={this.handleEditorChange}
+            init={{ ...initEditor }}
+          />
+        </EditorForm>
+        {
+          (this.state.notification.show) ?
+            <PopUp
+              heading={this.state.notification.msg}
+              handlePopUp={this.handlePopUp}
+              text=""
+              buttonText=""
+              buttonColor=""
+            /> : ''
+        }
+      </>
     )
   }
 
@@ -94,16 +149,26 @@ class NewArticle extends Component {
   }
 
   async fileUpload (file) {
-    const url = 'http://localhost:5000/admin/editor/uploadFile'
+    const url = `${config.host}admin/editor/uploadFile`
     const formData = new FormData()
     formData.append('image', file)
-    const config = {
+    const headerConfig = {
       headers: {
         'content-type': 'multipart/form-data',
       },
     }
-    const { data } = await axios.post(url, formData, config)
-    return 'http://localhost:5000' + data.file.url
+    try {
+      const { data } = await axios.post(url, formData, headerConfig)
+      const { host } = config
+      return host.slice(0, host.length - 1) + data.file.url
+    } catch (e) {
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Error in uploading file',
+        },
+      })
+    }
   }
 
   async PostData () {
@@ -114,11 +179,23 @@ class NewArticle extends Component {
               authorImage,
               ...data
             } = this.state
-      const url = 'http://localhost:5000/admin/editor/'
+
+      const url = `${config.host}admin/editor/`
       await axios.post(url, { ...data })
-      alert('Created New Article')
+
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Created new article',
+        },
+      })
     } catch (err) {
-      console.log('An Error occurred in posting data: ' + err.message)
+      this.setState({
+        notification: {
+          show: true,
+          msg: 'Error: could not create new article',
+        },
+      })
     }
   }
 }

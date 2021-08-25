@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 const volumeSchema = new mongoose.Schema({
     volume: {
@@ -15,7 +16,7 @@ const volumeSchema = new mongoose.Schema({
 
     cover: {
       type: String,
-      default: 'http://localhost:5000/editor/images/r2_c1.jpg'
+      default: `${process.env.HOST}editor/images/volume_cover_fallback.jpeg`
     },
 
     date: {

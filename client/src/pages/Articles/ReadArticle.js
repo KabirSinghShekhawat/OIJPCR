@@ -8,6 +8,7 @@ import linkedin from '../../assets/shareIcons/linkedin.svg'
 import shareIcon from '../../assets/shareIcons/shareLink.svg'
 import ArticleCardSmall from '../../components/Cards/ArticleCardSmall'
 import SubmitArticleFormFullWidth from '../Archive/SubmitArticleFormFullWidth'
+import config from '../../config/config'
 
 class ReadArticle extends Component {
   constructor (props) {
@@ -23,10 +24,10 @@ class ReadArticle extends Component {
   async componentDidMount () {
     try {
       const { urlSlug, id} = this.props
-      const url = `http://localhost:5000/journals/${urlSlug}/${id}`
+      const url = `${config.host}journals/${urlSlug}/${id}`
       const { data: journal } = await axios.get(url)
       const volume = journal.volume
-      const moreJournalsUrl = `http://localhost:5000/journals/limit/${volume}/${3}`
+      const moreJournalsUrl = `${config.host}journals/limit/${volume}/${3}`
       const { data: moreJournals } = await axios.get(moreJournalsUrl)
       this.setState({
         journal: journal,
@@ -39,7 +40,7 @@ class ReadArticle extends Component {
 
   async handleClickOtherArticle(url) {
     const { urlSlug, id} = url
-    const articleURL = `http://localhost:5000/journals/${urlSlug}/${id}`
+    const articleURL = `${config.host}journals/${urlSlug}/${id}`
     const { data: journal } = await axios.get(articleURL)
     this.setState({
       journal: journal,

@@ -2,6 +2,7 @@ import dollar from '../../assets/stockPhotos/r1_c1.jpg'
 import slugify from 'slugify'
 import { Link } from 'react-router-dom'
 import alertCircle from '../../assets/alert-circle.svg'
+import CardCover from './CardCover'
 
 function ArticleCardFullWidth (props) {
   const {
@@ -17,38 +18,50 @@ function ArticleCardFullWidth (props) {
           `BY ${author.toUpperCase()} ${String.fromCharCode(183)} VOLUME ${volume}`
   const defaultPhoto = coverPhoto ? coverPhoto : dollar
   return (
-    <div className='h-auto rounded-md overflow-hidden shadow-lg m-4 lg:h-auto md:col-span-full'>
-      <CardCover coverPhoto={defaultPhoto} authorText={authorText}/>
-      <CardContent title={title} slug={slug} id={id} path={path} cname={cname.button} />
-    </div>
-  )
-}
-
-function CardCover ({ coverPhoto, authorText }) {
-  return (
-    <>
-      <img className="h-64 w-full object-cover hover:bg-gray"
-           src={coverPhoto}
-           alt="ArticleList cover"
+    <div className={
+      `rounded-md overflow-hidden 
+       shadow-lg my-4 md:m-4 lg:h-auto 
+       md:col-span-full`
+    }
+    >
+      <CardCover
+        coverPhoto={defaultPhoto}
+        authorText={authorText}
       />
-      <p className="article-card-author">{authorText}</p>
-    </>
+      <CardContent
+        title={title}
+        slug={slug}
+        id={id}
+        path={path}
+        cname={cname}
+      />
+    </div>
   )
 }
 
 function CardContent ({ title, slug, id, path, cname }) {
   const start = 0,
-        end = slug.length >= 250 ? 250 : slug.length
-  const aboutSlug = slug.slice(start, end)
+        end   = slug.length >= 250 ? 250 : slug.length
+  const aboutSlug = slug.slice(start, end) + '...'
   // const urlSlug = slugify(slug)
   const urlSlug = slugify(title)
 
   return (
-    <div className="mx-6 my-4 border-gray-light">
-      <div className="font-bold text-4xl text-gray-600 mb-8 text-center"> {title} </div>
-      <p className="font-normal text-gray-700 text-lg mb-8 text-center"> {aboutSlug} </p>
+    <div className="mx-2 md:mx-6 my-4 border-gray-light">
+      <div className="font-bold text-2xl md:text-4xl text-gray-600 mb-8 text-center">
+        {title}
+      </div>
+      <p className="font-normal text-gray-700 text-lg mb-8 px-2">
+        {aboutSlug}
+      </p>
       <div>
-        <CardButton text="Read More" slug={urlSlug} id={id} path={path} cname={cname} />
+        <CardButton
+          text="Read More"
+          slug={urlSlug}
+          id={id}
+          path={path}
+          cname={cname.button}
+        />
       </div>
     </div>
   )
@@ -79,4 +92,4 @@ function CardButton ({ slug, id, path }) {
   )
 }
 
-export default ArticleCardFullWidth;
+export default ArticleCardFullWidth

@@ -13,7 +13,7 @@ class Home extends Component {
       <div className="flex-grow">
         <Header/>
         <Main/>
-        <div className="mx-8">
+        <div className="mx-2 md:mx-8">
           <Podcast/>
         </div>
       </div>
@@ -23,7 +23,7 @@ class Home extends Component {
 
 function Main () {
   return (
-    <div className="flex flex-col md:flex-row px-4 mx-4">
+    <div className="flex flex-col md:flex-row px-2 md:px-4 md:mx-4">
       <LeftGrid/>
       <SideBar/>
     </div>

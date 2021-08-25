@@ -3,6 +3,7 @@ const router = express.Router()
 const journalController = require('./../controllers/journalsController')
 
 router.get('/', journalController.journals)
+router.get('/home/:limit', journalController.journalsByLimit)
 router.get('/tags/:tag', journalController.tags)
 router.get('/all/:volume/:full', journalController.journalsByVolume)
 router.get('/limit/:volume/:limit', journalController.getLimitedJournalsByVolume)

@@ -4,7 +4,6 @@ import FormField from './Form/FormField'
 import UploadFile from './Form/UploadFile'
 import { Button, ButtonGroup } from './Form/FormButtons'
 
-
 class EditorForm extends Component {
   constructor (props) {
     super(props)
@@ -31,9 +30,17 @@ class EditorForm extends Component {
   }
 
   render () {
-    const { author, title, slug, volume, tags, isEdit=false } = this.props
+    const {
+            author,
+            title,
+            slug,
+            volume,
+            tags,
+            isEdit  = false,
+            heading = 'Submit Form',
+          } = this.props
     return (
-      <FormContainer heading="Submit Form" handleSubmit={this.handleSubmit}>
+      <FormContainer heading={heading} handleSubmit={this.handleSubmit}>
         {/* Author */}
         <FormField name="author" value={author} label="Author" handleChange={this.handleChange}/>
         {/* Title */}
@@ -76,6 +83,5 @@ class EditorForm extends Component {
     )
   }
 }
-
 
 export default EditorForm
