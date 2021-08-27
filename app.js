@@ -62,13 +62,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/img')))
  * Session
  */
 
-app.use(session({
-  secret: process.env.SECRET,
-  resave: false,
-  saveUninitialized: false,
-}))
+// app.use(session({
+//   secret: process.env.SECRET,
+//   resave: false,
+//   saveUninitialized: false,
+// }))
 
-app.use(flash())
+// app.use(flash())
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
@@ -102,11 +102,11 @@ mongoose.connect(mongoConnectionString, mongoOptions)
   })
 
 
-app.use((req, res, next) => {
-  res.locals.success = req.flash('success')
-  res.locals.error = req.flash('error')
-  next()
-})
+// app.use((req, res, next) => {
+//   res.locals.success = req.flash('success')
+//   res.locals.error = req.flash('error')
+//   next()
+// })
 
 app.use('/', homeRoute)
 app.use('/journals', journalsRoute)

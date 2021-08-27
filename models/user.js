@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
   },
 )
 
+
 userSchema.methods.matchPassword = async (
   candidatePassword,
   userPassword,

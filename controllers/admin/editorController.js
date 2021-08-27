@@ -4,7 +4,7 @@ const Journal = require('../../models/journal')
 const catchAsync = require('../../utils/catchAsync')
 const AppError = require('../../utils/appError')
 const multer = require('multer')
-const { isDefaultImage, deleteCoverImage } = require('./utils')
+const { deleteCoverImage } = require('./utils')
 const { multerStorage, multerFilter } = require('../ImageUpload/ArticleCoverImage')
 
 const upload = multer({

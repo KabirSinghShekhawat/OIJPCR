@@ -3,10 +3,9 @@ const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const AppError = require('../../utils/appError')
 const catchAsync = require('../../utils/catchAsync')
-
 const {
         generatePasswordHash,
-        signToken,
+        createSendToken,
       } = require('./utils')
 
 require('dotenv').config()
@@ -34,7 +33,7 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   const { username, password } = req.body
-
+  console.log(req.body)
   if (!(username && password))
     return next(new AppError('Please provide username and password', 400))
 
@@ -45,22 +44,21 @@ exports.login = catchAsync(async (req, res, next) => {
     !(await user.matchPassword(password, user.password))
   ) return next(new AppError('Incorrect username or password', 401))
 
-  const token = signToken(user._id)
-
   req.user = user
-
-  res.status(200).json({
-    status: 'success',
-    token,
-  })
+  createSendToken(user, 200, res)
 })
 
 exports.logout = (req, res) => {
-  req.user = null
-  return res.status(200).json({
-    status: 'success',
-    isAdmin: false,
-  })
+  const cookieOptions = {
+    // 15 minutes
+    expires: new Date(
+      Date.now() + 10 * 1000,
+    ),
+    httpOnly: true,
+  }
+
+  res.cookie('jwt', 'logged out', cookieOptions)
+  res.status(200).json({ status: 'success' })
 }
 
 exports.register = catchAsync(async (req, res, next) => {
@@ -77,19 +75,11 @@ exports.register = catchAsync(async (req, res, next) => {
   if (!newUser)
     return next(new AppError('Could not create user: ' + username, 500))
 
-  const token = signToken(newUser._id)
-
-  res.status(201).json({
-      status: 'success',
-      msg: `User created successfully: ${username}`,
-      isAdmin: true,
-      token,
-    },
-  )
+  createSendToken(newUser, 201, res)
 })
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
-  if(!req.user)
+  if (!req.user)
     return next(new AppError('You need to be logged-in to do that', 401))
 
   const { _id: id } = req.user
