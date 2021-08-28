@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
+import axios from 'axios'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 import FlexContainer from '../../components/utils/FlexContainer'
@@ -12,11 +13,26 @@ import NewVolume from './Volume/NewVolume'
 import EditVolume from './Volume/EditVolume'
 import VolumeList from '../../components/Admin/VolumeList'
 import { UserContext } from '../../UserContext'
+import config from '../../config/config'
 
 const Admin = (props) => {
-  const {value, setValue} = useContext(UserContext)
+  const { value, setValue } = useContext(UserContext)
 
   const { path } = props.match
+
+  const Logout = async () => {
+    const headers = {
+      'Authorization': value ? `Bearer ${value}` : null,
+      'Content-Type': 'application/json',
+    }
+
+    const { data } = await axios.post(`${config.host}admin/logout`, {}, {
+      withCredentials: true,
+      headers: headers,
+    })
+
+    if (data.status === 'success') setValue('')
+  }
 
   const NewArticleProps = {
     initialValue: 'initial Content',
@@ -33,6 +49,9 @@ const Admin = (props) => {
   return (
     <>
       <AdminNav/>
+      <div>
+        <button onClick={Logout}>Logout</button>
+      </div>
       <FlexContainer cname="m-2">
         {/*/admin/:urlSlug/:id*/}
         <Switch>

@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import {
   BrowserRouter as Router, Switch, Route,
 } from 'react-router-dom'
@@ -19,15 +19,14 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        {/*404*/}
-        <Route exact path="/notFound">
-          <NotFound msg="could not find that"/>
-        </Route>
-
-        {/*Admin*/}
+            {/*404*/}
+            <Route exact path="/notFound" render={() =>
+              <NotFound msg="could not find that" />}
+            />
+            {/*Admin*/}
         <UserContext.Provider value={{ value, setValue }}>
-          <Route path="/admin" render={(props) => <Admin {...props} />}/>
-          <Route path="/login" component={Login}/>
+            <Route exact path="/admin" render={(props) => <Admin {...props} />}/>
+            <Route exact path="/login" component={Login}/>
         </UserContext.Provider>
         {/*App*/}
         <div className="flex flex-col h-screen">

@@ -1,5 +1,5 @@
 import { useFormFields } from './FormHooks'
-import { useContext, useState } from 'react'
+import { useContext} from 'react'
 import axios from 'axios'
 import config from '../../../config/config'
 import {
@@ -8,13 +8,11 @@ import {
   FormField,
   Form, FormButton,
 } from './Form'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 import { UserContext } from '../../../UserContext'
 
 const Login = () => {
-  const {value, setValue} = useContext(UserContext)
-
-  const history = useHistory()
+  const { value, setValue } = useContext(UserContext)
 
   const [fields, handleFieldChange] = useFormFields({
     username: '',
@@ -27,22 +25,26 @@ const Login = () => {
 
     const formData = {
       username: fields.username,
-      password: fields.password
+      password: fields.password,
     }
 
     const headerConfig = {
+      withCredentials: true,
       headers: {
-        'content-type': 'application/json',
+        'Content-Type': 'application/json',
       },
     }
 
-    const { data } = await axios.post(url, {...formData}, headerConfig)
+    const { data } = await axios.post(
+      url,
+      { ...formData },
+      headerConfig,
+    )
     setValue(data?.token)
   }
 
   if (value) {
-    history.push("/admin")
-    // return <Redirect to="/admin" token={token} />
+    return <Redirect to="/admin"/>
   }
 
   return (

@@ -10,6 +10,7 @@ const flash = require('connect-flash')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 const AppError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
 // Routes
@@ -30,13 +31,18 @@ process.on('uncaughtException', err => {
 
 // Helmet
 
+const corsOrigin = 'http://localhost:3000'
+
 app.use(
   helmet({
     contentSecurityPolicy: false,
   }),
 )
 // CORS
-app.use(cors())
+app.use(cors({
+  credentials: true,
+  origin: corsOrigin
+}))
 // Rate Limiter
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
@@ -48,6 +54,10 @@ app.use('*', limiter)
 
 // Method Override
 app.use(method_override('_method'))
+
+// cookie parser
+
+app.use(cookieParser())
 
 // App Engine
 app.engine('ejs', engine)
@@ -107,6 +117,18 @@ mongoose.connect(mongoConnectionString, mongoOptions)
 //   res.locals.error = req.flash('error')
 //   next()
 // })
+
+
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, X-PINGOTHER,Content-Type, Accept, Authorization'
+  );
+  next();
+});
+
 
 app.use('/', homeRoute)
 app.use('/journals', journalsRoute)

@@ -8,22 +8,19 @@ import React from 'react'
 export default function NavController () {
   return (
     <Switch>
-      <Route exact path="/">
-        <Home/>
-      </Route>
-      <Route exact path="/about">
-        <About/>
-      </Route>
+      <Route exact path="/" component={Home} />
+
+      <Route exact path="/about" component={About}/>
+
       <Route path="/archive" render={(props) =>
         <Archive {...props} />}
       />
-      <Route exact path="/submitArticle">
-        <SubmitArticle/>
-      </Route>
+
+      <Route exact path="/submitArticle" component={SubmitArticle} />
+
       <Route path="*" render={() =>
         <Redirect to="/notFound" />
-      }
-      />
+      }/>
     </Switch>
   )
 }
