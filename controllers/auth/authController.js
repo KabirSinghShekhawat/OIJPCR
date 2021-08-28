@@ -26,7 +26,6 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
 
   if (!currentUser)
     return next(new AppError('This token is no longer valid', 401))
-
   return next()
 })
 
@@ -55,11 +54,11 @@ exports.logout = (req, res) => {
     httpOnly: true,
   }
 
-  res.cookie('jwt', 'logged out', cookieOptions)
+  res.cookie('jwt', '', cookieOptions)
   res.status(200).json({ status: 'success' })
 }
 
-exports.register = catchAsync(async (req, res, next) => {
+exports.signup = catchAsync(async (req, res, next) => {
   const { username, password, key } = req.body
 
   if (!key || key !== process.env.SECRET)

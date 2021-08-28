@@ -5,8 +5,11 @@ import EditorForm from '../../../components/Admin/EditorForm'
 import { initEditor } from '../../../components/Admin/Config/TinyMCEConfig'
 import config from '../../../config/config'
 import PopUp from '../../../components/utils/Popup'
+import { UserContext } from '../../../UserContext'
 
 class NewArticle extends Component {
+  static contextType = UserContext
+
   constructor (props) {
     super(props)
     this.state = {
@@ -25,6 +28,7 @@ class NewArticle extends Component {
         show: false,
         msg: '',
       },
+      token: '',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -33,6 +37,10 @@ class NewArticle extends Component {
     this.fileUpload = this.fileUpload.bind(this)
     this.PostData = this.PostData.bind(this)
     this.onInit = this.onInit.bind(this)
+  }
+
+  componentDidMount () {
+    this.setState({ token: this.context?.token })
   }
 
   handlePopUp () {
@@ -112,6 +120,7 @@ class NewArticle extends Component {
             authorImage,
             ...formState
           } = this.state
+
     return (
       <>
         <EditorForm
@@ -119,7 +128,7 @@ class NewArticle extends Component {
           handleSubmit={this.handleSubmit}
           onFileChange={this.onFileChange}
           isEdit={false}
-          heading={"New Article"}
+          heading={'New Article'}
           {...formState}
         >
           <Editor
@@ -150,15 +159,20 @@ class NewArticle extends Component {
 
   async fileUpload (file) {
     const url = `${config.host}admin/editor/uploadFile`
+
     const formData = new FormData()
     formData.append('image', file)
+
     const headerConfig = {
+      withCredentials: true,
       headers: {
-        'content-type': 'multipart/form-data',
+        'Authorization': `Bearer ${this.state.token}`,
+        'Content-Type': 'multipart/form-data',
       },
     }
+
     try {
-      const { data } = await axios.post(url, formData, headerConfig)
+      const { data } = await axios.post(url, formData, {...headerConfig})
       const { host } = config
       return host.slice(0, host.length - 1) + data.file.url
     } catch (e) {
@@ -181,7 +195,16 @@ class NewArticle extends Component {
             } = this.state
 
       const url = `${config.host}admin/editor/`
-      await axios.post(url, { ...data })
+
+      const headerConfig = {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+
+      await axios.post(url, { ...data }, {...headerConfig})
 
       this.setState({
         notification: {

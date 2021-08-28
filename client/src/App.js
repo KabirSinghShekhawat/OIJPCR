@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   BrowserRouter as Router, Switch, Route,
 } from 'react-router-dom'
@@ -6,36 +6,36 @@ import {
 import { UserContext } from './UserContext'
 
 import './App.css'
-import Nav from './components/Navigation/Nav'
-import Footer from './components/Footer/Footer'
 import NavController from './components/Navigation/NavController'
 import Admin from './pages/Admin/Admin'
 import Login from './pages/Admin/Auth/Login'
 import NotFound from './pages/NotFound'
+import SignUp from './pages/Admin/Auth/SignUp'
 
 const App = () => {
-  const [value, setValue] = useState('')
+  const [token, setToken] = useState('')
+
+  const providerValue = useMemo(() =>
+      ({ token, setToken }),
+    [token, setToken],
+  )
 
   return (
-    <Router>
-      <Switch>
-            {/*404*/}
-            <Route exact path="/notFound" render={() =>
-              <NotFound msg="could not find that" />}
-            />
-            {/*Admin*/}
-        <UserContext.Provider value={{ value, setValue }}>
-            <Route exact path="/admin" render={(props) => <Admin {...props} />}/>
-            <Route exact path="/login" component={Login}/>
-        </UserContext.Provider>
-        {/*App*/}
-        <div className="flex flex-col h-screen">
-          <Nav/>
+    <UserContext.Provider value={providerValue}>
+      <Router>
+        <Switch>
+          <Route path="/notFound" render={() =>
+            <NotFound msg="could not find that"/>}
+          />
+
+          <Route path="/admin" render={(props) => <Admin {...props} />}/>
+          <Route path="/signup" render={() => <SignUp/>}/>
+          <Route path="/login" render={() => <Login/>}/>
+
           <NavController/>
-          <Footer/>
-        </div>
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+    </UserContext.Provider>
   )
 }
 

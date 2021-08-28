@@ -11,10 +11,10 @@ router.route('/login')
   .post(authController.login)
 
 router.route('/signup')
-  .post(authController.register)
+  .post(authController.signup)
 
 router.route('/logout')
-  .post(authController.isLoggedIn, authController.logout)
+  .get(authController.logout)
 
 router.route('/user')
   .delete(authController.isLoggedIn, authController.deleteUser)

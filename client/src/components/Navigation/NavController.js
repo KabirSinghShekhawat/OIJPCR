@@ -4,23 +4,35 @@ import About from '../../pages/About'
 import Archive from '../../pages/Archive/Archive'
 import SubmitArticle from '../../pages/SubmitArticle'
 import React from 'react'
+import Nav from './Nav'
+import Footer from '../Footer/Footer'
 
-export default function NavController () {
+
+const NavController = () => {
   return (
-    <Switch>
-      <Route exact path="/" component={Home} />
+    <div className="flex flex-col h-screen">
+      <Nav/>
+      <Switch>
 
-      <Route exact path="/about" component={About}/>
+        <Route exact path="/about" render={() => <About/>}/>
 
-      <Route path="/archive" render={(props) =>
-        <Archive {...props} />}
-      />
+        <Route path="/archive"
+               render={(props) => <Archive {...props}/>}
+        />
 
-      <Route exact path="/submitArticle" component={SubmitArticle} />
+        <Route exact path="/submitArticle"
+               render={() => <SubmitArticle/>}
+        />
 
-      <Route path="*" render={() =>
-        <Redirect to="/notFound" />
-      }/>
-    </Switch>
+        <Route exact path="/" render={() => <Home/>}/>
+
+        <Route path="*" >
+          <Redirect to="/notFound"/>
+        </Route>
+      </Switch>
+      <Footer/>
+    </div>
   )
 }
+
+export default NavController

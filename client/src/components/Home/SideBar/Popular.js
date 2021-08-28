@@ -53,7 +53,7 @@ function NavLink (props) {
           _id: id,
         } = props
   const urlSlug = slugify(title)
-  console.log(id)
+
   const url = `/archive/${urlSlug}/${id}`
   return (
     <div className="flex flex-row flex-1 my-2 mr-4 pb-2 border-b-2  border-transparent hover:border-indigo-400 ">

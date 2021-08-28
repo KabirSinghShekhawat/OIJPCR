@@ -3,8 +3,10 @@ import VolumeForm from '../../../components/Admin/VolumeForm'
 import axios from 'axios'
 import PopUp from '../../../components/utils/Popup'
 import config from '../../../config/config'
+import { UserContext } from '../../../UserContext'
 
 class NewVolume extends Component {
+  static contextType = UserContext
   constructor (props) {
     super(props)
     this.state = {
@@ -18,6 +20,7 @@ class NewVolume extends Component {
         show: false,
         msg: '',
       },
+      token: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -25,6 +28,10 @@ class NewVolume extends Component {
     this.onFileChange = this.onFileChange.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
     this.PostData = this.PostData.bind(this)
+  }
+
+  componentDidMount () {
+    this.setState({ token: this.context?.token })
   }
 
   handlePopUp () {
@@ -68,13 +75,24 @@ class NewVolume extends Component {
 
   async PostData () {
     try {
+      const {volume, about,  cover, date} = this.state
+
       const url = `${config.host}admin/volume/`
+
+      const headerConfig = {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+          'content-type': 'application/json',
+        },
+      }
+
       await axios.post(url, {
-          volume: this.state.volume,
-          about: this.state.about,
-          cover: this.state.cover,
-          date: this.state.date,
-        })
+          volume,
+          about,
+          cover,
+          date
+        }, {...headerConfig})
 
       this.setState({
         notification: {
@@ -100,13 +118,15 @@ class NewVolume extends Component {
     formData.append('image', file)
 
     const headerConfig = {
+      withCredentials: true,
       headers: {
-        'content-type': 'multipart/form-data',
+        'Authorization': `Bearer ${this.state.token}`,
+        'Content-Type': 'multipart/form-data',
       },
     }
 
     try {
-      const { data } = await axios.post(url, formData, headerConfig)
+      const { data } = await axios.post(url, formData, {...headerConfig})
       const {host} = config
       return host.slice(0, host.length - 1) + data.file.url
     } catch (e) {

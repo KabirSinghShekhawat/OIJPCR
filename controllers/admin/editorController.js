@@ -49,6 +49,7 @@ exports.uploadImageFile = (req, res) => {
 
 exports.saveArticle = catchAsync(async (req, res, next) => {
   const { author, title, content, slug, volume, cover, tags, authorPhoto } = req.body
+  console.log(req.body)
   const newArticle = new Journal({
     author,
     title,

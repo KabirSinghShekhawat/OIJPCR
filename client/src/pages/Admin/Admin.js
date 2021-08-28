@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
@@ -14,46 +14,46 @@ import EditVolume from './Volume/EditVolume'
 import VolumeList from '../../components/Admin/VolumeList'
 import { UserContext } from '../../UserContext'
 import config from '../../config/config'
+import { NewArticleProps } from './Article/DefaultData'
+
 
 const Admin = (props) => {
-  const { value, setValue } = useContext(UserContext)
+  const { token, setToken } = useContext(UserContext)
 
-  const { path } = props.match
+  useEffect(() => {
+    const authToken = localStorage.getItem("jwt")
+    setToken(authToken)
+  }, [])
 
   const Logout = async () => {
     const headers = {
-      'Authorization': value ? `Bearer ${value}` : null,
+      'Authorization': token ? `Bearer ${token}` : null,
       'Content-Type': 'application/json',
     }
 
-    const { data } = await axios.post(`${config.host}admin/logout`, {}, {
+    const { data } = await axios.get(`${config.host}admin/logout`,  {
       withCredentials: true,
       headers: headers,
     })
 
-    if (data.status === 'success') setValue('')
+    if (data.status === 'success') {
+      localStorage.setItem("jwt", "")
+      setToken('')
+    }
   }
 
-  const NewArticleProps = {
-    initialValue: 'initial Content',
-    author: 'Admin',
-    title: 'Title',
-    slug: 'Slug',
-    volume: 1,
-    cover: 'http://localhost:5000/editor/images/article_cover_fallback.jpg',
-  }
-
-  if (!value)
+  if (!token)
     return <Redirect to="/login"/>
+
+  const { path } = props.match
 
   return (
     <>
-      <AdminNav/>
-      <div>
-        <button onClick={Logout}>Logout</button>
-      </div>
+      <AdminNav
+        token={token}
+        Logout={Logout}
+      />
       <FlexContainer cname="m-2">
-        {/*/admin/:urlSlug/:id*/}
         <Switch>
           <Route exact path="/admin/new/volume">
             <NewVolume/>

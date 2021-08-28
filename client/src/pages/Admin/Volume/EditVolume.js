@@ -4,8 +4,11 @@ import VolumeForm from '../../../components/Admin/VolumeForm'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import PopUp from '../../../components/utils/Popup'
+import { UserContext } from '../../../UserContext'
 
 class EditVolume extends Component {
+  static contextType = UserContext
+
   constructor (props) {
     super(props)
     this.state = {
@@ -22,6 +25,7 @@ class EditVolume extends Component {
         show: false,
         msg: '',
       },
+      token: '',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -34,8 +38,19 @@ class EditVolume extends Component {
   }
 
   async componentDidMount () {
+    this.setState({ token: this.context?.token })
+
+    const headerConfig = {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${this.state.token}`,
+        'Content-Type': 'application/json',
+      },
+    }
     const { volume } = this.props.match.params
-    const { data } = await axios.get(`${config.host}admin/volume/${volume}`)
+    const url = `${config.host}volume/${volume}`
+
+    const { data } = await axios.get(url, { ...headerConfig })
 
     if (!data) {
       this.setState({ redirect: '/notFound' })
@@ -86,7 +101,18 @@ class EditVolume extends Component {
         imageName: imageName,
       }
 
-      await axios.delete(url, { data: { ...data } })
+      const headerConfig = {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+
+      await axios.delete(url, {
+        ...headerConfig,
+        data: { ...data },
+      })
 
       this.setState({
         redirect: '/admin/list',
@@ -105,7 +131,16 @@ class EditVolume extends Component {
   async deletePreviousCoverImage () {
     const imageName = this.state.cover.split('/').pop()
     const url = `${config.host}admin/editor/${imageName}`
-    await axios.delete(url)
+
+    const headerConfig = {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${this.state.token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+
+    await axios.delete(url, {...headerConfig})
   }
 
   async handleSubmit (evt) {
@@ -135,13 +170,21 @@ class EditVolume extends Component {
 
       const url = `${config.host}admin/volume`
 
+      const headerConfig = {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+
       await axios.patch(url, {
         volume,
         about,
         cover,
         date,
         id,
-      })
+      }, {...headerConfig})
 
       this.setState({
         notification: {
@@ -168,12 +211,15 @@ class EditVolume extends Component {
     formData.append('image', file)
 
     const headerConfig = {
+      withCredentials: true,
       headers: {
-        'content-type': 'multipart/form-data',
+        'Authorization': `Bearer ${this.state.token}`,
+        'Content-Type': 'multipart/form-data',
       },
     }
+
     try {
-      const { data } = await axios.post(url, formData, headerConfig)
+      const { data } = await axios.post(url, formData, {...headerConfig})
       const { host } = config
       return host.slice(0, host.length - 1) + data.file.url
     } catch (e) {

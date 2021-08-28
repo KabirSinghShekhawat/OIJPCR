@@ -11,16 +11,11 @@ class VolumeList extends Component {
   }
 
   async componentDidMount () {
-    try {
-      const { data } = await axios.get('http://localhost:5000/admin/volume')
-      this.setState({ volumes: data })
-    } catch (e) {
-      // throw new Error(e.message)
-    }
+    const { data } = await axios.get('http://localhost:5000/volume')
+    this.setState({ volumes: data })
   }
 
   render () {
-    // const { path } = this.props.match
     return (
       <div className="flex-grow">
         <Volumes volumes={this.state.volumes}/>
@@ -50,7 +45,7 @@ function Volumes ({ volumes }) {
 
 function createVolumeCards (volumes) {
   return volumes.map((volume, index) =>
-    <VolumeCard {...volume} key={index} isAdmin={true} />)
+    <VolumeCard {...volume} key={index} isAdmin={true}/>)
 }
 
 export default VolumeList

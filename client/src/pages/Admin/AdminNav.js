@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import React from 'react'
 
 export const urlLinks = [
   { url: '/admin/new', value: 'New Article' },
@@ -7,11 +8,14 @@ export const urlLinks = [
   { url: '/admin/list', value: 'All Articles' },
 ]
 
-function AdminNav () {
+const AdminNav = (props) => {
   return (
     <div className="w-full bg-black">
       <div className="flex flex-row flex-wrap justify-evenly text-black text-lg">
         <LinkItems links={urlLinks}/>
+        <LogoutButton
+          {...props}
+        />
       </div>
     </div>
   )
@@ -22,7 +26,7 @@ function LinkItems ({ links }) {
     padding: 'lg:p-4 py-3 px-0',
     border: 'border-b-4 border-transparent hover:border-gray-50 ',
     font: 'font-semibold text-xl text-gray-50 ',
-    display: 'block cursor-pointer'
+    display: 'block cursor-pointer',
   }
 
   let cname = ''
@@ -42,6 +46,24 @@ function NavLink ({ url, value, cname = '' }) {
     <Link className={cname} to={url}>
       {value}
     </Link>
+  )
+}
+
+function LogoutButton (props) {
+  return (
+    <>
+      {props.token &&
+      <div className="mt-2">
+        <button
+          className="rounded-lg bg-purple-700 text-lg md:text-2xl font-mono
+           tracking-wide text-white px-4 py-2 w-24 md:w-32 md:h-12"
+          onClick={props.Logout}
+        >
+          Logout
+        </button>
+      </div>
+      }
+    </>
   )
 }
 

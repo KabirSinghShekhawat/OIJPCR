@@ -6,8 +6,11 @@ import { Redirect } from 'react-router-dom'
 import { initEditor } from '../../../components/Admin/Config/TinyMCEConfig'
 import config from '../../../config/config'
 import PopUp from '../../../components/utils/Popup'
+import { UserContext } from '../../../UserContext'
 
 class EditArticle extends Component {
+  static contextType = UserContext
+
   constructor (props) {
     super(props)
     this.state = {
@@ -31,6 +34,7 @@ class EditArticle extends Component {
         show: false,
         msg: '',
       },
+      token: '',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -49,7 +53,12 @@ class EditArticle extends Component {
       const url = `${config.host}journals/${urlSlug}/${id}`
       const { data } = await axios.get(url)
       const { content: initialValue } = data
-      this.setState({ ...data, id, initialValue })
+      this.setState({
+        ...data,
+        id,
+        initialValue,
+        token: this.context?.token,
+      })
     } catch (e) {
       this.setState({
         notification: {
@@ -84,7 +93,20 @@ class EditArticle extends Component {
         authorPhoto,
       }
 
-      await axios.delete(url, { data: { ...data } })
+      const headerConfig = {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+
+      await axios.delete(
+        url,
+        {
+          ...headerConfig,
+          data: { ...data },
+        })
 
       this.setState({
         redirect: '/admin/list',
@@ -104,7 +126,16 @@ class EditArticle extends Component {
   async deletePreviousCoverImage (imagePath) {
     const imageName = imagePath.split('/').pop()
     const url = `${config.host}admin/editor/${imageName}`
-    await axios.delete(url)
+
+    const headerConfig = {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${this.state.token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+
+    await axios.delete(url, { ...headerConfig })
   }
 
   onFileChange (evt) {
@@ -206,11 +237,14 @@ class EditArticle extends Component {
     formData.append('image', file)
 
     const headerConfig = {
+      withCredentials: true,
       headers: {
-        'content-type': 'multipart/form-data',
+        'Authorization': `Bearer ${this.state.token}`,
+        'Content-Type': 'multipart/form-data',
       },
     }
-    const { data } = await axios.post(url, formData, headerConfig)
+
+    const { data } = await axios.post(url, formData, { ...headerConfig })
     const { host } = config
     return host.slice(0, host.length - 1) + data.file.url
   }
@@ -227,8 +261,18 @@ class EditArticle extends Component {
               authorImage,
               ...data
             } = this.state
+
       const url = `${config.host}admin/editor`
-      await axios.patch(url, { ...data })
+
+      const headerConfig = {
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${this.state.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+
+      await axios.patch(url, { ...data }, { ...headerConfig })
 
       this.setState({
         notification: {

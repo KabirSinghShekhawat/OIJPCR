@@ -6,7 +6,6 @@ const Form = (props) => {
   )
 }
 
-
 const FormField = (props) => {
   return (
     <div className="flex justify-evenly flex-col">
@@ -28,15 +27,18 @@ const FormField = (props) => {
   )
 }
 
-
 const FormContainer = (props) => {
+  const { cname } = props
   return (
-    <div className="flex flex-col min-h-screen items-center py-4 px-1 sm:p-4 md:p-8 justify-start">
+    <div className={`flex flex-col min-h-screen items-center
+     ${cname || 'py-4 px-1 sm:p-4 md:p-8'} 
+     justify-start`
+    }
+    >
       {props.children}
     </div>
   )
 }
-
 
 const FormHeading = (props) => {
   return (
@@ -46,8 +48,7 @@ const FormHeading = (props) => {
   )
 }
 
-
-const FormButton = ({text}) => {
+const FormButton = ({ text }) => {
   return (
     <div className="flex justify-center mt-12">
       <button className="rounded-lg bg-purple-700 text-2xl font-mono tracking-wide text-white px-4 py-2 w-32 h-12">
@@ -57,11 +58,10 @@ const FormButton = ({text}) => {
   )
 }
 
-
 export {
   Form,
   FormField,
   FormContainer,
   FormHeading,
-  FormButton
+  FormButton,
 }

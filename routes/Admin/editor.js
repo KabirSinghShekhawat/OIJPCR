@@ -8,10 +8,6 @@ router.route('/')
   .patch(editorController.editArticle)
   .delete(editorController.deleteArticle)
 
-// router
-//   .route('/:id')
-//   .patch(editorController.editArticle)
-
 router
   .delete('/:id/:articleCover/:authorPhoto', editorController.deleteArticle)
   .delete('/:imageName', editorController.deleteImage)

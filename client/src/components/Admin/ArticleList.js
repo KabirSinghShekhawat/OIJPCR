@@ -7,19 +7,23 @@ import {
 import ArticleCardAdmin from '../Admin/Cards/ArticleCardAdmin'
 import ReadArticle from '../../pages/Articles/ReadArticle'
 import config from '../../config/config'
+import { UserContext } from '../../UserContext'
 
 class ArticleList extends Component {
+  static contextType = UserContext
   constructor (props) {
     super(props)
     this.state = {
       journals: [],
+      token: ''
     }
   }
 
   async componentDidMount () {
     try {
+
       const { data } = await axios.get(`${config.host}journals`)
-      this.setState({ journals: data })
+      this.setState({ journals: data, token: this.context?.token })
     } catch (e) {
       throw new Error(e.message)
     }

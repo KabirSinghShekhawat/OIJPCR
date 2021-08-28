@@ -5,8 +5,6 @@ const engine = require('ejs-mate')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const method_override = require('method-override')
-const session = require('express-session')
-const flash = require('connect-flash')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
 const path = require('path')
@@ -20,6 +18,7 @@ const submitArticleRoute = require('./routes/submitArticle')
 const homeRoute = require('./routes/home')
 const podcastRoute = require('./routes/podcast')
 const editorRoute = require('./routes/editor')
+const volumeRoute = require('./routes/volume')
 const unhandledExceptionListener = require('./utils/unhandledExceptionListener')
 require('dotenv').config()
 
@@ -72,13 +71,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/img')))
  * Session
  */
 
-// app.use(session({
-//   secret: process.env.SECRET,
-//   resave: false,
-//   saveUninitialized: false,
-// }))
-
-// app.use(flash())
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
@@ -92,9 +84,6 @@ if (process.env.NODE_ENV === 'prod') {
   mongoConnectionString = 'mongodb://localhost/oijpcr'
 }
 
-/**
- * Connect to mongo
- */
 
 const mongoOptions = {
   useNewUrlParser: true,
@@ -112,14 +101,6 @@ mongoose.connect(mongoConnectionString, mongoOptions)
   })
 
 
-// app.use((req, res, next) => {
-//   res.locals.success = req.flash('success')
-//   res.locals.error = req.flash('error')
-//   next()
-// })
-
-
-
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Credentials', true);
@@ -135,6 +116,7 @@ app.use('/journals', journalsRoute)
 app.use('/submit', submitArticleRoute)
 app.use('/podcast', podcastRoute)
 app.use('/admin', adminRoute)
+app.use('/volume', volumeRoute)
 app.use('/editor', editorRoute)
 
 // Serve static assets (react) in production
