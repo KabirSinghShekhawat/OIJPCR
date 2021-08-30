@@ -6,7 +6,7 @@ import SubmitArticle from '../../pages/SubmitArticle'
 import React from 'react'
 import Nav from './Nav'
 import Footer from '../Footer/Footer'
-
+import Tag from '../../pages/Topic/Tag'
 
 const NavController = () => {
   return (
@@ -15,6 +15,8 @@ const NavController = () => {
       <Switch>
 
         <Route exact path="/about" render={() => <About/>}/>
+
+        <Route exact path="/tags/:tag" render={(props) => <Tag {...props}/>}/>/>
 
         <Route path="/archive"
                render={(props) => <Archive {...props}/>}

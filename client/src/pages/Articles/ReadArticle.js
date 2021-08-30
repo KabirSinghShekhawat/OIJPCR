@@ -9,6 +9,7 @@ import shareIcon from '../../assets/shareIcons/shareLink.svg'
 import ArticleCardSmall from '../../components/Cards/ArticleCardSmall'
 import SubmitArticleFormFullWidth from '../Archive/SubmitArticleFormFullWidth'
 import config from '../../config/config'
+import { Link } from 'react-router-dom'
 
 class ReadArticle extends Component {
   constructor (props) {
@@ -23,7 +24,7 @@ class ReadArticle extends Component {
 
   async componentDidMount () {
     try {
-      const { urlSlug, id} = this.props
+      const { urlSlug, id } = this.props
       const url = `${config.host}journals/${urlSlug}/${id}`
       const { data: journal } = await axios.get(url)
       const volume = journal.volume
@@ -38,8 +39,8 @@ class ReadArticle extends Component {
     }
   }
 
-  async handleClickOtherArticle(url) {
-    const { urlSlug, id} = url
+  async handleClickOtherArticle (url) {
+    const { urlSlug, id } = url
     const articleURL = `${config.host}journals/${urlSlug}/${id}`
     const { data: journal } = await axios.get(articleURL)
     this.setState({
@@ -118,7 +119,7 @@ class ReadArticle extends Component {
           handleClick={this.handleClickOtherArticle}
           path={this.props.path}
         />
-        <SubmitArticleFormFullWidth />
+        <SubmitArticleFormFullWidth/>
       </ReadContainer>
     )
   }
@@ -173,53 +174,73 @@ function Tags ({ tags }) {
       {
         tags?.split(', ').map(
           (tag, index) => {
-            return (
-              <span
-                key={index}
-                className="mx-4 my-2 px-4 py-2 block font-semibold text-gray-900 bg-gray-300">
-            {tag}
-          </span>
-            )
+            const itemLink = {
+              value: tag,
+              url: `/tags/${tag}`,
+            }
+            return <TagBlock
+              index={index}
+              {...itemLink}
+            />
           })
       }
     </div>
   )
 }
 
-function MoreArticles ({journals, path, handleClick}) {
+function TagBlock (props) {
+  const cname="mx-4 my-2 px-4 py-2 block font-semibold text-gray-900 bg-gray-300"
+  const {url, value, index, newTab} = props
+
+  return (
+  <li className={cname} key={index}>
+    {
+      newTab ?
+        <a href={url} target="_blank" rel="noreferrer">
+          {value}
+        </a>
+        :
+        <Link to={url}>
+          {value}
+        </Link>
+    }
+  </li>
+  )
+}
+
+function MoreArticles ({ journals, path, handleClick }) {
   return (
     <div className="my-4">
       <h1 className="text-2xl primary-color font-bold border-b-2 border-gray-900">
         More from this volume
       </h1>
       <div className="flex flex-col md:flex-row justify-evenly my-4">
-        { journals?.length > 1 ?
+        {journals?.length > 1 ?
           journals?.map(
             (journal) => {
-            const journalProps = {
-              id: journal._id,
-              coverPhoto: journal.cover,
-              cname: {
-                container: '',
-                button: 'mt-10 flex flex-wrap',
-              },
-              ...journal,
-            }
-            return (
-              <ArticleCardSmall
-                {...journalProps}
-                handleClick={handleClick}
-                key={journal._id}
-                path={path}
-              />
-            )
-          }) :
+              const journalProps = {
+                id: journal._id,
+                coverPhoto: journal.cover,
+                cname: {
+                  container: '',
+                  button: 'mt-10 flex flex-wrap',
+                },
+                ...journal,
+              }
+              return (
+                <ArticleCardSmall
+                  {...journalProps}
+                  handleClick={handleClick}
+                  key={journal._id}
+                  path={path}
+                />
+              )
+            }) :
           'No articles available'
         }
       </div>
     </div>
   )
 }
-
 
 export default ReadArticle

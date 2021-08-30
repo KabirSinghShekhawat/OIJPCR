@@ -93,7 +93,7 @@ exports.tags = catchAsync(async (req, res, next) => {
           $search: tag,
         },
     }).select('-content')
-
+  console.log(articles)
   res.status(200).json(articles)
 })
 

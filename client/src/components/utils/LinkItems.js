@@ -8,7 +8,7 @@ export function LinkItems ({ links, cname = '', newTab }) {
   )
 }
 
-function NavLink ({ url, value, cname = '', newTab }) {
+export function NavLink ({ url, value, cname = '', newTab }) {
   return (
     <li className={cname}>
       {

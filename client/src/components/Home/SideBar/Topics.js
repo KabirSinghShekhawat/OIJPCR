@@ -1,4 +1,4 @@
-import { LinkItems } from '../../utils/LinkItems'
+import { NavLink } from '../../utils/LinkItems'
 
 const ExploreTopics = [
   { url: '#', value: 'Philosophy' },
@@ -18,8 +18,23 @@ export default function Topics() {
     <div className="p-2 mx-1 mb-6 md:mb-0 rounded-lg shadow-xl border">
       <p className="text-3xl text-gray-900 text-center font-bold my-4 mx-2">Explore Topics</p>
       <ul className="text-center primary-color text-xl font-semibold">
-        <LinkItems links={ExploreTopics} cname="my-2 pb-2 border-b-2 border-transparent hover:border-indigo-400" />
+        <LinkItems
+          links={ExploreTopics}
+          cname="my-2 pb-2 border-b-2 border-transparent hover:border-indigo-400"
+        />
       </ul>
     </div>
+  )
+}
+
+function LinkItems ({ links, cname = '', newTab }) {
+  return (
+    links.map((item, index) => {
+      const itemLink = {
+        value: item.value,
+        url: `/tags/${item.value}`
+      }
+      return <NavLink key={index} {...itemLink} cname={cname} newTab={newTab}/>
+    })
   )
 }

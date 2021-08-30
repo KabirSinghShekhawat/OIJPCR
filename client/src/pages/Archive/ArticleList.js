@@ -1,26 +1,25 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   Switch,
   Route, Redirect,
 } from 'react-router-dom'
 import ArticleCard from '../../components/Cards/ArticleCard'
 
-class ArticleList extends Component {
-  render () {
-    const { path } = this.props
-    return (
-      <div className="flex-grow">
-        <Switch>
-          <Route path={path} render={(routeProps) =>
-            <Journals journals={this.props.journals} {...routeProps}/>}
-          />
-          <Route exact path={`${path}/*`}
-                 render={() => <Redirect to="/notFound"/>}
-          />
-        </Switch>
-      </div>
-    )
-  }
+const ArticleList = (props) => {
+  const { path, journals } = props
+
+  return (
+    <div className="flex-grow">
+      <Switch>
+        <Route path={path} render={(routeProps) =>
+          <Journals journals={journals} {...routeProps}/>}
+        />
+        <Route exact path={`${path}/*`}
+               render={() => <Redirect to="/notFound"/>}
+        />
+      </Switch>
+    </div>
+  )
 }
 
 function Journals ({ journals }) {
@@ -40,8 +39,8 @@ function Journals ({ journals }) {
   )
 }
 
-function createJournals (journals) {
-  return journals.map((article) => {
+function createJournals (journals=[]) {
+  return journals?.map((article) => {
     const articleProps = {
       id: article._id,
       coverPhoto: article.cover,
@@ -54,6 +53,5 @@ function createJournals (journals) {
     return <ArticleCard {...articleProps} key={article._id}/>
   })
 }
-
 
 export default ArticleList

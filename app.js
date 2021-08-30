@@ -37,15 +37,17 @@ app.use(
     contentSecurityPolicy: false,
   }),
 )
+
 // CORS
 app.use(cors({
   credentials: true,
   origin: corsOrigin
 }))
+
 // Rate Limiter
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 100,
+  max: 1000,
   message: 'Too many requests, try again later',
 })
 
