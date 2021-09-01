@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const Journal = require('../models/journal')
 const Volume = require('../models/volume')
+const { journals } = require('./journalsController')
 
 exports.journals = catchAsync(async (request, response, next) => {
   const journals = await Journal
@@ -79,7 +80,7 @@ exports.archive = catchAsync(async (req, res, next) => {
   res.status(200).json(archives)
 })
 
-exports.tags = catchAsync(async (req, res, next) => {
+exports.journalsByTag = catchAsync(async (req, res, next) => {
   const {tag} = req.params
 
   if (typeof tag !== 'string' || tag.length < 1) {
@@ -93,8 +94,22 @@ exports.tags = catchAsync(async (req, res, next) => {
           $search: tag,
         },
     }).select('-content')
-  console.log(articles)
   res.status(200).json(articles)
+})
+
+exports.tags = catchAsync(async (req, res, next) => {
+  let tags = await Journal.distinct("tags")
+  // tags = ["tag1, tag2, tag3", "tag4, tag5"]
+  tags = tags.map(tag => tag.split(', '))
+  // tags is a 2D array
+  // tags = [["tag1", "tag2", "tag3"], ["tag4, tag5"]]
+  // alternate solution - tags = tags.flat(1) ES2019 syntax
+  tags = [].concat.apply([], tags)
+  
+  const max = 9
+  const end = tags.length < max ? tags.length : max
+  tags = tags.slice(0, end)
+  res.status(200).json(tags)
 })
 
 async function getJournals(limit) {

@@ -17,7 +17,7 @@ const Tag = () => {
       setJournals(journals)
     }
     return getJournals(tag)
-  }, [])
+  }, )
 
   return (
     <div className="flex-grow">

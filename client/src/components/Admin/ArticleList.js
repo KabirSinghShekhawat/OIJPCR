@@ -20,13 +20,8 @@ class ArticleList extends Component {
   }
 
   async componentDidMount () {
-    try {
-
       const { data } = await axios.get(`${config.host}journals`)
       this.setState({ journals: data, token: this.context?.token })
-    } catch (e) {
-      throw new Error(e.message)
-    }
   }
 
   render () {

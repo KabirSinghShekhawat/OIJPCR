@@ -4,22 +4,15 @@ import axios from 'axios'
 import config from '../../../config/config'
 import slugify from 'slugify'
 
-// const MostPopular = [
-//   { url: '#', title: 'Role of Police in Conflict Resolution', author: 'Jyoti M. Pathania', volume: 1 },
-//   { url: '#', title: 'Economics and the Resolution of Conflicts', author: 'Jyoti M. Pathania', volume: 2 },
-//   { url: '#', title: 'Role of Women in Conflict Resolution: The Durga Way', author: 'Jyoti M. Pathania', volume: 3 },
-//   { url: '#', title: 'Politics: An Instrument to Resolve Conflicts', author: 'Jyoti M. Pathania', volume: 4 },
-//   { url: '#', title: 'Editor\'s Note', author: 'Jyoti M. Pathania', volume: 5 },
-// ]
 
 const Popular = () => {
   const [mostPopular, setPopular] = useState([])
 
   useEffect(() => {
     async function fetchPopular () {
-      return await axios.get(`${config.host}journals/home/5`)
+      const url = `${config.host}journals/home/5`
+      return await axios.get(url)
     }
-
     fetchPopular().then((result) => {
       setPopular(result?.data)
     })
@@ -48,7 +41,6 @@ function NavLink (props) {
           author,
           volume,
           title,
-          slug,
           index,
           _id: id,
         } = props

@@ -23,7 +23,7 @@ const Admin = (props) => {
   useEffect(() => {
     const authToken = localStorage.getItem("jwt")
     setToken(authToken)
-  }, [])
+  }, [token, setToken])
 
   const Logout = async () => {
     const headers = {
