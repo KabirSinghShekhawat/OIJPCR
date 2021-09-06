@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import VolumeCard from '../Cards/VolumeCard'
+import config from '../../config/config'
 
 class VolumeList extends Component {
   constructor (props) {
@@ -11,7 +12,8 @@ class VolumeList extends Component {
   }
 
   async componentDidMount () {
-    const { data } = await axios.get('http://localhost:5000/volume')
+    const url = `${config.host}volume`
+    const { data } = await axios.get(url)
     this.setState({ volumes: data })
   }
 

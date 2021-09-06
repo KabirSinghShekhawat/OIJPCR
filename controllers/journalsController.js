@@ -2,7 +2,7 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const Journal = require('../models/journal')
 const Volume = require('../models/volume')
-const { journals } = require('./journalsController')
+
 
 exports.journals = catchAsync(async (request, response, next) => {
   const journals = await Journal
@@ -105,7 +105,7 @@ exports.tags = catchAsync(async (req, res, next) => {
   // tags = [["tag1", "tag2", "tag3"], ["tag4, tag5"]]
   // alternate solution - tags = tags.flat(1) ES2019 syntax
   tags = [].concat.apply([], tags)
-  
+
   const max = 9
   const end = tags.length < max ? tags.length : max
   tags = tags.slice(0, end)
