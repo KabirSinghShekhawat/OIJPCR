@@ -180,6 +180,7 @@ function Tags ({ tags }) {
             }
             return <TagBlock
               index={index}
+              key={index}
               {...itemLink}
             />
           })

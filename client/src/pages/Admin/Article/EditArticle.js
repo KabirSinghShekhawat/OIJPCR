@@ -245,8 +245,7 @@ class EditArticle extends Component {
     }
 
     const { data } = await axios.post(url, formData, { ...headerConfig })
-    const { host } = config
-    return host.slice(0, host.length - 1) + data.file.url
+    return data.file.url
   }
 
   async PostData () {

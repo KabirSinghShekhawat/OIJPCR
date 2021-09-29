@@ -3,19 +3,11 @@ const path = require('path')
 const Journal = require('../../models/journal')
 const catchAsync = require('../../utils/catchAsync')
 const AppError = require('../../utils/appError')
-const multer = require('multer')
 const { deleteCoverImage } = require('./utils')
-const { multerStorage, multerFilter } = require('../ImageUpload/ArticleCoverImage')
+const { multerUpload } = require('../ImageUpload/ArticleCoverImage')
 
-const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
-})
+exports.uploadImage = multerUpload
 
-exports.uploadImage = upload.single('image')
-
-// ! testing only
-// TODO: Remove later
 exports.getJournals = catchAsync(async (req, res, next) => {
   const journals = await Journal.find()
   res.json(journals)
@@ -38,18 +30,16 @@ exports.getImageFile = catchAsync(async (req, res, next) => {
 // * return image URL to client, also available in MongoDB.
 exports.uploadImageFile = (req, res) => {
   res.send({
-    success: 1,
+    msg: 'File Uploaded Successfully',
     file: {
-      // * path is relative, no need to change for deployment
-      // ** ex: http://localhost:<PORT>/editor/images/<IMAGE_NAME>
-      url: '/editor/images/' + req.file.filename,
+      url: req.file.location,
     },
   })
 }
 
 exports.saveArticle = catchAsync(async (req, res, next) => {
   const { author, title, content, slug, volume, cover, tags, authorPhoto } = req.body
-  console.log(req.body)
+
   const newArticle = new Journal({
     author,
     title,

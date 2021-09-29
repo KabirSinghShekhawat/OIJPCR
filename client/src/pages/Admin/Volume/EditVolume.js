@@ -92,7 +92,7 @@ class EditVolume extends Component {
 
   async deleteVolume () {
     try {
-      const imageName = this.state.cover.split('/').pop()
+      const imageName = encodeURI(this.state.cover.split('/').pop())
 
       const url = `${config.host}admin/volume`
 
@@ -129,7 +129,7 @@ class EditVolume extends Component {
   }
 
   async deletePreviousCoverImage () {
-    const imageName = this.state.cover.split('/').pop()
+    const imageName = encodeURI(this.state.cover.split('/').pop())
     const url = `${config.host}admin/editor/${imageName}`
 
     const headerConfig = {
@@ -220,8 +220,7 @@ class EditVolume extends Component {
 
     try {
       const { data } = await axios.post(url, formData, {...headerConfig})
-      const { host } = config
-      return host.slice(0, host.length - 1) + data.file.url
+      return data.file.url
     } catch (e) {
       this.setState({
         notification: {

@@ -20,7 +20,7 @@ const podcastRoute = require('./routes/podcast')
 const editorRoute = require('./routes/editor')
 const volumeRoute = require('./routes/volume')
 const unhandledExceptionListener = require('./utils/unhandledExceptionListener')
-require('dotenv').config()
+require('dotenv').config({path: path.join(__dirname, '/.env')});
 
 process.on('uncaughtException', err => {
   unhandledExceptionListener('UNHANDLED EXCEPTION', err)
@@ -57,7 +57,6 @@ app.use('*', limiter)
 app.use(method_override('_method'))
 
 // cookie parser
-
 app.use(cookieParser())
 
 // App Engine
@@ -69,10 +68,6 @@ app.set('views', path.join(__dirname, 'views'))
 
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/uploads', express.static(path.join(__dirname, 'public/img')))
-/**
- * Session
- */
-
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
@@ -103,7 +98,7 @@ mongoose.connect(mongoConnectionString, mongoOptions)
   })
 
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers',
@@ -125,7 +120,14 @@ app.use('/editor', editorRoute)
 if (process.env.NODE_ENV === 'prod') {
   app.use(express.static('client/build'))
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(
+      path.resolve(
+        __dirname,
+        'client',
+        'build',
+        'index.html'
+      )
+    )
   })
 }
 
