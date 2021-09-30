@@ -4,9 +4,11 @@ import axios from 'axios'
 import PopUp from '../../../components/utils/Popup'
 import config from '../../../config/config'
 import { UserContext } from '../../../UserContext'
+import { uploadMultipart } from '../utils'
 
 class NewVolume extends Component {
   static contextType = UserContext
+
   constructor (props) {
     super(props)
     this.state = {
@@ -20,21 +22,15 @@ class NewVolume extends Component {
         show: false,
         msg: '',
       },
-      token: ''
+      token: '',
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handlePopUp = this.handlePopUp.bind(this)
-    this.onFileChange = this.onFileChange.bind(this)
-    this.fileUpload = this.fileUpload.bind(this)
-    this.PostData = this.PostData.bind(this)
   }
 
   componentDidMount () {
     this.setState({ token: this.context?.token })
   }
 
-  handlePopUp () {
+  handlePopUp = () => {
     this.setState(prevState => {
       return {
         notification: {
@@ -45,17 +41,17 @@ class NewVolume extends Component {
     })
   }
 
-  onFileChange (evt) {
+  onFileChange = (evt) => {
     this.setState({ file: evt.target.files[0] })
   }
 
-  handleChange (evt) {
+  handleChange = (evt) => {
     this.setState(() => ({
       [evt.target.name]: evt.target.value,
     }))
   }
 
-  async handleSubmit (evt) {
+  handleSubmit = async (evt) => {
     evt.preventDefault()
 
     if (!this.state.file || !this.state.volume) {
@@ -73,9 +69,9 @@ class NewVolume extends Component {
     await this.PostData()
   }
 
-  async PostData () {
+  PostData = async () => {
     try {
-      const {volume, about,  cover, date} = this.state
+      const { volume, about, cover, date } = this.state
 
       const url = `${config.host}admin/volume/`
 
@@ -88,11 +84,11 @@ class NewVolume extends Component {
       }
 
       await axios.post(url, {
-          volume,
-          about,
-          cover,
-          date
-        }, {...headerConfig})
+        volume,
+        about,
+        cover,
+        date,
+      }, { ...headerConfig })
 
       this.setState({
         notification: {
@@ -111,31 +107,10 @@ class NewVolume extends Component {
     }
   }
 
-  async fileUpload (file) {
+  fileUpload = async (file) => {
     const url = `${config.host}admin/editor/uploadFile`
-
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const headerConfig = {
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${this.state.token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-
-    try {
-      const { data } = await axios.post(url, formData, {...headerConfig})
-      return data.file.url
-    } catch (e) {
-      this.setState({
-        notification: {
-          show: true,
-          msg: 'Error in uploading file',
-        },
-      })
-    }
+    const authToken = this.state.token
+    return await uploadMultipart(file, { url, authToken })
   }
 
   render () {
@@ -145,7 +120,7 @@ class NewVolume extends Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           onFileChange={this.onFileChange}
-          heading={"New Volume"}
+          heading={'New Volume'}
           {...this.state}
         >
         </VolumeForm>

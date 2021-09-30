@@ -6,6 +6,7 @@ import { initEditor } from '../../../components/Admin/Config/TinyMCEConfig'
 import config from '../../../config/config'
 import PopUp from '../../../components/utils/Popup'
 import { UserContext } from '../../../UserContext'
+import { uploadMultipart} from '../utils'
 
 class NewArticle extends Component {
   static contextType = UserContext
@@ -30,20 +31,13 @@ class NewArticle extends Component {
       },
       token: '',
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handlePopUp = this.handlePopUp.bind(this)
-    this.onFileChange = this.onFileChange.bind(this)
-    this.fileUpload = this.fileUpload.bind(this)
-    this.PostData = this.PostData.bind(this)
-    this.onInit = this.onInit.bind(this)
   }
 
   componentDidMount () {
     this.setState({ token: this.context?.token })
   }
 
-  handlePopUp () {
+  handlePopUp = () => {
     this.setState(prevState => {
       return {
         notification: {
@@ -54,17 +48,17 @@ class NewArticle extends Component {
     })
   }
 
-  onFileChange (evt) {
+  onFileChange = (evt) => {
     this.setState({ [evt.target.name]: evt.target.files[0] })
   }
 
-  handleChange (evt) {
+  handleChange = (evt) => {
     this.setState(() => ({
       [evt.target.name]: evt.target.value,
     }))
   }
 
-  async handleSubmit (evt) {
+  handleSubmit = async (evt) => {
     evt.preventDefault()
 
     if (!this.state.articleCoverImage) {
@@ -151,40 +145,19 @@ class NewArticle extends Component {
     )
   }
 
-  onInit (evt, editor) {
+  onInit = (evt, editor) => {
     this.setState({
       editorRef: editor,
     })
   }
 
-  async fileUpload (file) {
+  fileUpload = async (file) => {
     const url = `${config.host}admin/editor/uploadFile`
-
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const headerConfig = {
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${this.state.token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-
-    try {
-      const { data } = await axios.post(url, formData, {...headerConfig})
-      return data.file.url
-    } catch (e) {
-      this.setState({
-        notification: {
-          show: true,
-          msg: 'Error in uploading file',
-        },
-      })
-    }
+    const authToken = this.state.token
+    return await uploadMultipart(file, { url, authToken })
   }
 
-  async PostData () {
+  PostData = async () => {
     try {
       const {
               editorRef,
@@ -203,7 +176,7 @@ class NewArticle extends Component {
         },
       }
 
-      await axios.post(url, { ...data }, {...headerConfig})
+      await axios.post(url, { ...data }, { ...headerConfig })
 
       this.setState({
         notification: {

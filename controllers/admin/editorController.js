@@ -10,6 +10,7 @@ exports.uploadImage = multerUpload
 
 exports.getJournals = catchAsync(async (req, res, next) => {
   const journals = await Journal.find()
+  if (!journals) return next(new AppError('Could not load articles', 500))
   res.json(journals)
 })
 

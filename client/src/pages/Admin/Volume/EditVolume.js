@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import PopUp from '../../../components/utils/Popup'
 import { UserContext } from '../../../UserContext'
+import { deleteOldImage, uploadMultipart } from '../utils'
 
 class EditVolume extends Component {
   static contextType = UserContext
@@ -27,14 +28,6 @@ class EditVolume extends Component {
       },
       token: '',
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handlePopUp = this.handlePopUp.bind(this)
-    this.onFileChange = this.onFileChange.bind(this)
-    this.fileUpload = this.fileUpload.bind(this)
-    this.PatchData = this.PatchData.bind(this)
-    this.deleteVolume = this.deleteVolume.bind(this)
-    this.deletePreviousCoverImage = this.deletePreviousCoverImage.bind(this)
   }
 
   async componentDidMount () {
@@ -69,7 +62,7 @@ class EditVolume extends Component {
     })
   }
 
-  handlePopUp () {
+  handlePopUp = () => {
     this.setState(prevState => {
       return {
         notification: {
@@ -80,17 +73,17 @@ class EditVolume extends Component {
     })
   }
 
-  onFileChange (evt) {
+  onFileChange = (evt) => {
     this.setState({ file: evt.target.files[0] })
   }
 
-  handleChange (evt) {
+  handleChange = (evt) => {
     this.setState(() => ({
       [evt.target.name]: evt.target.value,
     }))
   }
 
-  async deleteVolume () {
+  deleteVolume = async () => {
     try {
       const imageName = encodeURI(this.state.cover.split('/').pop())
 
@@ -128,36 +121,31 @@ class EditVolume extends Component {
     }
   }
 
-  async deletePreviousCoverImage () {
-    const imageName = encodeURI(this.state.cover.split('/').pop())
-    const url = `${config.host}admin/editor/${imageName}`
-
-    const headerConfig = {
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${this.state.token}`,
-        'Content-Type': 'application/json',
-      },
-    }
-
-    await axios.delete(url, {...headerConfig})
+  deletePreviousCoverImage = async (imagePath) => {
+    const routePrefix = `${config.host}admin/editor/`
+    const authToken = this.state.token
+    await deleteOldImage({
+      imagePath,
+      routePrefix,
+      authToken
+    })
   }
 
-  async handleSubmit (evt) {
+  handleSubmit = async (evt) => {
     evt.preventDefault()
 
     if (!this.state.postDataFlag) return
 
     if (this.state.file) {
       const imgPath = await this.fileUpload(this.state.file)
-      await this.deletePreviousCoverImage()
+      await this.deletePreviousCoverImage(this.state.cover)
       this.setState({ cover: imgPath })
     }
 
     await this.PatchData()
   }
 
-  async PatchData () {
+  PatchData = async () => {
     try {
       if (!this.state.postDataFlag) return
 
@@ -184,7 +172,7 @@ class EditVolume extends Component {
         cover,
         date,
         id,
-      }, {...headerConfig})
+      }, { ...headerConfig })
 
       this.setState({
         notification: {
@@ -204,31 +192,10 @@ class EditVolume extends Component {
     }
   }
 
-  async fileUpload (file) {
+  fileUpload = async (file) => {
     const url = `${config.host}admin/editor/uploadFile`
-
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const headerConfig = {
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${this.state.token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-
-    try {
-      const { data } = await axios.post(url, formData, {...headerConfig})
-      return data.file.url
-    } catch (e) {
-      this.setState({
-        notification: {
-          show: true,
-          msg: 'Error in uploading file',
-        },
-      })
-    }
+    const authToken = this.state.token
+    return await uploadMultipart(file, { url, authToken })
   }
 
   render () {

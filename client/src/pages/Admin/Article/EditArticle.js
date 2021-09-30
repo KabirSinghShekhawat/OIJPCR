@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Editor } from '@tinymce/tinymce-react'
 import axios from 'axios'
-import EditorForm from '../../../components/Admin/EditorForm'
 import { Redirect } from 'react-router-dom'
+import { Editor } from '@tinymce/tinymce-react'
 import { initEditor } from '../../../components/Admin/Config/TinyMCEConfig'
+import EditorForm from '../../../components/Admin/EditorForm'
 import config from '../../../config/config'
 import PopUp from '../../../components/utils/Popup'
 import { UserContext } from '../../../UserContext'
+import { deleteOldImage, uploadMultipart } from '../utils'
 
 class EditArticle extends Component {
   static contextType = UserContext
@@ -36,15 +37,6 @@ class EditArticle extends Component {
       },
       token: '',
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handlePopUp = this.handlePopUp.bind(this)
-    this.onFileChange = this.onFileChange.bind(this)
-    this.fileUpload = this.fileUpload.bind(this)
-    this.deleteArticle = this.deleteArticle.bind(this)
-    this.deletePreviousCoverImage = this.deletePreviousCoverImage.bind(this)
-    this.PostData = this.PostData.bind(this)
-    this.onInit = this.onInit.bind(this)
   }
 
   async componentDidMount () {
@@ -69,7 +61,7 @@ class EditArticle extends Component {
     }
   }
 
-  handlePopUp () {
+  handlePopUp = () => {
     this.setState(prevState => {
       return {
         notification: {
@@ -80,7 +72,7 @@ class EditArticle extends Component {
     })
   }
 
-  async deleteArticle () {
+  deleteArticle = async () => {
     try {
       const articleCover = this.state.cover.split('/').pop()
       const authorPhoto = this.state.authorPhoto.split('/').pop()
@@ -123,32 +115,27 @@ class EditArticle extends Component {
     }
   }
 
-  async deletePreviousCoverImage (imagePath) {
-    const imageName = imagePath.split('/').pop()
-    const url = `${config.host}admin/editor/${imageName}`
-
-    const headerConfig = {
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${this.state.token}`,
-        'Content-Type': 'application/json',
-      },
-    }
-
-    await axios.delete(url, { ...headerConfig })
+  deletePreviousCoverImage = async (imagePath) => {
+    const routePrefix = `${config.host}admin/editor/`
+    const authToken = this.state.token
+    await deleteOldImage({
+      imagePath,
+      routePrefix,
+      authToken
+    })
   }
 
-  onFileChange (evt) {
+  onFileChange = (evt) => {
     this.setState({ [evt.target.name]: evt.target.files[0] })
   }
 
-  handleChange (evt) {
+  handleChange = (evt) => {
     this.setState(() => ({
       [evt.target.name]: evt.target.value,
     }))
   }
 
-  async handleSubmit (evt) {
+  handleSubmit = async (evt) => {
     evt.preventDefault()
 
     if (!this.state.postDataFlag) return
@@ -224,31 +211,19 @@ class EditArticle extends Component {
     )
   }
 
-  onInit (evt, editor) {
+  onInit = (evt, editor) => {
     this.setState({
       editorRef: editor,
     })
   }
 
-  async fileUpload (file) {
+  fileUpload = async (file) => {
     const url = `${config.host}admin/editor/uploadFile`
-
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const headerConfig = {
-      withCredentials: true,
-      headers: {
-        'Authorization': `Bearer ${this.state.token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-
-    const { data } = await axios.post(url, formData, { ...headerConfig })
-    return data.file.url
+    const authToken = this.state.token
+    return await uploadMultipart(file, { url, authToken })
   }
 
-  async PostData () {
+  PostData = async () => {
     try {
       if (!this.state.postDataFlag) return
 
