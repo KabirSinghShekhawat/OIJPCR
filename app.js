@@ -30,7 +30,7 @@ process.on('uncaughtException', err => {
 
 // Helmet
 
-const corsOrigin = '*'
+const corsOrigin = 'https://oijpcr.org'
 
 app.use(
   helmet({
@@ -58,13 +58,6 @@ app.use(method_override('_method'))
 
 // cookie parser
 app.use(cookieParser())
-
-// App Engine
-app.engine('ejs', engine)
-app.set('view engine', 'ejs')
-
-// Set Views
-app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
@@ -97,7 +90,7 @@ mongoose.connect(mongoConnectionString, mongoOptions)
 
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', corsOrigin);
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, X-PINGOTHER,Content-Type, Accept, Authorization'
