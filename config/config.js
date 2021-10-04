@@ -1,7 +1,7 @@
 const path = require('path')
-
+console.log(path.join(__dirname, '/config/.env'));
 const envPath = {
-  path: path.join(__dirname, '.env')
+  path: path.join(__dirname, '/config/.env')
 }
 
 const configObj = require('dotenv').config(envPath)
