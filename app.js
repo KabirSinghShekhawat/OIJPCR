@@ -30,7 +30,7 @@ process.on('uncaughtException', err => {
 
 // Helmet
 
-const corsOrigin = 'http://localhost:3000'
+const corsOrigin = '*'
 
 app.use(
   helmet({
@@ -66,8 +66,6 @@ app.set('view engine', 'ejs')
 // Set Views
 app.set('views', path.join(__dirname, 'views'))
 
-app.use('/', express.static(path.join(__dirname, 'public')))
-app.use('/uploads', express.static(path.join(__dirname, 'public/img')))
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
@@ -99,7 +97,7 @@ mongoose.connect(mongoConnectionString, mongoOptions)
 
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, X-PINGOTHER,Content-Type, Accept, Authorization'
@@ -115,21 +113,6 @@ app.use('/podcast', podcastRoute)
 app.use('/admin', adminRoute)
 app.use('/volume', volumeRoute)
 app.use('/editor', editorRoute)
-
-// Serve static assets (react) in production
-if (process.env.NODE_ENV === 'prod') {
-  app.use(express.static('client/build'))
-  app.get('*', (req, res) => {
-    res.sendFile(
-      path.resolve(
-        __dirname,
-        'client',
-        'build',
-        'index.html'
-      )
-    )
-  })
-}
 
 // 404 page
 app.get('*', (req, res) => {
