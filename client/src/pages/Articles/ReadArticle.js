@@ -35,7 +35,7 @@ class ReadArticle extends Component {
         moreJournals: moreJournals,
       })
     } catch (e) {
-      console.log(e.message)
+      throw new Error(e.message)
     }
   }
 

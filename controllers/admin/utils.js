@@ -1,5 +1,3 @@
-const fs = require('fs/promises')
-const path = require('path')
 const catchAsync = require('../../utils/catchAsync')
 const AppError = require('../../utils/appError')
 const { s3, s3bucket } = require('../../config/config')
@@ -11,12 +9,10 @@ const deleteCoverImage = catchAsync(async (imageName, next) => {
     Key: keyName
   };
 
-  s3.deleteObject(params, (error, data) => {
+  s3.deleteObject(params, (error) => {
     if (error) {
-      console.log(error)
       return next(new AppError('Could not delete image: ' + imageName, 404))
     }
-    console.log(data)
   });
 })
 

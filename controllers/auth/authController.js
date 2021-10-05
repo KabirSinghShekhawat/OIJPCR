@@ -46,10 +46,10 @@ exports.login = catchAsync(async (req, res, next) => {
 })
 
 exports.logout = (req, res) => {
+  const bufferTime = 10 * 1000
   const cookieOptions = {
-    // 15 minutes
     expires: new Date(
-      Date.now() + 10 * 1000,
+      Date.now() + bufferTime,
     ),
     httpOnly: true,
   }

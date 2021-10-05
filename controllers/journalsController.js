@@ -67,8 +67,7 @@ exports.getLimitedJournalsByVolume = catchAsync(async (request, response, next) 
 exports.getJournal = catchAsync(async (req, res, next) => {
   const { id } = req.params
   const journal = await Journal.findById(id)
-  console.log("Id")
-  console.log(id)
+
   if (!journal) {
     return next(new AppError(`Found no journal with ID ${id}`, 404))
   }

@@ -31,7 +31,7 @@ function LeftGrid () {
           {...card}
           coverPhoto={card.cover}
           id={card._id}
-          volume={index + 1}
+          volume={card.volume}
           cname={cname}
         />
         :

@@ -21,7 +21,7 @@ class Archive extends Component {
       const { data } = await axios.get(`${config.host}journals/archive`)
       this.setState({ archive: data })
     } catch (e) {
-      console.log(e.message)
+      throw new Error(e.message)
     }
   }
 
