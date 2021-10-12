@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express().disable('x-powered-by')
 const cors = require('cors')
-const engine = require('ejs-mate')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const method_override = require('method-override')
@@ -14,9 +13,6 @@ const globalErrorHandler = require('./controllers/errorController')
 // Routes
 const journalsRoute = require('./routes/journals')
 const adminRoute = require('./routes/admin')
-const submitArticleRoute = require('./routes/submitArticle')
-const homeRoute = require('./routes/home')
-const podcastRoute = require('./routes/podcast')
 const editorRoute = require('./routes/editor')
 const volumeRoute = require('./routes/volume')
 const unhandledExceptionListener = require('./utils/unhandledExceptionListener')
@@ -59,15 +55,6 @@ app.use(method_override('_method'))
 // cookie parser
 app.use(cookieParser())
 
-// App Engine
-app.engine('ejs', engine)
-app.set('view engine', 'ejs')
-
-// Set Views
-app.set('views', path.join(__dirname, 'views'))
-
-app.use('/', express.static(path.join(__dirname, 'public')))
-app.use('/uploads', express.static(path.join(__dirname, 'public/img')))
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(express.json({ limit: '5mb' }))
 
@@ -108,10 +95,7 @@ app.use(function (req, res, next) {
 });
 
 
-app.use('/', homeRoute)
 app.use('/journals', journalsRoute)
-app.use('/submit', submitArticleRoute)
-app.use('/podcast', podcastRoute)
 app.use('/admin', adminRoute)
 app.use('/volume', volumeRoute)
 app.use('/editor', editorRoute)
