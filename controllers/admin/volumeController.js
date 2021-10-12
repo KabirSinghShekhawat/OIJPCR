@@ -31,7 +31,7 @@ exports.createVolume = catchAsync(async (req, res, next) => {
   if (!result)
     return next(new AppError('Could not create volume ' + volume, 400))
 
-  res.status(201).send({ status: 'success' })
+  res.status(201).json({ status: 'success' })
 })
 
 
