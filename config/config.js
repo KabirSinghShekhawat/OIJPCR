@@ -4,10 +4,10 @@
 //   path: path.join(__dirname, '.env')
 // }
 
-// const configObj = require('dotenv').config(envPath)
+const configObj = require('dotenv').config()
 
 
-// if (configObj.error) throw configObj.error
+if (configObj.error) throw configObj.error
 
 const aws = require('aws-sdk')
 
