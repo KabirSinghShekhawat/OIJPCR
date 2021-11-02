@@ -1,20 +1,21 @@
-const path = require('path')
+// const path = require('path')
 
-const envPath = {
-  path: path.join(__dirname, '../.env')
-}
+// const envPath = {
+//   path: path.join(__dirname, '../.env')
+// }
 
-const configObj = require('dotenv').config(envPath)
+// const configObj = require('dotenv').config(envPath)
 
 
-if (configObj.error) throw configObj.error
+
+// if (configObj.error) throw configObj.error
 
 const aws = require('aws-sdk')
 
 aws.config.update({
-  accessKey: configObj.parsed.AWS_SECRET_ACCESS_KEY,
-  accessKeyId: configObj.parsed.AWS_ACCESS_KEY_ID,
-  region: configObj.parsed.AWS_REGION
+  accessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  region: process.env.AWS_REGION
 })
 
 const s3 = new aws.S3();
@@ -22,5 +23,5 @@ const s3 = new aws.S3();
 module.exports={
   aws,
   s3,
-  s3bucket: configObj.parsed.S3_BUCKET
+  s3bucket: process.env.S3_BUCKET
 }

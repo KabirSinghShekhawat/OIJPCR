@@ -26,7 +26,7 @@ process.on('uncaughtException', err => {
 
 // Helmet
 
-const corsOrigin = 'http://localhost:3000'
+const corsOrigin = ['http://oijpcr.org','https://oijpcr.org']
 
 app.use(
   helmet({
@@ -86,7 +86,7 @@ mongoose.connect(mongoConnectionString, mongoOptions)
 
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', corsOrigin);
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, X-PINGOTHER,Content-Type, Accept, Authorization'
