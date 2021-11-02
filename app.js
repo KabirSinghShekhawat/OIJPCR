@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express().disable('x-powered-by')
 const cors = require('cors')
-const engine = require('ejs-mate')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const method_override = require('method-override')
@@ -14,9 +13,6 @@ const globalErrorHandler = require('./controllers/errorController')
 // Routes
 const journalsRoute = require('./routes/journals')
 const adminRoute = require('./routes/admin')
-const submitArticleRoute = require('./routes/submitArticle')
-const homeRoute = require('./routes/home')
-const podcastRoute = require('./routes/podcast')
 const editorRoute = require('./routes/editor')
 const volumeRoute = require('./routes/volume')
 const unhandledExceptionListener = require('./utils/unhandledExceptionListener')
@@ -30,7 +26,7 @@ process.on('uncaughtException', err => {
 
 // Helmet
 
-const corsOrigin = 'https://oijpcr.org'
+const corsOrigin = 'http://localhost:3000'
 
 app.use(
   helmet({
@@ -90,7 +86,7 @@ mongoose.connect(mongoConnectionString, mongoOptions)
 
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', corsOrigin);
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, X-PINGOTHER,Content-Type, Accept, Authorization'
@@ -99,13 +95,25 @@ app.use(function (req, res, next) {
 });
 
 
-app.use('/', homeRoute)
 app.use('/journals', journalsRoute)
-app.use('/submit', submitArticleRoute)
-app.use('/podcast', podcastRoute)
 app.use('/admin', adminRoute)
 app.use('/volume', volumeRoute)
 app.use('/editor', editorRoute)
+
+// Serve static assets (react) in production
+if (process.env.NODE_ENV === 'prod') {
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.resolve(
+        __dirname,
+        'client',
+        'build',
+        'index.html'
+      )
+    )
+  })
+}
 
 // 404 page
 app.get('*', (req, res) => {
