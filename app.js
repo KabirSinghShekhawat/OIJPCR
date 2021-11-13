@@ -26,7 +26,7 @@ process.on('uncaughtException', err => {
 
 // Helmet
 
-const corsOrigin = 'https://oijpcr.org'
+const corsOrigin = ['https://oijpcr.org','https://oijpcr-front-end.pages.dev/']
 
 app.use(
   helmet({
