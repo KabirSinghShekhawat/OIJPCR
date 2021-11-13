@@ -1,5 +1,6 @@
 import box from '../../assets/submitArticleBtn.svg'
 import React from 'react'
+import {Link} from "react-router-dom"
 
 function SubmitArticleFormFullWidth (props) {
   return (
@@ -13,9 +14,11 @@ function SubmitArticleFormFullWidth (props) {
         </p>
         <button className="mt-16 sm:mt-8 py-2 px-6 ml-4 max-w-max rounded-md primary-color-bg text-white">
           <img src={box} alt="submit button icon" className="mr-2 inline h-4 w-4 mb-1"/>
-          <span>
-          Submit Article
-        </span>
+          <Link
+            to="/submitArticle"
+          >
+            Submit Article
+          </Link>
         </button>
       </div>
     </div>

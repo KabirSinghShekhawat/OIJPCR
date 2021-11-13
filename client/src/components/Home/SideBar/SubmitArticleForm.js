@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom"
 import box from '../../../assets/submitArticleBtn.svg'
 
 export default function SubmitArticleForm () {
@@ -12,9 +13,11 @@ export default function SubmitArticleForm () {
         </p>
         <button className="mt-6 md:mt-16 self-center sm:mt-8 py-2 px-6 max-w-max rounded-md primary-color-bg text-white">
           <img src={box} alt="submit button icon" className="mr-2 inline h-4 w-4 mb-1"/>
-          <span>
+          <Link
+            to="/submitArticle"
+          >
             Submit Article
-          </span>
+          </Link>
         </button>
       </div>
     </div>
